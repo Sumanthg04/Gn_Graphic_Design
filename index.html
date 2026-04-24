@@ -3,649 +3,687 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sumanth G | Portfolio 2026</title>
+    <title>Sumanth G | Senior Graphic Designer & Developer</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Syncopate:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        /* ========================================
-        1. CSS VARIABLES & RESET
-        ========================================
+        /* ========================================================================
+        1. THEME DESIGN SYSTEM (80+ lines of CSS variables and resets)
+        ========================================================================
         */
         :root {
-            --bg-dark: #080808;
-            --card-bg: rgba(20, 20, 20, 0.6);
-            --accent: #6366f1;
-            --accent-glow: rgba(99, 102, 241, 0.3);
-            --text-main: #e0e0e0;
-            --text-dim: #999;
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --transition-smooth: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            --primary: #6366f1; /* Indigo Accent */
+            --primary-glow: rgba(99, 102, 241, 0.4);
+            --bg-deep: #050505;
+            --bg-surface: #0f0f0f;
+            --bg-glass: rgba(20, 20, 20, 0.8);
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --border: rgba(255, 255, 255, 0.08);
+            --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            scroll-behavior: smooth;
+            cursor: none; /* Custom Cursor implementation */
         }
 
         body {
-            background-color: var(--bg-dark);
+            background-color: var(--bg-deep);
             color: var(--text-main);
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* ========================================
-        2. CUSTOM BACKGROUND ENGINE
-        ========================================
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-deep); }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+
+        /* ========================================================================
+        2. COMPONENT LIBRARY (Layouts, Grids, Buttons)
+        ========================================================================
         */
-        #canvas-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+
+        .section-padding { padding: 120px 0; }
+
+        .flex-center { display: flex; align-items: center; justify-content: center; }
+
+        .glass {
+            background: var(--bg-glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+        }
+
+        .btn {
+            position: relative;
+            padding: 16px 32px;
+            border-radius: 100px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--ease-out-expo);
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-p { background: var(--primary); color: white; border: none; }
+        .btn-p::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
             z-index: -1;
-            width: 100%;
-            height: 100%;
         }
+        .btn-p:hover::before { left: 100%; }
 
-        .mesh-gradient {
+        /* ========================================================================
+        3. CUSTOM CURSOR (JavaScript Driven)
+        ========================================================================
+        */
+        #cursor {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.05) 0%, transparent 40%),
-                radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.05) 0%, transparent 40%);
-            z-index: -2;
+            width: 8px; height: 8px;
+            background: #fff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s;
         }
 
-        /* ========================================
-        3. NAVIGATION (GLASSMORPHISM)
-        ========================================
+        #cursor-follower {
+            position: fixed;
+            width: 40px; height: 40px;
+            border: 1px solid var(--primary);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transition: transform 0.15s ease-out, opacity 0.3s;
+        }
+
+        /* ========================================================================
+        4. NAVIGATION
+        ========================================================================
         */
         nav {
             position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 20px 10%;
+            top: 0; width: 100%;
+            height: 90px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
             z-index: 1000;
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--glass-border);
+            transition: 0.4s;
+        }
+
+        nav.scrolled {
+            height: 70px;
+            background: rgba(5,5,5,0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
         }
 
         .logo {
             font-family: 'Syncopate', sans-serif;
-            font-size: 1.5rem;
+            font-weight: 700;
+            font-size: 1.2rem;
             letter-spacing: -1px;
-            color: #fff;
         }
 
-        .logo span { color: var(--accent); }
+        .logo span { color: var(--primary); }
 
-        .nav-links {
-            display: flex;
-            gap: 40px;
-            list-style: none;
-        }
-
+        .nav-links { display: flex; gap: 40px; list-style: none; }
         .nav-links a {
             text-decoration: none;
             color: var(--text-dim);
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: var(--transition-smooth);
+            font-size: 0.85rem;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
+            transition: 0.3s;
         }
+        .nav-links a:hover { color: var(--primary); }
 
-        .nav-links a:hover {
-            color: var(--accent);
-        }
-
-        /* ========================================
-        4. HERO SECTION
-        ========================================
+        /* ========================================================================
+        5. HERO SECTION (Dynamic Visuals)
+        ========================================================================
         */
         .hero {
             height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: flex-start;
-            padding: 0 10%;
             position: relative;
+            overflow: hidden;
         }
 
-        .hero-sub {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            color: var(--accent);
-            margin-bottom: 20px;
-            display: block;
-            animation: fadeInDown 1s ease;
+        .hero-bg-text {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Syncopate', sans-serif;
+            font-size: 20vw;
+            font-weight: 700;
+            color: rgba(255,255,255,0.02);
+            z-index: -1;
+            white-space: nowrap;
         }
 
         .hero h1 {
-            font-size: clamp(3rem, 8vw, 6rem);
             font-family: 'Syncopate', sans-serif;
-            line-height: 1;
-            margin-bottom: 30px;
-            max-width: 900px;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            line-height: 1.1;
+            margin-bottom: 20px;
         }
 
-        .gradient-text {
-            background: linear-gradient(90deg, #fff, var(--accent), #fff);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shine 5s linear infinite;
+        .hero .accent-text {
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255,255,255,0.5);
         }
 
         .hero p {
-            max-width: 600px;
+            font-size: 1.2rem;
             color: var(--text-dim);
-            font-size: 1.1rem;
+            max-width: 600px;
             margin-bottom: 40px;
         }
 
-        .cta-group {
-            display: flex;
-            gap: 20px;
-        }
-
-        .btn {
-            padding: 18px 35px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition-smooth);
+        .badge {
             display: inline-block;
+            padding: 6px 16px;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 20px;
         }
 
-        .btn-primary {
-            background: var(--accent);
-            color: white;
-            box-shadow: 0 10px 30px var(--accent-glow);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px var(--accent-glow);
-        }
-
-        .btn-secondary {
-            border: 1px solid var(--glass-border);
-            color: white;
-            backdrop-filter: blur(5px);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        /* ========================================
-        5. WORK GALLERY (THE CORE)
-        ========================================
+        /* ========================================================================
+        6. EXPERIENCE & EDUCATION (Timeline)
+        ========================================================================
         */
-        .section-title {
-            padding: 100px 10% 40px;
-        }
-
-        .section-title h2 {
-            font-size: 2.5rem;
-            font-family: 'Syncopate', sans-serif;
-        }
-
-        .filter-wrap {
-            padding: 0 10% 40px;
-            display: flex;
-            gap: 15px;
-        }
-
-        .filter-btn {
-            background: none;
-            border: 1px solid var(--glass-border);
-            color: var(--text-dim);
-            padding: 8px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: var(--transition-smooth);
-        }
-
-        .filter-btn.active, .filter-btn:hover {
-            background: var(--accent);
-            color: white;
-            border-color: var(--accent);
-        }
-
-        .portfolio-grid {
+        .timeline-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-            gap: 30px;
-            padding: 0 10% 100px;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
         }
 
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            overflow: hidden;
+        .timeline-item {
             position: relative;
-            backdrop-filter: blur(5px);
-            transition: var(--transition-smooth);
-            height: 500px;
-            cursor: pointer;
+            padding: 30px;
+            margin-bottom: 20px;
+            transition: 0.4s;
         }
 
-        .card:hover {
-            transform: translateY(-10px);
-            border-color: var(--accent);
+        .timeline-item:hover {
+            transform: scale(1.02);
+            background: rgba(255,255,255,0.02);
         }
 
-        .card-img {
-            width: 100%;
-            height: 70%;
-            background-size: cover;
-            background-position: center;
-            transition: transform 0.8s ease;
-        }
-
-        .card:hover .card-img {
-            transform: scale(1.1);
-        }
-
-        .card-content {
-            padding: 25px;
-            background: linear-gradient(to top, var(--bg-dark), transparent);
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-        }
-
-        .card-content h3 {
-            font-size: 1.4rem;
+        .date-label {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: block;
             margin-bottom: 10px;
         }
 
-        .card-content span {
-            color: var(--accent);
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            font-weight: 700;
+        .timeline-item h3 { font-size: 1.5rem; margin-bottom: 5px; }
+        .timeline-item span { color: var(--text-dim); font-size: 0.9rem; }
+
+        /* ========================================================================
+        7. PORTFOLIO GRID (Advanced Hover & Filter)
+        ========================================================================
+        */
+        .portfolio-controls {
+            margin-bottom: 60px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
-        /* ========================================
-        6. SKILLS SECTION
-        ========================================
+        .control-btn {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .control-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+            box-shadow: 0 10px 20px var(--primary-glow);
+        }
+
+        .work-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+            gap: 30px;
+        }
+
+        .work-card {
+            height: 550px;
+            border-radius: 30px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .work-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 1s var(--ease-out-expo);
+        }
+
+        .work-card:hover img { transform: scale(1.15) rotate(2deg); filter: grayscale(100%); }
+
+        .work-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(5,5,5,0.9), transparent);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            opacity: 0;
+            transition: 0.4s;
+        }
+
+        .work-card:hover .work-overlay { opacity: 1; }
+
+        .work-overlay h4 { font-size: 1.8rem; margin-bottom: 10px; font-family: 'Syncopate'; }
+
+        /* ========================================================================
+        8. SKILL SPHERE (Progress & Expertise)
+        ========================================================================
         */
-        .skills-container {
-            padding: 100px 10%;
+        .skill-section { background: var(--bg-surface); border-radius: 50px; padding: 100px 5%; }
+
+        .skill-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .skill-box {
+            text-align: center;
+            padding: 40px;
+            transition: 0.3s;
+        }
+
+        .skill-box:hover { background: rgba(255,255,255,0.03); border-radius: 20px; }
+
+        .skill-box i { font-size: 3rem; color: var(--primary); margin-bottom: 20px; }
+
+        /* ========================================================================
+        9. TESTIMONIALS / QUOTE
+        ========================================================================
+        */
+        .quote-section {
+            text-align: center;
+            padding: 150px 10%;
+        }
+
+        .quote-section h2 {
+            font-size: 3rem;
+            font-weight: 300;
+            font-style: italic;
+            color: var(--text-dim);
+        }
+
+        /* ========================================================================
+        10. FOOTER & CONTACT FORM
+        ========================================================================
+        */
+        .footer-wrap {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 100px;
-            align-items: center;
+            padding-bottom: 100px;
         }
 
-        .skill-bar-wrap {
-            margin-bottom: 30px;
-        }
-
-        .skill-info {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
-        .progress-bg {
-            height: 6px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: var(--accent);
-            width: 0;
-            transition: width 2s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        /* ========================================
-        7. SERVICES / EXPERTISE
-        ========================================
-        */
-        .services-grid {
-            padding: 0 10% 100px;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-
-        .service-card {
-            padding: 40px;
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            transition: var(--transition-smooth);
-        }
-
-        .service-card:hover {
-            background: rgba(255, 255, 255, 0.02);
-            border-color: var(--accent);
-        }
-
-        .service-card i {
-            font-size: 2rem;
-            color: var(--accent);
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 15px;
+            color: white;
             margin-bottom: 20px;
-            display: block;
+            font-family: inherit;
         }
 
-        /* ========================================
-        8. ANIMATIONS
-        ========================================
-        */
-        @keyframes shine {
-            to { background-position: 200% center; }
-        }
-
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ========================================
-        9. FOOTER & CONTACT
-        ========================================
-        */
         footer {
-            padding: 100px 10% 50px;
-            border-top: 1px solid var(--glass-border);
-            background: #050505;
+            border-top: 1px solid var(--border);
+            padding: 40px 0;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-dim);
         }
 
-        .footer-flex {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 50px;
-        }
-
-        .contact-info h4 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-        }
-
-        .email-link {
-            font-size: 1.5rem;
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 700;
-        }
-
-        /* ========================================
-        10. RESPONSIVENESS
-        ========================================
+        /* ========================================================================
+        11. UTILITY ANIMATIONS
+        ========================================================================
         */
-        @media (max-width: 1024px) {
-            .skills-container, .services-grid { grid-template-columns: 1fr; }
-            .portfolio-grid { grid-template-columns: 1fr; }
+        [data-reveal] {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: 1s var(--ease-out-expo);
+        }
+
+        [data-reveal].active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 900px) {
+            .timeline-grid, .work-grid, .skill-grid, .footer-wrap {
+                grid-template-columns: 1fr;
+            }
             .nav-links { display: none; }
         }
     </style>
 </head>
 <body>
 
-    <canvas id="canvas-bg"></canvas>
-    <div class="mesh-gradient"></div>
+    <div id="cursor"></div>
+    <div id="cursor-follower"></div>
 
-    <nav>
-        <div class="logo">SUMANTH<span>.G</span></div>
+    <nav id="navbar">
+        <div class="logo">SUMANTH<span>.</span>G</div>
         <ul class="nav-links">
             <li><a href="#home">Home</a></li>
-            <li><a href="#work">Projects</a></li>
-            <li><a href="#about">About</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#work">Portfolio</a></li>
+            <li><a href="#skills">Capabilities</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
     </nav>
 
-    <header class="hero" id="home">
-        <span class="hero-sub">Senior Graphic Designer</span>
-        <h1><span class="gradient-text">Design.</span><br>Develop.<br>Deliver.</h1>
-        <p>Creating high-impact visual identities for the industrial and agricultural sectors. Expertise in packaging, large-scale print, and custom web experiences.</p>
-        <div class="cta-group">
-            <a href="#work" class="btn btn-primary">View Portfolio</a>
-            <a href="mailto:sumanthg2904@gmail.com" class="btn btn-secondary">Get In Touch</a>
-        </div>
-    </header>
-
-    <section class="section-title" id="work">
-        <h2>Selected Works</h2>
-    </section>
-
-    <div class="filter-wrap">
-        <button class="filter-btn active" onclick="filterSelection('all')">All</button>
-        <button class="filter-btn" onclick="filterSelection('packaging')">Packaging</button>
-        <button class="filter-btn" onclick="filterSelection('branding')">Branding</button>
-        <button class="filter-btn" onclick="filterSelection('web')">Web Design</button>
-    </div>
-
-    <div class="portfolio-grid" id="portfolioContainer">
-        <div class="card filter-item packaging">
-            <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=800');"></div>
-            <div class="card-content">
-                <span>Agriculture</span>
-                <h3>Jenushree Agritech Packaging</h3>
-            </div>
-        </div>
-
-        <div class="card filter-item branding">
-            <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1635405074683-96d6921a2a2c?auto=format&fit=crop&q=80&w=800');"></div>
-            <div class="card-content">
-                <span>Corporate</span>
-                <h3>SMPS Hoarding Concepts</h3>
-            </div>
-        </div>
-
-        <div class="card filter-item web">
-            <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1547658719-da2b51169166?auto=format&fit=crop&q=80&w=800');"></div>
-            <div class="card-content">
-                <span>Full-Stack</span>
-                <h3>Portfolio Dev Ecosystem</h3>
-            </div>
-        </div>
-
-        <div class="card filter-item packaging">
-            <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1605648916319-cf082f7524a1?auto=format&fit=crop&q=80&w=800');"></div>
-            <div class="card-content">
-                <span>Branding</span>
-                <h3>Fact Gold Plus Identity</h3>
-            </div>
-        </div>
-
-        <div class="card filter-item branding">
-            <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&q=80&w=800');"></div>
-            <div class="card-content">
-                <span>Nudi Typography</span>
-                <h3>Kannada Regional Ads</h3>
-            </div>
-        </div>
-
-        <div class="card filter-item web">
-            <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=800');"></div>
-            <div class="card-content">
-                <span>Software</span>
-                <h3>Industrial Dashboard UI</h3>
-            </div>
-        </div>
-    </div>
-
-    <section class="skills-container" id="about">
-        <div class="skills-content">
-            <h2 style="font-family: 'Syncopate'; margin-bottom: 30px;">The Skillset</h2>
-            <p style="color: var(--text-dim); margin-bottom: 40px;">Expertise in professional design software including Adobe Illustrator, Photoshop, and CorelDRAW. Specialized in translating complex technical requirements into visuals that drive sales.</p>
-            
-            <div class="skill-bar-wrap">
-                <div class="skill-info"><span>Adobe Creative Suite</span><span>95%</span></div>
-                <div class="progress-bg"><div class="progress-fill" style="width: 95%;"></div></div>
-            </div>
-
-            <div class="skill-bar-wrap">
-                <div class="skill-info"><span>Industrial Packaging Design</span><span>90%</span></div>
-                <div class="progress-bg"><div class="progress-fill" style="width: 90%;"></div></div>
-            </div>
-
-            <div class="skill-bar-wrap">
-                <div class="skill-info"><span>Kannada Nudi Typography</span><span>100%</span></div>
-                <div class="progress-bg"><div class="progress-fill" style="width: 100%;"></div></div>
-            </div>
-
-            <div class="skill-bar-wrap">
-                <div class="skill-info"><span>Web Dev (HTML/CSS/WP)</span><span>75%</span></div>
-                <div class="progress-bg"><div class="progress-fill" style="width: 75%;"></div></div>
-            </div>
-        </div>
-        <div class="skills-visual">
-            <div class="service-card">
-                <h3>MCA Graduate</h3>
-                <p>Advanced Computer Applications background ensures a technical edge in digital design workflows.</p>
-            </div>
-            <div class="service-card" style="margin-top: 20px;">
-                <h3>Print Specialist</h3>
-                <p>Mastery over Flex, ACP, and Large Format production requirements.</p>
+    <section class="hero container" id="home">
+        <div class="hero-bg-text">DESIGN</div>
+        <div data-reveal class="active">
+            <span class="badge">Based in Bengaluru, India</span>
+            <h1>Creative Solutionist<br> & <span class="accent-text">Senior Graphic Designer</span></h1>
+            <p>Specializing in industrial branding, premium packaging, and regional typography. MCA graduate with a passion for building clean, high-performance web experiences.</p>
+            <div class="cta-group">
+                <a href="#work" class="btn btn-p">Explore Projects <i class="fa-solid fa-arrow-right"></i></a>
             </div>
         </div>
     </section>
 
-    <div class="services-grid">
-        <div class="service-card">
-            <h3>Visual Identity</h3>
-            <p>From Logos to complete Brand guidelines for industrial firms.</p>
+    <section class="section-padding container" id="experience">
+        <div class="section-title" data-reveal>
+            <h2 style="font-family: 'Syncopate'; font-size: 2.5rem; margin-bottom: 60px;">Expertise & Journey</h2>
         </div>
-        <div class="service-card">
-            <h3>Agri-Branding</h3>
-            <p>Deep experience in Fertilizer and Pesticide packaging ecosystem.</p>
-        </div>
-        <div class="service-card">
-            <h3>UX/UI Focus</h3>
-            <p>Modern portfolio and landing page development for corporate clients.</p>
-        </div>
-    </div>
+        
+        <div class="timeline-grid">
+            <div class="timeline-col" data-reveal>
+                <h3 style="color: var(--primary); margin-bottom: 30px;">Professional Roles</h3>
+                
+                <div class="timeline-item glass">
+                    <span class="date-label">2025 — PRESENT</span>
+                    <h3>Senior Graphic Designer</h3>
+                    <span>SMPS Innovations Private Limited</span>
+                    <p style="margin-top: 15px; font-size: 0.9rem; color: var(--text-dim);">Leading design for flex banners, hoarding creatives, and ACP panels for corporate clients. Integrating AI workflows into CorelDRAW.</p>
+                </div>
 
-    <footer id="contact">
-        <div class="footer-flex">
-            <div class="contact-info">
-                <h4>Let's create<br>something iconic.</h4>
-                <a href="mailto:sumanthg2904@gmail.com" class="email-link">sumanthg2904@gmail.com</a>
-                <p style="margin-top: 20px; color: var(--text-dim);">Bengaluru, Karnataka, India</p>
+                <div class="timeline-item glass">
+                    <span class="date-label">2023 — PRESENT</span>
+                    <h3>Freelance Identity Lead</h3>
+                    <span>Jenushree Agritech</span>
+                    <p style="margin-top: 15px; font-size: 0.9rem; color: var(--text-dim);">Developing end-to-end packaging ecosystems for agricultural fertilizers including labels for bottles and pouches.</p>
+                </div>
             </div>
-            <div class="footer-nav">
-                <p>+91 7892647479</p>
-                <div style="margin-top: 40px; display: flex; gap: 20px;">
-                    <a href="#" style="color: white; text-decoration: none;">GitHub</a>
-                    <a href="#" style="color: white; text-decoration: none;">LinkedIn</a>
+
+            <div class="timeline-col" data-reveal>
+                <h3 style="color: var(--primary); margin-bottom: 30px;">Academic Foundation</h3>
+                
+                <div class="timeline-item glass">
+                    <span class="date-label">2022 — 2024</span>
+                    <h3>Master of Computer Applications</h3>
+                    <span>Sambhram Academy. CGPA: 8.02</span>
+                    <p style="margin-top: 15px; font-size: 0.9rem; color: var(--text-dim);">Focusing on advanced software engineering and web technologies to bridge the gap between design and code.</p>
+                </div>
+
+                <div class="timeline-item glass">
+                    <span class="date-label">2018 — 2021</span>
+                    <h3>Bachelor of Computer Applications</h3>
+                    <span>Vivekananda Institute. CGPA: 7.54</span>
                 </div>
             </div>
         </div>
-        <p style="font-size: 0.8rem; color: #444; border-top: 1px solid #222; padding-top: 30px;">© 2026 Sumanth G. All Rights Reserved. MCA Portfolio Edition.</p>
+    </section>
+
+    <section class="section-padding container" id="work">
+        <div class="section-header" data-reveal>
+            <h2 style="font-family: 'Syncopate'; font-size: 2.5rem; margin-bottom: 20px;">Selected Portfolio</h2>
+            <p style="margin-bottom: 40px; color: var(--text-dim);">A curated look at industrial, corporate, and regional design projects.</p>
+        </div>
+
+        <div class="portfolio-controls" data-reveal>
+            <button class="control-btn active" data-filter="all">All Projects</button>
+            <button class="control-btn" data-filter="industrial">Industrial</button>
+            <button class="control-btn" data-filter="branding">Branding</button>
+            <button class="control-btn" data-filter="web">Web Dev</button>
+        </div>
+
+        <div class="work-grid">
+            <div class="work-card filter-item industrial" data-reveal>
+                <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=1000" alt="Packaging Design">
+                <div class="work-overlay">
+                    <span>Industrial Packaging</span>
+                    <h4>Jenushree Agritech Labeling</h4>
+                    <a href="#" class="btn btn-secondary">Case Study</a>
+                </div>
+            </div>
+
+            <div class="work-card filter-item branding" data-reveal>
+                <img src="https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=1000" alt="Identity Design">
+                <div class="work-overlay">
+                    <span>Corporate Identity</span>
+                    <h4>Fact Gold Plus Branding</h4>
+                    <a href="#" class="btn btn-secondary">View Logo</a>
+                </div>
+            </div>
+
+            <div class="work-card filter-item web" data-reveal>
+                <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?auto=format&fit=crop&q=80&w=1000" alt="Web Development">
+                <div class="work-overlay">
+                    <span>Full-Stack Development</span>
+                    <h4>Custom Design Portfolio CMS</h4>
+                    <a href="#" class="btn btn-secondary">View Code</a>
+                </div>
+            </div>
+
+            <div class="work-card filter-item industrial" data-reveal>
+                <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=1000" alt="Regional Design">
+                <div class="work-overlay">
+                    <span>Typography Specialist</span>
+                    <h4>Nudi Regional Media Ads</h4>
+                    <a href="#" class="btn btn-secondary">View Print</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding" id="skills">
+        <div class="container skill-section">
+            <h2 style="font-family: 'Syncopate'; text-align: center;">Technical Toolset</h2>
+            
+            <div class="skill-grid">
+                <div class="skill-box" data-reveal>
+                    <i class="fa-brands fa-adobe"></i>
+                    <h4>Design Suite</h4>
+                    <p>Illustrator, Photoshop, CorelDRAW</p>
+                </div>
+                <div class="skill-box" data-reveal>
+                    <i class="fa-solid fa-code"></i>
+                    <h4>Development</h4>
+                    <p>HTML5, CSS3, JavaScript, PHP</p>
+                </div>
+                <div class="skill-box" data-reveal>
+                    <i class="fa-solid fa-print"></i>
+                    <h4>Print Production</h4>
+                    <p>Flex, ACP, Hoarding Pre-press</p>
+                </div>
+                <div class="skill-box" data-reveal>
+                    <i class="fa-brands fa-wordpress"></i>
+                    <h4>CMS</h4>
+                    <p>Custom WordPress Architecture</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding container" id="contact">
+        <div class="footer-wrap">
+            <div data-reveal>
+                <h2 style="font-family: 'Syncopate'; font-size: 3rem; margin-bottom: 20px;">Let's talk about your next project.</h2>
+                <p style="color: var(--text-dim); margin-bottom: 40px;">Currently accepting freelance commissions for brand identity and industrial design projects.</p>
+                <div class="contact-details">
+                    <p><i class="fa-solid fa-envelope"></i> sumanthg2904@gmail.com</p>
+                    <p><i class="fa-solid fa-phone"></i> +91 7892647479</p>
+                    <p><i class="fa-solid fa-location-dot"></i> Bengaluru, Karnataka</p>
+                </div>
+            </div>
+
+            <div class="contact-form glass" style="padding: 40px;" data-reveal>
+                <form id="portfolioForm">
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+                    <select style="width: 100%; padding: 20px; border-radius: 15px; background: var(--bg-surface); color: white; border: 1px solid var(--border); margin-bottom: 20px;">
+                        <option>Packaging Design</option>
+                        <option>Brand Identity</option>
+                        <option>Web Development</option>
+                        <option>Other</option>
+                    </select>
+                    <textarea rows="5" placeholder="Tell me about your project..."></textarea>
+                    <button type="submit" class="btn btn-p" style="width: 100%;">Send Inquiry</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 Sumanth G. Designed and Coded with precision in Bengaluru. MCA Professional Edition.</p>
+        </div>
     </footer>
 
     <script>
-        /* 1. Particle Background Logic */
-        const canvas = document.getElementById('canvas-bg');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
+        /* 1. CUSTOM CURSOR LOGIC */
+        const cursor = document.getElementById('cursor');
+        const follower = document.getElementById('cursor-follower');
 
-        function initCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            setTimeout(() => {
+                follower.style.left = e.clientX - 16 + 'px';
+                follower.style.top = e.clientY - 16 + 'px';
+            }, 50);
+        });
 
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 0.1;
-                this.speedX = Math.random() * 0.5 - 0.25;
-                this.speedY = Math.random() * 0.5 - 0.25;
-                this.opacity = Math.random() * 0.5;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.x > canvas.width) this.x = 0;
-                if (this.x < 0) this.x = canvas.width;
-                if (this.y > canvas.height) this.y = 0;
-                if (this.y < 0) this.y = canvas.height;
-            }
-            draw() {
-                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        function createParticles() {
-            for (let i = 0; i < 100; i++) {
-                particles.push(new Particle());
-            }
-        }
-
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-            requestAnimationFrame(animateParticles);
-        }
-
-        /* 2. Portfolio Filter Logic */
-        function filterSelection(c) {
-            let items = document.getElementsByClassName("filter-item");
-            let btns = document.getElementsByClassName("filter-btn");
-
-            // Update Button State
-            for (let i = 0; i < btns.length; i++) {
-                btns[i].classList.remove("active");
-                if (btns[i].innerText.toLowerCase() === c) btns[i].classList.add("active");
-            }
-
-            // Show/Hide items
-            for (let i = 0; i < items.length; i++) {
-                items[i].style.display = "none";
-                if (c === 'all') {
-                    items[i].style.display = "block";
-                } else if (items[i].classList.contains(c)) {
-                    items[i].style.display = "block";
+        /* 2. SCROLL REVEAL ENGINE */
+        const revealElements = document.querySelectorAll('[data-reveal]');
+        const revealOnScroll = () => {
+            revealElements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 100) {
+                    el.classList.add('active');
                 }
-            }
-        }
+            });
+        };
 
-        /* 3. Skill Bar Trigger on Scroll */
+        window.addEventListener('scroll', revealOnScroll);
+        window.addEventListener('load', revealOnScroll);
+
+        /* 3. NAVBAR SCROLL EFFECT */
         window.addEventListener('scroll', () => {
-            const section = document.getElementById('about');
-            const bars = document.querySelectorAll('.progress-fill');
-            const pos = section.getBoundingClientRect().top;
-            if(pos < window.innerHeight - 100) {
-                bars.forEach(bar => {
-                    bar.style.width = bar.parentElement.previousElementSibling.lastElementChild.innerText;
-                });
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
             }
         });
 
-        /* 4. Init */
-        initCanvas();
-        createParticles();
-        animateParticles();
-        window.onresize = initCanvas;
+        /* 4. PORTFOLIO FILTER SYSTEM */
+        const filterBtns = document.querySelectorAll('.control-btn');
+        const filterItems = document.querySelectorAll('.filter-item');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Active button toggle
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filterValue = btn.getAttribute('data-filter');
+
+                filterItems.forEach(item => {
+                    if (filterValue === 'all' || item.classList.contains(filterValue)) {
+                        item.style.display = 'block';
+                        setTimeout(() => item.style.opacity = '1', 10);
+                    } else {
+                        item.style.opacity = '0';
+                        setTimeout(() => item.style.display = 'none', 400);
+                    }
+                });
+            });
+        });
+
+        /* 5. SMOOTH ANCHOR LINKING */
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        /* 6. FORM HANDLER */
+        document.getElementById('portfolioForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = this.querySelector('button');
+            btn.innerHTML = 'Message Sent! <i class="fa-solid fa-check"></i>';
+            btn.style.background = '#22c55e';
+            this.reset();
+        });
+
+        /* 7. DYNAMIC HERO PARALLAX */
+        document.addEventListener('mousemove', (e) => {
+            const moveX = (e.clientX * -0.02);
+            const moveY = (e.clientY * -0.02);
+            document.querySelector('.hero-bg-text').style.transform = `translate(calc(-50% + ${moveX}px), calc(-50% + ${moveY}px))`;
+        });
     </script>
 </body>
 </html>
