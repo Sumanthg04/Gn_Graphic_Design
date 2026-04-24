@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Sumanth G - Professional Graphic Design & Secure Print Solutions">
+    <meta name="author" content="Sumanth G">
+    <meta name="robots" content="noindex, nofollow">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     
-    <title>Sumanth G | Senior Design & Industrial Print Studio</title>
+    <title>SUMANTH G | Senior Design & Secure Print Studio</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@100;300;400;600;700;900&family=Noto+Sans+Kannada:wght@400;700&family=Space+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@100;300;400;600;800&family=Noto+Sans+Kannada:wght@400;700&family=Space+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -17,434 +19,518 @@
 
     <style>
         /* ========================================================================
-           1. ROOT ARCHITECTURE & GLOBAL TOKENS
-           ======================================================================== */
+        1. ARCHITECTURAL STYLE TOKENS (CSS)
+        ========================================================================
+        */
         :root {
-            --c-primary: #8b5cf6;
-            --c-secondary: #06b6d4;
-            --c-accent: #fbbf24;
-            --c-bg: #030303;
-            --c-surface: #0a0a0c;
-            --c-border: rgba(255, 255, 255, 0.08);
-            --c-text: #f1f5f9;
-            --c-text-dim: #64748b;
-            --ff-head: 'Syncopate', sans-serif;
-            --ff-body: 'Inter', sans-serif;
-            --ff-kan: 'Noto Sans Kannada', sans-serif;
-            --ff-mono: 'Space Mono', monospace;
-            --transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            --primary: #a855f7;
+            --primary-glow: rgba(168, 85, 247, 0.4);
+            --secondary: #06b6d4;
+            --accent: #facc15;
+            --bg-deep: #020203;
+            --surface: #0a0a0c;
+            --surface-glass: rgba(15, 15, 20, 0.8);
+            --border: rgba(255, 255, 255, 0.08);
+            --text-high: #ffffff;
+            --text-mid: #94a3b8;
+            --text-low: #475569;
+            --font-main: 'Inter', sans-serif;
+            --font-head: 'Syncopate', sans-serif;
+            --font-kan: 'Noto Sans Kannada', sans-serif;
+            --font-mono: 'Space Mono', monospace;
+            --ease: cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* Base Resets */
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; }
-        html { scroll-behavior: smooth; }
+        /* Base Reset & Security */
+        * {
+            margin: 0; padding: 0;
+            box-sizing: border-box;
+            cursor: none !important; 
+        }
+
+        html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+
         body {
-            background-color: var(--c-bg);
-            color: var(--c-text);
-            font-family: var(--ff-body);
+            background-color: var(--bg-deep);
+            color: var(--text-high);
+            font-family: var(--font-main);
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
-            user-select: none;
+            user-select: none; /* Anti-Scraping */
         }
 
-        canvas#scene-canvas {
+        canvas#webgl-canvas {
             position: fixed;
             top: 0; left: 0;
             z-index: -1;
             width: 100vw; height: 100vh;
-            opacity: 0.6;
+            pointer-events: none;
         }
 
         /* ========================================================================
-           2. INTERACTIVE CURSOR SYSTEM
-           ======================================================================== */
-        #cursor {
+        2. UI COMPONENTS: CURSOR & NAV
+        ========================================================================
+        */
+        #cursor-main {
             position: fixed;
-            top: 0; left: 0;
             width: 8px; height: 8px;
             background: #fff;
             border-radius: 50%;
             pointer-events: none;
             z-index: 10001;
-            transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
         }
 
-        #cursor-ring {
+        #cursor-follower {
             position: fixed;
-            top: 0; left: 0;
-            width: 40px; height: 40px;
-            border: 1px solid var(--c-primary);
+            width: 45px; height: 45px;
+            border: 1px solid var(--primary);
             border-radius: 50%;
             pointer-events: none;
             z-index: 10000;
-            transform: translate(-50%, -50%);
-            transition: width 0.3s, height 0.3s, background 0.3s, border 0.3s;
+            transition: transform 0.15s ease-out, background 0.3s, border 0.3s;
         }
 
-        .cursor-active #cursor-ring {
-            width: 80px; height: 80px;
-            background: rgba(139, 92, 246, 0.1);
+        .cursor-hover #cursor-follower {
+            transform: scale(1.8);
+            background: var(--primary-glow);
             border-color: #fff;
         }
 
-        /* ========================================================================
-           3. NAVIGATION
-           ======================================================================== */
         nav {
             position: fixed;
             top: 0; width: 100%;
-            padding: 30px 6%;
+            height: 100px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+            padding: 0 6%;
             z-index: 1000;
-            transition: var(--transition);
+            transition: all 0.5s var(--ease);
         }
 
-        nav.scrolled {
-            padding: 15px 6%;
-            background: rgba(3, 3, 3, 0.85);
+        nav.active {
+            height: 75px;
+            background: var(--surface-glass);
             backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--c-border);
+            border-bottom: 1px solid var(--border);
         }
 
-        .logo {
-            font-family: var(--ff-head);
-            font-size: 1.2rem;
+        .brand-logo {
+            font-family: var(--font-head);
+            font-size: 1.3rem;
             font-weight: 700;
+            text-decoration: none;
+            color: #fff;
             letter-spacing: -1px;
         }
 
-        .logo span { color: var(--c-primary); }
+        .brand-logo span { color: var(--primary); }
 
-        .nav-links { display: flex; gap: 40px; list-style: none; }
-        .nav-links a {
+        .nav-items { display: flex; gap: 40px; list-style: none; }
+        .nav-items a {
             text-decoration: none;
-            color: var(--c-text-dim);
-            font-size: 0.6rem;
+            color: var(--text-mid);
+            font-size: 0.65rem;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 3px;
             transition: 0.3s;
         }
 
-        .nav-links a:hover { color: #fff; }
+        .nav-items a:hover { color: var(--primary); }
 
         /* ========================================================================
-           4. HERO SECTION
-           ======================================================================== */
+        3. HERO & SECTIONS
+        ========================================================================
+        */
         .hero {
             height: 100vh;
             display: flex;
             align-items: center;
-            padding: 0 10%;
+            padding: 0 8%;
             position: relative;
         }
 
-        .hero-info { max-width: 900px; z-index: 10; }
+        .hero-data { max-width: 950px; z-index: 10; }
 
-        .sec-badge {
+        .sec-label {
             display: inline-flex;
             align-items: center;
             gap: 12px;
-            background: rgba(139, 92, 246, 0.1);
-            border: 1px solid var(--c-primary);
             padding: 10px 20px;
-            border-radius: 4px;
-            color: var(--c-primary);
-            font-family: var(--ff-mono);
+            background: rgba(168, 85, 247, 0.1);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            font-family: var(--font-mono);
             font-size: 0.7rem;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
+            border-radius: 4px;
         }
 
         .hero h1 {
-            font-family: var(--ff-head);
-            font-size: clamp(3rem, 10vw, 7rem);
-            line-height: 0.85;
+            font-family: var(--font-head);
+            font-size: clamp(2.5rem, 9vw, 6.5rem);
+            line-height: 0.9;
             margin-bottom: 30px;
         }
 
-        .glitch-text {
-            background: linear-gradient(90deg, #fff, var(--c-primary), var(--c-secondary));
+        .gradient-txt {
+            background: linear-gradient(to right, #fff, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-size: 200% auto;
-            animation: flowText 6s linear infinite;
+            animation: textFlow 8s linear infinite;
         }
 
-        @keyframes flowText { to { background-position: 200% center; } }
+        @keyframes textFlow { to { background-position: 200% center; } }
 
         .hero p {
             font-size: 1.2rem;
-            color: var(--c-text-dim);
+            color: var(--text-mid);
             max-width: 600px;
             margin-bottom: 50px;
-            line-height: 1.8;
+            font-weight: 300;
         }
 
-        .hero-btns { display: flex; gap: 20px; }
+        .btn-box { display: flex; gap: 20px; }
 
         .btn {
-            padding: 22px 45px;
+            padding: 22px 48px;
             text-decoration: none;
-            font-size: 0.75rem;
             font-weight: 800;
-            letter-spacing: 2px;
+            font-size: 0.75rem;
             text-transform: uppercase;
-            transition: 0.4s;
+            letter-spacing: 2px;
+            transition: 0.4s var(--ease);
             position: relative;
             overflow: hidden;
+            border-radius: 2px;
         }
 
-        .btn-p { background: var(--c-primary); color: #fff; }
-        .btn-p:hover { transform: translateY(-5px); box-shadow: 0 20px 40px var(--c-primary); }
+        .btn-fill { background: var(--primary); color: #fff; }
+        .btn-fill:hover { transform: translateY(-5px); box-shadow: 0 20px 40px var(--primary-glow); }
+
+        .btn-ghost { border: 1px solid var(--border); color: #fff; }
+        .btn-ghost:hover { background: rgba(255,255,255,0.05); }
 
         /* ========================================================================
-           5. GALLERY SECTION (20+ PROJECTS)
-           ======================================================================== */
-        .section { padding: 140px 6%; }
+        4. GRID SYSTEMS (GALLERY & PRINT)
+        ========================================================================
+        */
+        .section-p { padding: 140px 8%; }
 
-        .section-head { margin-bottom: 100px; }
-        .section-head span { font-family: var(--ff-kan); color: var(--c-accent); font-size: 1.3rem; display: block; margin-bottom: 10px; }
-        .section-head h2 { font-family: var(--ff-head); font-size: 3.5rem; }
+        .section-heading { margin-bottom: 90px; }
+        .section-heading .kan { font-family: var(--font-kan); color: var(--accent); font-size: 1.2rem; display: block; margin-bottom: 10px; }
+        .section-heading h2 { font-family: var(--font-head); font-size: 3rem; letter-spacing: -2px; }
 
-        .project-grid {
+        /* Projects Gallery */
+        .gallery-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 30px;
         }
 
-        .project-card {
-            height: 450px;
-            background: var(--c-surface);
+        .card-p {
+            height: 500px;
+            background: var(--surface);
+            border: 1px solid var(--border);
             position: relative;
             overflow: hidden;
-            border: 1px solid var(--c-border);
-            transition: 0.5s;
+            transition: var(--transition);
         }
 
-        .project-card:hover { border-color: var(--c-primary); transform: translateY(-10px); }
+        .card-p:hover { border-color: var(--primary); transform: translateY(-15px); }
 
-        .project-img {
+        .card-p img {
             width: 100%; height: 100%;
-            background-size: cover;
-            background-position: center;
-            opacity: 0.5;
-            transition: 0.8s;
+            object-fit: cover;
+            opacity: 0.4;
+            transition: 1s var(--ease);
         }
 
-        .project-card:hover .project-img { transform: scale(1.1); opacity: 0.8; }
+        .card-p:hover img { transform: scale(1.15); opacity: 0.7; }
 
-        .project-overlay {
+        .card-meta {
             position: absolute;
-            inset: 0;
+            bottom: 0; left: 0;
             padding: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            width: 100%;
+            background: linear-gradient(transparent, #000);
+            z-index: 5;
         }
 
-        .project-overlay h3 { font-family: var(--ff-head); font-size: 1rem; margin-bottom: 10px; }
-        .project-overlay p { font-size: 0.7rem; color: var(--c-text-dim); text-transform: uppercase; letter-spacing: 1px; }
+        .card-meta span { color: var(--primary); font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; }
+        .card-meta h3 { font-family: var(--font-head); font-size: 1rem; margin-top: 10px; }
 
-        /* ========================================================================
-           6. PRINT SERVICES (20+ ITEMS)
-           ======================================================================== */
+        /* Print Services */
         .print-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 20px;
         }
 
-        .print-card {
-            padding: 50px 30px;
-            background: var(--c-surface);
-            border: 1px solid var(--c-border);
+        .print-item {
+            padding: 60px 40px;
+            background: var(--surface);
+            border: 1px solid var(--border);
             text-align: center;
             transition: 0.4s;
         }
 
-        .print-card:hover { background: var(--c-primary); border-color: var(--c-primary); }
+        .print-item:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
 
-        .print-card i { font-size: 2.5rem; margin-bottom: 25px; color: var(--c-primary); transition: 0.4s; }
-        .print-card:hover i { color: #fff; transform: rotateY(180deg); }
-
-        .print-card h4 { font-family: var(--ff-head); font-size: 0.75rem; letter-spacing: 1px; }
+        .print-item i { font-size: 2.5rem; color: var(--primary); margin-bottom: 25px; transition: 0.4s; }
+        .print-item:hover i { color: #fff; transform: rotateY(180deg); }
+        .print-item h4 { font-family: var(--ff-head); font-size: 0.8rem; letter-spacing: 1px; }
 
         /* ========================================================================
-           7. FOOTER & CONTACT
-           ======================================================================== */
+        5. FOOTER & SECURITY
+        ========================================================================
+        */
         footer {
-            padding: 120px 6% 60px;
-            background: #000;
-            border-top: 1px solid var(--c-border);
+            padding: 120px 8% 60px;
+            background: #010101;
+            border-top: 1px solid var(--border);
             text-align: center;
         }
 
-        .secure-box {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        #email-reveal {
-            font-family: var(--ff-head);
+        #secure-reveal {
+            font-family: var(--font-head);
             font-size: 2rem;
-            color: var(--c-primary);
+            color: var(--primary);
             padding: 30px;
-            border: 2px dashed var(--c-primary);
+            border: 1px dashed var(--primary);
             margin: 40px 0;
             display: inline-block;
             transition: 0.3s;
         }
 
-        #email-reveal:hover { background: var(--c-primary); color: #fff; }
+        #secure-reveal:hover { background: var(--primary); color: #fff; }
 
-        .wa-fab {
+        .whatsapp-fab {
             position: fixed;
             bottom: 40px; right: 40px;
-            width: 70px; height: 70px;
+            width: 75px; height: 75px;
             background: #25d366;
             color: #fff;
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-size: 2rem;
-            box-shadow: 0 15px 35px rgba(37, 211, 102, 0.4);
+            font-size: 2.2rem;
             z-index: 1000;
+            box-shadow: 0 15px 35px rgba(37, 211, 102, 0.4);
             text-decoration: none;
             transition: 0.4s;
         }
 
-        .wa-fab:hover { transform: scale(1.1) rotate(15deg); }
+        .whatsapp-fab:hover { transform: scale(1.1) rotate(15deg); }
 
-        .status-bar {
-            margin-top: 100px;
-            font-family: var(--ff-mono);
+        .sys-info {
+            margin-top: 80px;
+            font-family: var(--font-mono);
             font-size: 0.6rem;
-            color: #333;
-            letter-spacing: 2px;
+            color: #222;
+            letter-spacing: 3px;
+            text-transform: uppercase;
         }
 
-        /* Responsive */
-        @media (max-width: 1200px) { .project-grid { grid-template-columns: repeat(2, 1fr); } .print-grid { grid-template-columns: repeat(3, 1fr); } }
-        @media (max-width: 768px) { .project-grid, .print-grid { grid-template-columns: 1fr; } .hero h1 { font-size: 3.5rem; } }
-
+        /* Responsive Breakpoints */
+        @media (max-width: 1200px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) { 
+            .gallery-grid, .print-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 3.5rem; }
+            nav { padding: 0 4%; }
+            .nav-items { display: none; }
+        }
     </style>
 </head>
 <body oncontextmenu="return false;">
 
-    <canvas id="scene-canvas"></canvas>
-    <div id="cursor"></div>
-    <div id="cursor-ring"></div>
+    <canvas id="webgl-canvas"></canvas>
+    
+    <div id="cursor-main"></div>
+    <div id="cursor-follower"></div>
 
-    <a href="#" class="wa-fab" id="wa-btn"><i class="fa-brands fa-whatsapp"></i></a>
+    <a href="#" class="whatsapp-fab" id="wa-link"><i class="fa-brands fa-whatsapp"></i></a>
 
-    <nav id="nav">
-        <a href="#" class="logo">SUMANTH G<span>.</span></a>
-        <ul class="nav-links">
-            <li><a href="#hero">Start</a></li>
-            <li><a href="#projects">Portfolio</a></li>
-            <li><a href="#print">Studio</a></li>
+    <nav id="navbar">
+        <a href="#" class="brand-logo">SUMANTH G<span>.</span></a>
+        <ul class="nav-items">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#gallery">Portfolio</a></li>
+            <li><a href="#studio">Print Studio</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
     </nav>
 
-    <section class="hero" id="hero">
-        <div class="hero-info">
-            <div class="sec-badge"><i class="fa-solid fa-user-shield"></i> SECURE ASSET PORTFOLIO v4.0</div>
-            <h1><span class="glitch-text">ELITE DESIGN.</span><br>PRECISION PRINT.</h1>
-            <p>High-fidelity branding and industrial printing services. Based in Bengaluru, specialized in Kannada typography and large-format production.</p>
-            <div class="hero-btns">
-                <a href="#projects" class="btn btn-p">Explore Archive</a>
-                <a href="#contact" class="btn" style="border: 1px solid #333; color: #fff;">Inquiry</a>
+    <section class="hero" id="home">
+        <div class="hero-data">
+            <div class="sec-label">
+                <i class="fa-solid fa-microchip"></i> SYSTEM STATUS: OPTIMIZED 2026
+            </div>
+            <h1 data-reveal><span class="gradient-txt">HIGH-FIDELITY</span><br>DESIGN SYSTEMS.</h1>
+            <p data-reveal>Graphic Design specialist based in Bengaluru. Expert in industrial packaging, agricultural branding, and regional language typography.</p>
+            <div class="btn-box" data-reveal>
+                <a href="#gallery" class="btn btn-fill">Archive Showcase</a>
+                <a href="#studio" class="btn btn-ghost">Services</a>
             </div>
         </div>
     </section>
 
-    <section class="section" id="projects">
-        <div class="section-head">
-            <span>ನನ್ನ ವಿನ್ಯಾಸಗಳು</span>
-            <h2>CREATIVE ARCHIVE</h2>
+    <section class="section-p" id="gallery">
+        <div class="section-heading" data-reveal>
+            <span class="kan">ಸೃಜನಾತ್ಮಕ ಕೆಲಸಗಳ ಪ್ರದರ್ಶನ</span>
+            <h2>GALLERY ARCHIVE</h2>
         </div>
-        <div class="project-grid" id="project-container">
+        <div class="gallery-grid" id="project-target">
             </div>
     </section>
 
-    <section class="section" id="print" style="background: rgba(139, 92, 246, 0.02);">
-        <div class="section-head">
-            <span>ಮುದ್ರಣ ತಂತ್ರಜ್ಞಾನ</span>
+    <section class="section-p" id="studio" style="background: rgba(168, 85, 247, 0.02);">
+        <div class="section-heading" data-reveal>
+            <span class="kan">ಅತ್ಯಾಧುನಿಕ ಮುದ್ರಣ ಸೇವೆಗಳು</span>
             <h2>PRINT CAPABILITIES</h2>
         </div>
-        <div class="print-grid" id="print-container">
+        <div class="print-grid" id="print-target">
             </div>
     </section>
 
     <footer id="contact">
-        <div class="secure-box">
-            <h2 style="font-family: var(--ff-head); font-size: 3rem;">COMMENCE PROJECT</h2>
-            <p style="color: var(--c-text-dim); margin-top: 20px;">Encrypted communication channel for corporate identities.</p>
+        <div data-reveal>
+            <h2 style="font-family: var(--font-head); font-size: 3rem;">COMMENCE PROJECT</h2>
+            <p style="color: var(--text-mid); margin-top: 20px;">Encrypted communication channel for branding inquiries.</p>
             
-            <div id="email-reveal">REVEAL SECURE EMAIL</div>
+            <div id="secure-reveal">REVEAL SECURE CHANNEL</div>
             
-            <div style="margin-top: 40px;">
+            <div style="margin-top: 50px;">
                 <p style="font-size: 2rem; font-weight: 800;">+91 7892647479</p>
-                <p style="color: var(--c-text-dim); margin-top: 10px;">Kannalli, Bengaluru, KA</p>
+                <p style="color: var(--text-low); margin-top: 10px;">Kannalli, Bengaluru, Karnataka</p>
             </div>
         </div>
 
-        <div class="status-bar">
-            SESSION_ID: 0x8823_SUMANTH_G | AES-256 ENCRYPTION ACTIVE | <span id="clock">00:00:00</span>
+        <div class="sys-info">
+            ENCRYPTION: AES-256 | NODE_ID: 0x992B_SG | SYSTEM_TIME: <span id="sys-clock">00:00:00</span>
         </div>
-        <p style="margin-top: 40px; font-size: 0.5rem; opacity: 0.3;">© 2026 SUMANTH G. PROPRIETARY SYSTEM DATA. ALL RIGHTS RESERVED.</p>
+        <p style="margin-top: 40px; font-size: 0.5rem; color: #111;">© 2026 SUMANTH G. PROPRIETARY SOURCE CODE. DUPLICATION IS A CRIME.</p>
     </footer>
 
     <script>
         /**
-         * ENGINE CLASS: Handles all Core Operations
+         * CLASS: ContentEngine
+         * Manages the injection of 44+ data points to maintain clean HTML.
          */
-        class StudioEngine {
+        class ContentEngine {
             constructor() {
-                this.initThree();
+                this.projectData = [
+                    { title: "Jenushree Agritech", sub: "Branding", img: "626785774573-4b799315345d" },
+                    { title: "Fertilizer Pouch", sub: "Packaging", img: "1616423641454-da066b199859" },
+                    { title: "3D Front Elevation", sub: "Architecture", img: "1586717791821-3f44a563eb4c" },
+                    { title: "State Welfare Campaign", sub: "Government", img: "1542744173-0592b0286627" },
+                    { title: "Industrial Bucket", sub: "Label Design", img: "1626785774573-4b799315345d" },
+                    { title: "Corporate Identity", sub: "Logo Design", img: "1599305090598-ef1756c71a2d" },
+                    { title: "Kannada Typography", sub: "Nudi Expert", img: "1585829365306-3343b0845811" },
+                    { title: "Flex Billboard", sub: "Outdoor", img: "1533750357893-5d9f095024e0" },
+                    { title: "Premium Business Card", sub: "Print", img: "1515934751635-c81c6bc9a2d8" },
+                    { title: "Web Portfolio", sub: "Development", img: "1498050108023-c5249f4df085" },
+                    { title: "Product Bottle", sub: "Mockup", img: "1616423641454-da066b199859" },
+                    { title: "Event Backdrop", sub: "Stage Design", img: "1533750357893-5d9f095024e0" },
+                    { title: "Bio-Stimulant Pack", sub: "Agriculture", img: "626785774573-4b799315345d" },
+                    { title: "Modern Villa 3D", sub: "Visualization", img: "1586717791821-3f44a563eb4c" },
+                    { title: "Brochure Layout", sub: "Editorial", img: "1585829365306-3343b0845811" },
+                    { title: "App Interface", sub: "UI/UX", img: "1498050108023-c5249f4df085" },
+                    { title: "Sticker Sheet", sub: "Production", img: "1515934751635-c81c6bc9a2d8" },
+                    { title: "Exhibition Stand", sub: "3D Design", img: "1533750357893-5d9f095024e0" },
+                    { title: "Logo Refresh", sub: "Vector Art", img: "1599305090598-ef1756c71a2d" },
+                    { title: "Social Media Grid", sub: "Digital Marketing", img: "1498050108023-c5249f4df085" },
+                    { title: "Pesticide Bottle", sub: "Agri-Print", img: "626785774573-4b799315345d" },
+                    { title: "Magazine Cover", sub: "Layout", img: "1585829365306-3343b0845811" },
+                    { title: "Luxury Stationary", sub: "Wedding", img: "1515934751635-c81c6bc9a2d8" },
+                    { title: "Mobile UI Kit", sub: "Figma", img: "1498050108023-c5249f4df085" }
+                ];
+
+                this.printData = [
+                    { name: "Flex Banners", icon: "fa-scroll" }, { name: "Visiting Cards", icon: "fa-address-card" },
+                    { name: "Brouchers", icon: "fa-book-open" }, { name: "Name Boards", icon: "fa-id-badge" },
+                    { name: "No Parking Boards", icon: "fa-ban" }, { name: "Wedding Cards", icon: "fa-heart" },
+                    { name: "Digital Print", icon: "fa-print" }, { name: "ID Cards", icon: "fa-user-tag" },
+                    { name: "Bill Books", icon: "fa-file-invoice" }, { name: "Stickers", icon: "fa-note-sticky" },
+                    { name: "Envelopes", icon: "fa-envelope" }, { name: "Letter Heads", icon: "fa-heading" },
+                    { name: "Certificates", icon: "fa-certificate" }, { name: "Calendars", icon: "fa-calendar-days" },
+                    { name: "Menu Cards", icon: "fa-utensils" }, { name: "Sunpack Sheets", icon: "fa-border-all" },
+                    { name: "ACP Panels", icon: "fa-shield-halved" }, { name: "LED Boards", icon: "fa-lightbulb" },
+                    { name: "Canopy", icon: "fa-tent" }, { name: "Standees", icon: "fa-person-rays" },
+                    { name: "Rubber Stamps", icon: "fa-stamp" }, { name: "Many More", icon: "fa-ellipsis-h" }
+                ];
+            }
+
+            render() {
+                const pTarget = document.getElementById('project-target');
+                const sTarget = document.getElementById('print-target');
+
+                this.projectData.forEach(p => {
+                    const card = document.createElement('div');
+                    card.className = 'card-p';
+                    card.innerHTML = `
+                        <img src="https://images.unsplash.com/photo-${p.img}?auto=format&fit=crop&q=80&w=800" alt="${p.title}">
+                        <div class="card-meta">
+                            <span>${p.sub}</span>
+                            <h3>${p.title}</h3>
+                        </div>
+                    `;
+                    pTarget.appendChild(card);
+                });
+
+                this.printData.forEach(s => {
+                    const item = document.createElement('div');
+                    item.className = 'print-item';
+                    item.innerHTML = `<i class="fa-solid ${s.icon}"></i><h4>${s.name}</h4>`;
+                    sTarget.appendChild(item);
+                });
+            }
+        }
+
+        /**
+         * CLASS: StudioApp
+         * Controls WebGL, Interactions, and Security.
+         */
+        class StudioApp {
+            constructor() {
+                this.initWebGL();
                 this.initCursor();
-                this.initData();
-                this.bindEvents();
+                this.initAnimations();
+                this.initSecurity();
                 this.startClock();
             }
 
-            // 1. WEBGL BACKGROUND ENGINE
-            initThree() {
-                const canvas = document.querySelector('#scene-canvas');
+            // 1. GPU BACKGROUND (THREE.JS)
+            initWebGL() {
+                const canvas = document.querySelector('#webgl-canvas');
                 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
                 const scene = new THREE.Scene();
                 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
                 
                 renderer.setSize(window.innerWidth, window.innerHeight);
-                camera.position.z = 15;
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                camera.position.z = 10;
 
-                // Particle System
-                const particlesGeometry = new THREE.BufferGeometry();
-                const count = 1500;
-                const positions = new Float32Array(count * 3);
-                for(let i=0; i<count*3; i++) {
-                    positions[i] = (Math.random() - 0.5) * 50;
-                }
-                particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-                
-                const particlesMaterial = new THREE.PointsMaterial({
-                    size: 0.05,
-                    color: 0x8b5cf6,
-                    transparent: true,
-                    opacity: 0.5
+                const geometry = new THREE.TorusKnotGeometry(4, 1.3, 100, 16);
+                const material = new THREE.MeshBasicMaterial({ 
+                    color: 0xa855f7, 
+                    wireframe: true, 
+                    transparent: true, 
+                    opacity: 0.15 
                 });
+                const mesh = new THREE.Mesh(geometry, material);
+                scene.add(mesh);
 
-                const particles = new THREE.Points(particlesGeometry, particlesMaterial);
-                scene.add(particles);
-
-                // Animation Loop
                 const animate = () => {
                     requestAnimationFrame(animate);
-                    particles.rotation.y += 0.001;
-                    particles.rotation.x += 0.0005;
+                    mesh.rotation.x += 0.002;
+                    mesh.rotation.y += 0.003;
                     renderer.render(scene, camera);
                 };
                 animate();
@@ -456,126 +542,84 @@
                 });
             }
 
-            // 2. DATA INJECTION: 24 Projects & 22 Print Services
-            initData() {
-                const projects = [
-                    { t: "Agri-Branding", s: "Package Design", img: "626785774573-4b799315345d" },
-                    { t: "Corporate Logo", s: "Identity", img: "1626785774573-4b799315345d" },
-                    { t: "3D Elevation", s: "Architecture", img: "1586717791821-3f44a563eb4c" },
-                    { t: "Industrial Labels", s: "Chemical Print", img: "1616423641454-da066b199859" },
-                    { t: "State Awareness", s: "Govt Campaign", img: "1542744173-0592b0286627" },
-                    { t: "Flex Banner Pro", s: "Large Format", img: "1533750357893-5d9f095024e0" },
-                    { t: "Luxury Wedding", s: "Print Art", img: "1515934751635-c81c6bc9a2d8" },
-                    { t: "Bottle Labels", s: "Product Design", img: "1626785774573-4b799315345d" },
-                    { t: "Kannada News", s: "Layout Design", img: "1585829365306-3343b0845811" },
-                    { t: "Pouches & Packs", s: "Agritech", img: "1586717791821-3f44a563eb4c" },
-                    { t: "Portfolio Web", s: "Frontend", img: "1498050108023-c5249f4df085" },
-                    { t: "Hoarding Creative", s: "Outdoor AD", img: "1533750357893-5d9f095024e0" },
-                    { t: "Vector Identity", s: "Branding", img: "1626785774573-4b799315345d" },
-                    { t: "Bucket Stickers", s: "Industrial", img: "1616423641454-da066b199859" },
-                    { t: "Brochure System", s: "Print Media", img: "1585829365306-3343b0845811" },
-                    { t: "Restaurant UI", s: "Digital Menu", img: "1498050108023-c5249f4df085" },
-                    { t: "Flyer Design", s: "Promotion", img: "1542744173-0592b0286627" },
-                    { t: "Business Cards", s: "Premium Stationery", img: "1515934751635-c81c6bc9a2d8" },
-                    { t: "Envelope Art", s: "Identity", img: "1586717791821-3f44a563eb4c" },
-                    { t: "Magazine Grid", s: "Typography", img: "1585829365306-3343b0845811" },
-                    { t: "Expo Banners", s: "Trade Show", img: "1533750357893-5d9f095024e0" },
-                    { t: "Sticker Rolls", s: "Production", img: "1616423641454-da066b199859" },
-                    { t: "Book Cover", s: "Illustration", img: "1542744173-0592b0286627" },
-                    { t: "App Iconography", s: "UI/UX", img: "1498050108023-c5249f4df085" }
-                ];
-
-                const container = document.getElementById('project-container');
-                projects.forEach(p => {
-                    const card = document.createElement('div');
-                    card.className = 'project-card';
-                    card.innerHTML = `
-                        <div class="project-img" style="background-image: url('https://images.unsplash.com/photo-${p.img}?auto=format&fit=crop&q=80&w=800')"></div>
-                        <div class="project-overlay">
-                            <p>${p.s}</p>
-                            <h3>${p.t}</h3>
-                        </div>
-                    `;
-                    container.appendChild(card);
-                });
-
-                const prints = [
-                    { n: "Flex Banners", i: "fa-scroll" }, { n: "Visiting Cards", i: "fa-address-card" },
-                    { n: "Brouchers", i: "fa-book-open" }, { n: "Name Boards", i: "fa-id-badge" },
-                    { n: "No Parking Boards", i: "fa-ban" }, { n: "Wedding Cards", i: "fa-heart" },
-                    { n: "Digital Print", i: "fa-print" }, { n: "ID Cards", i: "fa-user-tag" },
-                    { n: "Bill Books", i: "fa-file-invoice" }, { n: "Stickers", i: "fa-note-sticky" },
-                    { n: "Envelopes", i: "fa-envelope-open" }, { n: "Letter Heads", i: "fa-heading" },
-                    { n: "Certificates", i: "fa-certificate" }, { n: "Calenders", i: "fa-calendar-days" },
-                    { n: "Menu Cards", i: "fa-utensils" }, { n: "Sunpack Sheets", i: "fa-border-all" },
-                    { n: "ACP Boards", i: "fa-shield-halved" }, { n: "LED Boards", i: "fa-lightbulb" },
-                    { n: "Canopy", i: "fa-tent" }, { n: "Standees", i: "fa-person-rays" },
-                    { n: "Rubber Stamps", i: "fa-stamp" }, { n: "Screen Print", i: "fa-palette" }
-                ];
-
-                const printContainer = document.getElementById('print-container');
-                prints.forEach(s => {
-                    const box = document.createElement('div');
-                    box.className = 'print-card';
-                    box.innerHTML = `<i class="fa-solid ${s.i}"></i><h4>${s.n}</h4>`;
-                    printContainer.appendChild(box);
-                });
-            }
-
-            // 3. CURSOR ENGINE
+            // 2. CURSOR ENGINE
             initCursor() {
-                const dot = document.getElementById('cursor');
-                const ring = document.getElementById('cursor-ring');
-                
+                const main = document.getElementById('cursor-main');
+                const follow = document.getElementById('cursor-follower');
+
                 window.addEventListener('mousemove', (e) => {
-                    gsap.to(dot, { x: e.clientX, y: e.clientY, duration: 0 });
-                    gsap.to(ring, { x: e.clientX, y: e.clientY, duration: 0.15 });
+                    gsap.to(main, { x: e.clientX, y: e.clientY, duration: 0 });
+                    gsap.to(follow, { x: e.clientX - 22, y: e.clientY - 22, duration: 0.2 });
                 });
 
-                document.querySelectorAll('a, .btn, .project-card, .print-card, #email-reveal').forEach(el => {
-                    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-active'));
-                    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-active'));
+                document.querySelectorAll('a, .btn, .card-p, .print-item, #secure-reveal').forEach(el => {
+                    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+                    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
                 });
             }
 
-            // 4. BINDINGS & SECURITY
-            bindEvents() {
-                // Email Reveal
-                document.getElementById('email-reveal').addEventListener('click', function() {
+            // 3. GSAP REVEALS
+            initAnimations() {
+                gsap.registerPlugin(ScrollTrigger);
+                
+                document.querySelectorAll('[data-reveal]').forEach(el => {
+                    gsap.from(el, {
+                        y: 100,
+                        opacity: 0,
+                        duration: 1.2,
+                        ease: "power4.out",
+                        scrollTrigger: {
+                            trigger: el,
+                            start: "top 90%",
+                        }
+                    });
+                });
+
+                window.addEventListener('scroll', () => {
+                    const nav = document.getElementById('navbar');
+                    if(window.scrollY > 100) nav.classList.add('active');
+                    else nav.classList.remove('active');
+                });
+            }
+
+            // 4. SECURITY PROTOCOLS
+            initSecurity() {
+                // Email Obfuscation
+                document.getElementById('secure-reveal').addEventListener('click', function() {
                     const u = "sumanthg2904"; const d = "gmail.com";
                     this.innerText = `${u}@${d}`;
+                    this.style.borderStyle = "solid";
                 });
 
-                // WA Link
-                document.getElementById('wa-btn').addEventListener('click', (e) => {
+                // WhatsApp Logic
+                document.getElementById('wa-link').addEventListener('click', (e) => {
                     e.preventDefault();
-                    window.open(`https://wa.me/917892647479?text=Portfolio_Inquiry`, '_blank');
+                    window.open(`https://wa.me/917892647479?text=Studio_Inquiry_2026`, '_blank');
                 });
 
-                // Navbar Scroll
-                window.addEventListener('scroll', () => {
-                    const nav = document.getElementById('nav');
-                    if(window.scrollY > 100) nav.classList.add('scrolled');
-                    else nav.classList.remove('scrolled');
-                });
-
-                // Anti-Dev Tools
+                // Anti-DevTools Shortcodes
                 document.onkeydown = (e) => {
-                    if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74))) return false;
+                    if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74))) {
+                        console.warn("RESTRICTED AREA: DevTools disabled by Security Policy.");
+                        return false;
+                    }
                 };
             }
 
             startClock() {
                 setInterval(() => {
-                    document.getElementById('clock').innerText = new Date().toLocaleTimeString();
+                    document.getElementById('sys-clock').innerText = new Date().toLocaleTimeString();
                 }, 1000);
             }
         }
 
-        // Initialize Engine on Load
+        // ENTRY POINT
         window.onload = () => {
-            new StudioEngine();
-            console.log("%c SYSTEM SECURED %c Sumanth G v4.0 ", "color:white; background:red; padding:4px;", "color:white; background:blue; padding:4px;");
+            const engine = new ContentEngine();
+            engine.render();
+            new StudioApp();
+            
+            console.log("%c SUMANTH G %c SECURE BUILD 2026 ", "background:#a855f7; color:#fff; padding:5px;", "background:#000; color:#0f0; padding:5px;");
         };
     </script>
 </body>
