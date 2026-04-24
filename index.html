@@ -2,146 +2,149 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="Sumanth G">
-    <meta name="robots" content="noindex, nofollow">
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <title>Sumanth G | Creative Design & Print Studio</title>
     
-    <title>SUMANTH G | Senior Design & Secure Print Studio</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@100;300;400;600;800&family=Noto+Sans+Kannada:wght@400;700&family=Space+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Poppins:wght@300;400;600&family=Noto+Sans+Kannada:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
     <style>
         /* ========================================================================
-        1. ARCHITECTURAL STYLE TOKENS (CSS)
+        1. COLOR TOKENS & ROOT
         ========================================================================
         */
         :root {
-            --primary: #a855f7;
-            --primary-glow: rgba(168, 85, 247, 0.4);
-            --secondary: #06b6d4;
-            --accent: #facc15;
-            --bg-deep: #020203;
-            --surface: #0a0a0c;
-            --surface-glass: rgba(15, 15, 20, 0.8);
-            --border: rgba(255, 255, 255, 0.08);
-            --text-high: #ffffff;
-            --text-mid: #94a3b8;
-            --text-low: #475569;
-            --font-main: 'Inter', sans-serif;
-            --font-head: 'Syncopate', sans-serif;
-            --font-kan: 'Noto Sans Kannada', sans-serif;
-            --font-mono: 'Space Mono', monospace;
-            --ease: cubic-bezier(0.16, 1, 0.3, 1);
+            --white: #FFFFFF;
+            --orange: #FF6B00; /* Primary Action */
+            --orange-light: #FF9E5E;
+            --blue: #003366;   /* Professional Base */
+            --blue-dark: #001F3F;
+            --grey-light: #F8F9FA;
+            --grey-mid: #E9ECEF;
+            --text-main: #212529;
+            --transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* Base Reset & Security */
         * {
             margin: 0; padding: 0;
             box-sizing: border-box;
-            cursor: none !important; 
+            cursor: none;
         }
-
-        html { scroll-behavior: smooth; scroll-padding-top: 100px; }
 
         body {
-            background-color: var(--bg-deep);
-            color: var(--text-high);
-            font-family: var(--font-main);
+            background-color: var(--white);
+            color: var(--text-main);
+            font-family: 'Poppins', sans-serif;
             overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            user-select: none; /* Anti-Scraping */
-        }
-
-        canvas#webgl-canvas {
-            position: fixed;
-            top: 0; left: 0;
-            z-index: -1;
-            width: 100vw; height: 100vh;
-            pointer-events: none;
+            line-height: 1.6;
         }
 
         /* ========================================================================
-        2. UI COMPONENTS: CURSOR & NAV
+        2. PAINT SPLASH BACKGROUND ENGINE
         ========================================================================
         */
-        #cursor-main {
+        #paint-canvas {
             position: fixed;
-            width: 8px; height: 8px;
-            background: #fff;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        .splash-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(40px);
+            z-index: -2;
+            opacity: 0.1;
+            animation: float 20s infinite alternate;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 50px) scale(1.2); }
+        }
+
+        /* ========================================================================
+        3. CUSTOM CURSOR
+        ========================================================================
+        */
+        #cursor {
+            position: fixed;
+            width: 10px; height: 10px;
+            background: var(--orange);
             border-radius: 50%;
             pointer-events: none;
-            z-index: 10001;
-            mix-blend-mode: difference;
+            z-index: 10000;
+            transition: transform 0.1s;
         }
 
         #cursor-follower {
             position: fixed;
-            width: 45px; height: 45px;
-            border: 1px solid var(--primary);
+            width: 40px; height: 40px;
+            border: 2px solid var(--blue);
             border-radius: 50%;
             pointer-events: none;
-            z-index: 10000;
-            transition: transform 0.15s ease-out, background 0.3s, border 0.3s;
+            z-index: 9999;
+            transition: transform 0.2s cubic-bezier(0.17, 0.67, 0.83, 0.67);
         }
 
-        .cursor-hover #cursor-follower {
-            transform: scale(1.8);
-            background: var(--primary-glow);
-            border-color: #fff;
+        .hovering #cursor-follower {
+            transform: scale(1.5);
+            background: rgba(0, 51, 102, 0.1);
+            border-color: var(--orange);
         }
 
-        nav {
+        /* ========================================================================
+        4. NAVIGATION
+        ========================================================================
+        */
+        header {
             position: fixed;
             top: 0; width: 100%;
-            height: 100px;
+            padding: 30px 8%;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            padding: 0 6%;
+            align-items: center;
             z-index: 1000;
-            transition: all 0.5s var(--ease);
+            transition: var(--transition);
         }
 
-        nav.active {
-            height: 75px;
-            background: var(--surface-glass);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
+        header.scrolled {
+            padding: 15px 8%;
+            background: var(--white);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
 
-        .brand-logo {
-            font-family: var(--font-head);
-            font-size: 1.3rem;
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 1.5rem;
+            color: var(--blue);
+            text-decoration: none;
+        }
+
+        .logo span { color: var(--orange); }
+
+        nav ul { display: flex; list-style: none; gap: 40px; }
+        nav a {
+            text-decoration: none;
+            color: var(--blue);
             font-weight: 700;
-            text-decoration: none;
-            color: #fff;
-            letter-spacing: -1px;
-        }
-
-        .brand-logo span { color: var(--primary); }
-
-        .nav-items { display: flex; gap: 40px; list-style: none; }
-        .nav-items a {
-            text-decoration: none;
-            color: var(--text-mid);
-            font-size: 0.65rem;
-            font-weight: 800;
+            font-size: 0.9rem;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 1px;
             transition: 0.3s;
         }
 
-        .nav-items a:hover { color: var(--primary); }
+        nav a:hover { color: var(--orange); }
 
         /* ========================================================================
-        3. HERO & SECTIONS
+        5. HERO SECTION
         ========================================================================
         */
         .hero {
@@ -152,475 +155,369 @@
             position: relative;
         }
 
-        .hero-data { max-width: 950px; z-index: 10; }
-
-        .sec-label {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 20px;
-            background: rgba(168, 85, 247, 0.1);
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
-            margin-bottom: 35px;
-            border-radius: 4px;
-        }
+        .hero-content { max-width: 800px; }
 
         .hero h1 {
-            font-family: var(--font-head);
-            font-size: clamp(2.5rem, 9vw, 6.5rem);
-            line-height: 0.9;
-            margin-bottom: 30px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(3rem, 8vw, 5.5rem);
+            font-weight: 900;
+            color: var(--blue);
+            line-height: 1;
+            margin-bottom: 25px;
         }
 
-        .gradient-txt {
-            background: linear-gradient(to right, #fff, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-size: 200% auto;
-            animation: textFlow 8s linear infinite;
-        }
-
-        @keyframes textFlow { to { background-position: 200% center; } }
+        .hero h1 span { color: var(--orange); }
 
         .hero p {
             font-size: 1.2rem;
-            color: var(--text-mid);
-            max-width: 600px;
-            margin-bottom: 50px;
-            font-weight: 300;
+            color: #555;
+            margin-bottom: 40px;
+            border-left: 5px solid var(--orange);
+            padding-left: 20px;
         }
 
-        .btn-box { display: flex; gap: 20px; }
+        .cta-group { display: flex; gap: 20px; }
 
         .btn {
-            padding: 22px 48px;
+            padding: 18px 40px;
+            border-radius: 50px;
             text-decoration: none;
-            font-weight: 800;
-            font-size: 0.75rem;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: 0.4s var(--ease);
-            position: relative;
-            overflow: hidden;
-            border-radius: 2px;
-        }
-
-        .btn-fill { background: var(--primary); color: #fff; }
-        .btn-fill:hover { transform: translateY(-5px); box-shadow: 0 20px 40px var(--primary-glow); }
-
-        .btn-ghost { border: 1px solid var(--border); color: #fff; }
-        .btn-ghost:hover { background: rgba(255,255,255,0.05); }
-
-        /* ========================================================================
-        4. GRID SYSTEMS (GALLERY & PRINT)
-        ========================================================================
-        */
-        .section-p { padding: 140px 8%; }
-
-        .section-heading { margin-bottom: 90px; }
-        .section-heading .kan { font-family: var(--font-kan); color: var(--accent); font-size: 1.2rem; display: block; margin-bottom: 10px; }
-        .section-heading h2 { font-family: var(--font-head); font-size: 3rem; letter-spacing: -2px; }
-
-        /* Projects Gallery */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-        }
-
-        .card-p {
-            height: 500px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            position: relative;
-            overflow: hidden;
+            letter-spacing: 1px;
             transition: var(--transition);
         }
 
-        .card-p:hover { border-color: var(--primary); transform: translateY(-15px); }
+        .btn-orange { background: var(--orange); color: var(--white); box-shadow: 0 10px 20px rgba(255, 107, 0, 0.2); }
+        .btn-orange:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(255, 107, 0, 0.4); }
 
-        .card-p img {
-            width: 100%; height: 100%;
-            object-fit: cover;
-            opacity: 0.4;
-            transition: 1s var(--ease);
+        .btn-blue { border: 2px solid var(--blue); color: var(--blue); }
+        .btn-blue:hover { background: var(--blue); color: var(--white); }
+
+        /* ========================================================================
+        6. GALLERY GRID (24+ PROJECTS)
+        ========================================================================
+        */
+        .section { padding: 120px 8%; }
+        
+        .section-header { margin-bottom: 80px; }
+        .section-header h2 { font-family: 'Montserrat', sans-serif; font-size: 3rem; color: var(--blue); position: relative; }
+        .section-header h2::after { content: ''; position: absolute; bottom: -10px; left: 0; width: 80px; height: 5px; background: var(--orange); }
+        .section-header p { font-family: 'Noto Sans Kannada', sans-serif; margin-top: 15px; color: var(--orange); font-weight: 700; }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
         }
 
-        .card-p:hover img { transform: scale(1.15); opacity: 0.7; }
-
-        .card-meta {
-            position: absolute;
-            bottom: 0; left: 0;
-            padding: 40px;
-            width: 100%;
-            background: linear-gradient(transparent, #000);
-            z-index: 5;
+        .project-card {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+            transition: var(--transition);
+            border: 1px solid var(--grey-mid);
         }
 
-        .card-meta span { color: var(--primary); font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; }
-        .card-meta h3 { font-family: var(--font-head); font-size: 1rem; margin-top: 10px; }
+        .project-card:hover { transform: translateY(-15px); border-color: var(--orange); }
 
-        /* Print Services */
+        .card-img {
+            width: 100%; height: 250px;
+            background: var(--grey-light);
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+        }
+
+        .card-img img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .project-card:hover .card-img img { transform: scale(1.1); }
+
+        .card-body { padding: 30px; }
+        .card-body .tag { color: var(--orange); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; }
+        .card-body h3 { color: var(--blue); margin: 10px 0; font-family: 'Montserrat', sans-serif; }
+
+        /* ========================================================================
+        7. PRINT SERVICES (20+ ITEMS)
+        ========================================================================
+        */
+        .print-section { background: var(--grey-light); }
+        
         .print-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 20px;
         }
 
-        .print-item {
-            padding: 60px 40px;
-            background: var(--surface);
-            border: 1px solid var(--border);
+        .print-box {
+            background: var(--white);
+            padding: 40px;
             text-align: center;
-            transition: 0.4s;
+            border-radius: 12px;
+            transition: var(--transition);
+            border-bottom: 4px solid var(--blue);
         }
 
-        .print-item:hover {
-            background: var(--primary);
-            border-color: var(--primary);
-            transform: scale(1.05);
-        }
-
-        .print-item i { font-size: 2.5rem; color: var(--primary); margin-bottom: 25px; transition: 0.4s; }
-        .print-item:hover i { color: #fff; transform: rotateY(180deg); }
-        .print-item h4 { font-family: var(--ff-head); font-size: 0.8rem; letter-spacing: 1px; }
+        .print-box:hover { background: var(--blue); color: var(--white); transform: scale(1.05); border-color: var(--orange); }
+        .print-box i { font-size: 2.5rem; color: var(--orange); margin-bottom: 20px; }
+        .print-box h4 { font-family: 'Montserrat', sans-serif; font-size: 1rem; }
 
         /* ========================================================================
-        5. FOOTER & SECURITY
+        8. CONTACT & FOOTER
         ========================================================================
         */
         footer {
-            padding: 120px 8% 60px;
-            background: #010101;
-            border-top: 1px solid var(--border);
+            background: var(--blue-dark);
+            color: var(--white);
+            padding: 100px 8% 50px;
             text-align: center;
         }
 
-        #secure-reveal {
-            font-family: var(--font-head);
-            font-size: 2rem;
-            color: var(--primary);
-            padding: 30px;
-            border: 1px dashed var(--primary);
-            margin: 40px 0;
-            display: inline-block;
-            transition: 0.3s;
+        .contact-card {
+            background: var(--white);
+            color: var(--blue);
+            max-width: 900px;
+            margin: -200px auto 100px;
+            padding: 80px;
+            border-radius: 20px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1);
         }
 
-        #secure-reveal:hover { background: var(--primary); color: #fff; }
+        .contact-card h2 { font-family: 'Montserrat', sans-serif; font-size: 2.5rem; margin-bottom: 20px; }
+        .contact-card .phone { font-size: 2rem; color: var(--orange); font-weight: 900; }
 
-        .whatsapp-fab {
+        .wa-float {
             position: fixed;
             bottom: 40px; right: 40px;
-            width: 75px; height: 75px;
-            background: #25d366;
-            color: #fff;
+            background: #25D366;
+            width: 70px; height: 70px;
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-size: 2.2rem;
-            z-index: 1000;
-            box-shadow: 0 15px 35px rgba(37, 211, 102, 0.4);
+            color: white; font-size: 2rem;
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3);
             text-decoration: none;
-            transition: 0.4s;
+            z-index: 1000;
         }
 
-        .whatsapp-fab:hover { transform: scale(1.1) rotate(15deg); }
+        .wa-float:hover { transform: rotate(15deg) scale(1.1); }
 
-        .sys-info {
-            margin-top: 80px;
-            font-family: var(--font-mono);
-            font-size: 0.6rem;
-            color: #222;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-        }
-
-        /* Responsive Breakpoints */
-        @media (max-width: 1200px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 768px) { 
-            .gallery-grid, .print-grid { grid-template-columns: 1fr; }
-            .hero h1 { font-size: 3.5rem; }
-            nav { padding: 0 4%; }
-            .nav-items { display: none; }
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            header { padding: 20px 5%; }
+            nav { display: none; }
+            .hero h1 { font-size: 3rem; }
+            .contact-card { padding: 40px 20px; }
         }
     </style>
 </head>
-<body oncontextmenu="return false;">
+<body>
 
-    <canvas id="webgl-canvas"></canvas>
-    
-    <div id="cursor-main"></div>
+    <canvas id="paint-canvas"></canvas>
+    <div id="cursor"></div>
     <div id="cursor-follower"></div>
 
-    <a href="#" class="whatsapp-fab" id="wa-link"><i class="fa-brands fa-whatsapp"></i></a>
+    <a href="https://wa.me/917892647479" class="wa-float" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
 
-    <nav id="navbar">
-        <a href="#" class="brand-logo">SUMANTH G<span>.</span></a>
-        <ul class="nav-items">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#gallery">Portfolio</a></li>
-            <li><a href="#studio">Print Studio</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
+    <header id="header">
+        <a href="#" class="logo">SUMANTH<span>.</span>G</a>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#services">Print Shop</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
 
     <section class="hero" id="home">
-        <div class="hero-data">
-            <div class="sec-label">
-                <i class="fa-solid fa-microchip"></i> SYSTEM STATUS: OPTIMIZED 2026
-            </div>
-            <h1 data-reveal><span class="gradient-txt">HIGH-FIDELITY</span><br>DESIGN SYSTEMS.</h1>
-            <p data-reveal>Graphic Design specialist based in Bengaluru. Expert in industrial packaging, agricultural branding, and regional language typography.</p>
-            <div class="btn-box" data-reveal>
-                <a href="#gallery" class="btn btn-fill">Archive Showcase</a>
-                <a href="#studio" class="btn btn-ghost">Services</a>
+        <div class="hero-content">
+            <h1>PREMIUM <span>DESIGN</span> & PRECISION <span>PRINT</span></h1>
+            <p>Expert Senior Graphic Designer based in Bengaluru. Transforming agricultural and industrial brands with high-impact visuals and regional Kannada mastery.</p>
+            <div class="cta-group">
+                <a href="#gallery" class="btn btn-orange">View Projects</a>
+                <a href="#contact" class="btn btn-blue">Get Quote</a>
             </div>
         </div>
     </section>
 
-    <section class="section-p" id="gallery">
-        <div class="section-heading" data-reveal>
-            <span class="kan">ಸೃಜನಾತ್ಮಕ ಕೆಲಸಗಳ ಪ್ರದರ್ಶನ</span>
-            <h2>GALLERY ARCHIVE</h2>
+    <section class="section" id="gallery">
+        <div class="section-header">
+            <h2>DESIGN GALLERY</h2>
+            <p>ಸೃಜನಾತ್ಮಕ ವಿನ್ಯಾಸಗಳ ಸಂಗ್ರಹ</p>
         </div>
-        <div class="gallery-grid" id="project-target">
+        <div class="gallery-grid" id="gallery-container">
             </div>
     </section>
 
-    <section class="section-p" id="studio" style="background: rgba(168, 85, 247, 0.02);">
-        <div class="section-heading" data-reveal>
-            <span class="kan">ಅತ್ಯಾಧುನಿಕ ಮುದ್ರಣ ಸೇವೆಗಳು</span>
-            <h2>PRINT CAPABILITIES</h2>
+    <section class="section print-section" id="services">
+        <div class="section-header">
+            <h2>PRINT SERVICES</h2>
+            <p>ಅತ್ಯುತ್ತಮ ಮುದ್ರಣ ಸೇವೆಗಳು</p>
         </div>
-        <div class="print-grid" id="print-target">
+        <div class="print-grid" id="print-container">
             </div>
     </section>
 
-    <footer id="contact">
-        <div data-reveal>
-            <h2 style="font-family: var(--font-head); font-size: 3rem;">COMMENCE PROJECT</h2>
-            <p style="color: var(--text-mid); margin-top: 20px;">Encrypted communication channel for branding inquiries.</p>
-            
-            <div id="secure-reveal">REVEAL SECURE CHANNEL</div>
-            
-            <div style="margin-top: 50px;">
-                <p style="font-size: 2rem; font-weight: 800;">+91 7892647479</p>
-                <p style="color: var(--text-low); margin-top: 10px;">Kannalli, Bengaluru, Karnataka</p>
-            </div>
-        </div>
+    <section id="contact" style="padding-top: 200px;"></section>
+    <div class="contact-card">
+        <h2>Ready to Start?</h2>
+        <p>Let's discuss your branding and printing requirements.</p>
+        <div class="phone">+91 7892647479</div>
+        <p style="margin-top: 20px; font-weight: 700;">Kannalli, Bengaluru, Karnataka</p>
+    </div>
 
-        <div class="sys-info">
-            ENCRYPTION: AES-256 | NODE_ID: 0x992B_SG | SYSTEM_TIME: <span id="sys-clock">00:00:00</span>
+    <footer>
+        <p style="font-size: 1.2rem; font-weight: 700; margin-bottom: 20px;">SUMANTH G | SENIOR GRAPHIC DESIGNER</p>
+        <div style="margin-bottom: 30px; opacity: 0.6;">
+            CorelDRAW | Photoshop | Illustrator | Nudi | Web Dev
         </div>
-        <p style="margin-top: 40px; font-size: 0.5rem; color: #111;">© 2026 SUMANTH G. PROPRIETARY SOURCE CODE. DUPLICATION IS A CRIME.</p>
+        <p>© 2026 Creative Studio. Designed with precision for industrial excellence.</p>
     </footer>
 
     <script>
         /**
-         * CLASS: ContentEngine
-         * Manages the injection of 44+ data points to maintain clean HTML.
+         * PROJECT DATA REPOSITORY
+         * Structured for high-volume content delivery
          */
-        class ContentEngine {
-            constructor() {
-                this.projectData = [
-                    { title: "Jenushree Agritech", sub: "Branding", img: "626785774573-4b799315345d" },
-                    { title: "Fertilizer Pouch", sub: "Packaging", img: "1616423641454-da066b199859" },
-                    { title: "3D Front Elevation", sub: "Architecture", img: "1586717791821-3f44a563eb4c" },
-                    { title: "State Welfare Campaign", sub: "Government", img: "1542744173-0592b0286627" },
-                    { title: "Industrial Bucket", sub: "Label Design", img: "1626785774573-4b799315345d" },
-                    { title: "Corporate Identity", sub: "Logo Design", img: "1599305090598-ef1756c71a2d" },
-                    { title: "Kannada Typography", sub: "Nudi Expert", img: "1585829365306-3343b0845811" },
-                    { title: "Flex Billboard", sub: "Outdoor", img: "1533750357893-5d9f095024e0" },
-                    { title: "Premium Business Card", sub: "Print", img: "1515934751635-c81c6bc9a2d8" },
-                    { title: "Web Portfolio", sub: "Development", img: "1498050108023-c5249f4df085" },
-                    { title: "Product Bottle", sub: "Mockup", img: "1616423641454-da066b199859" },
-                    { title: "Event Backdrop", sub: "Stage Design", img: "1533750357893-5d9f095024e0" },
-                    { title: "Bio-Stimulant Pack", sub: "Agriculture", img: "626785774573-4b799315345d" },
-                    { title: "Modern Villa 3D", sub: "Visualization", img: "1586717791821-3f44a563eb4c" },
-                    { title: "Brochure Layout", sub: "Editorial", img: "1585829365306-3343b0845811" },
-                    { title: "App Interface", sub: "UI/UX", img: "1498050108023-c5249f4df085" },
-                    { title: "Sticker Sheet", sub: "Production", img: "1515934751635-c81c6bc9a2d8" },
-                    { title: "Exhibition Stand", sub: "3D Design", img: "1533750357893-5d9f095024e0" },
-                    { title: "Logo Refresh", sub: "Vector Art", img: "1599305090598-ef1756c71a2d" },
-                    { title: "Social Media Grid", sub: "Digital Marketing", img: "1498050108023-c5249f4df085" },
-                    { title: "Pesticide Bottle", sub: "Agri-Print", img: "626785774573-4b799315345d" },
-                    { title: "Magazine Cover", sub: "Layout", img: "1585829365306-3343b0845811" },
-                    { title: "Luxury Stationary", sub: "Wedding", img: "1515934751635-c81c6bc9a2d8" },
-                    { title: "Mobile UI Kit", sub: "Figma", img: "1498050108023-c5249f4df085" }
-                ];
+        const PROJECT_DATA = [
+            { id: 1, title: "Jenushree Agritech", tag: "Agricultural Branding", img: "https://images.unsplash.com/photo-1625244724123-1ed302969799?auto=format&fit=crop&q=80&w=800" },
+            { id: 2, title: "Fertilizer Pouch", tag: "Packaging Design", img: "https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&q=80&w=800" },
+            { id: 3, title: "3D Villa Elevation", tag: "Architectural Visuals", img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800" },
+            { id: 4, title: "State Welfare Campaign", tag: "Govt Branding", img: "https://images.unsplash.com/photo-1542744173-0592b0286627?auto=format&fit=crop&q=80&w=800" },
+            { id: 5, title: "Industrial Bucket Label", tag: "Product Label", img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=800" },
+            { id: 6, title: "Corporate Logo System", tag: "Identity Design", img: "https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=800" },
+            { id: 7, title: "Kannada News Layout", tag: "Typography", img: "https://images.unsplash.com/photo-1585829365306-3343b0845811?auto=format&fit=crop&q=80&w=800" },
+            { id: 8, title: "Flex Billboard", tag: "Outdoor Ad", img: "https://images.unsplash.com/photo-1533750357893-5d9f095024e0?auto=format&fit=crop&q=80&w=800" },
+            { id: 9, title: "Premium Business Card", tag: "Stationery", img: "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800" },
+            { id: 10, title: "Web Portfolio UI", tag: "Development", img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=800" },
+            { id: 11, title: "Agri-Chemical Bottle", tag: "Labeling", img: "https://images.unsplash.com/photo-1616423641454-da066b199859?auto=format&fit=crop&q=80&w=800" },
+            { id: 12, title: "Event Backdrop", tag: "Stage Design", img: "https://images.unsplash.com/photo-1533750357893-5d9f095024e0?auto=format&fit=crop&q=80&w=800" },
+            { id: 13, title: "Bio-Stimulant Pack", tag: "Branding", img: "https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&q=80&w=800" },
+            { id: 14, title: "Modern 600sqft Elevation", tag: "3D Design", img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800" },
+            { id: 15, title: "Brochure Layout", tag: "Editorial", img: "https://images.unsplash.com/photo-1585829365306-3343b0845811?auto=format&fit=crop&q=80&w=800" },
+            { id: 16, title: "App Interface Kit", tag: "UI Design", img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=800" },
+            { id: 17, title: "Industrial Decals", tag: "Stickers", img: "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800" },
+            { id: 18, title: "3D Exhibition Stand", tag: "Visualization", img: "https://images.unsplash.com/photo-1533750357893-5d9f095024e0?auto=format&fit=crop&q=80&w=800" },
+            { id: 19, title: "Brand Refresh", tag: "Vectorization", img: "https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=800" },
+            { id: 20, title: "Social Media Grid", tag: "Digital", img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=800" },
+            { id: 21, title: "Pesticide Bottle", tag: "Industrial", img: "https://images.unsplash.com/photo-1616423641454-da066b199859?auto=format&fit=crop&q=80&w=800" },
+            { id: 22, title: "Magazine Cover", tag: "Publishing", img: "https://images.unsplash.com/photo-1585829365306-3343b0845811?auto=format&fit=crop&q=80&w=800" },
+            { id: 23, title: "Wedding Invite", tag: "Custom Print", img: "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800" },
+            { id: 24, title: "Figma UI Kit", tag: "Productivity", img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=800" }
+        ];
 
-                this.printData = [
-                    { name: "Flex Banners", icon: "fa-scroll" }, { name: "Visiting Cards", icon: "fa-address-card" },
-                    { name: "Brouchers", icon: "fa-book-open" }, { name: "Name Boards", icon: "fa-id-badge" },
-                    { name: "No Parking Boards", icon: "fa-ban" }, { name: "Wedding Cards", icon: "fa-heart" },
-                    { name: "Digital Print", icon: "fa-print" }, { name: "ID Cards", icon: "fa-user-tag" },
-                    { name: "Bill Books", icon: "fa-file-invoice" }, { name: "Stickers", icon: "fa-note-sticky" },
-                    { name: "Envelopes", icon: "fa-envelope" }, { name: "Letter Heads", icon: "fa-heading" },
-                    { name: "Certificates", icon: "fa-certificate" }, { name: "Calendars", icon: "fa-calendar-days" },
-                    { name: "Menu Cards", icon: "fa-utensils" }, { name: "Sunpack Sheets", icon: "fa-border-all" },
-                    { name: "ACP Panels", icon: "fa-shield-halved" }, { name: "LED Boards", icon: "fa-lightbulb" },
-                    { name: "Canopy", icon: "fa-tent" }, { name: "Standees", icon: "fa-person-rays" },
-                    { name: "Rubber Stamps", icon: "fa-stamp" }, { name: "Many More", icon: "fa-ellipsis-h" }
-                ];
+        const SERVICE_DATA = [
+            { n: "Flex Banners", i: "fa-scroll" }, { n: "Visiting Cards", i: "fa-address-card" },
+            { n: "Brochures", i: "fa-book-open" }, { n: "Name Boards", i: "fa-id-badge" },
+            { n: "No Parking Boards", i: "fa-ban" }, { n: "Wedding Cards", i: "fa-heart" },
+            { n: "Digital Print", i: "fa-print" }, { n: "ID Cards", i: "fa-user-tag" },
+            { n: "Bill Books", i: "fa-file-invoice" }, { n: "Stickers", i: "fa-note-sticky" },
+            { n: "Envelopes", i: "fa-envelope" }, { n: "Letter Heads", i: "fa-heading" },
+            { n: "Certificates", i: "fa-certificate" }, { n: "Calendars", i: "fa-calendar-days" },
+            { n: "Menu Cards", i: "fa-utensils" }, { n: "Sunpack Sheets", i: "fa-border-all" },
+            { n: "ACP Panels", i: "fa-shield-halved" }, { n: "LED Boards", i: "fa-lightbulb" },
+            { n: "Canopy", i: "fa-tent" }, { n: "Standees", i: "fa-person-rays" },
+            { n: "Rubber Stamps", i: "fa-stamp" }, { n: "Many More", i: "fa-plus" }
+        ];
+
+        /**
+         * ENGINE CLASS: DesignStudio
+         * Handles all dynamic rendering and interactions
+         */
+        class DesignStudio {
+            constructor() {
+                this.initCursor();
+                this.initPaintSplashes();
+                this.renderGallery();
+                this.renderServices();
+                this.initAnimations();
+                this.handleScroll();
             }
 
-            render() {
-                const pTarget = document.getElementById('project-target');
-                const sTarget = document.getElementById('print-target');
+            initCursor() {
+                const c = document.getElementById('cursor');
+                const f = document.getElementById('cursor-follower');
+                
+                window.addEventListener('mousemove', (e) => {
+                    gsap.to(c, { x: e.clientX, y: e.clientY, duration: 0 });
+                    gsap.to(f, { x: e.clientX - 20, y: e.clientY - 20, duration: 0.15 });
+                });
 
-                this.projectData.forEach(p => {
+                document.querySelectorAll('a, .btn, .project-card, .print-box').forEach(el => {
+                    el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+                    el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+                });
+            }
+
+            initPaintSplashes() {
+                const colors = ['#FF6B00', '#003366', '#FF9E5E', '#001F3F'];
+                for(let i=0; i<15; i++) {
+                    const blob = document.createElement('div');
+                    blob.className = 'splash-blob';
+                    const size = Math.random() * 400 + 200;
+                    blob.style.width = `${size}px`;
+                    blob.style.height = `${size}px`;
+                    blob.style.left = `${Math.random() * 100}%`;
+                    blob.style.top = `${Math.random() * 100}%`;
+                    blob.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    blob.style.animationDelay = `${Math.random() * 5}s`;
+                    document.body.appendChild(blob);
+                }
+            }
+
+            renderGallery() {
+                const container = document.getElementById('gallery-container');
+                PROJECT_DATA.forEach(p => {
                     const card = document.createElement('div');
-                    card.className = 'card-p';
+                    card.className = 'project-card';
                     card.innerHTML = `
-                        <img src="https://images.unsplash.com/photo-${p.img}?auto=format&fit=crop&q=80&w=800" alt="${p.title}">
-                        <div class="card-meta">
-                            <span>${p.sub}</span>
+                        <div class="card-img"><img src="${p.img}" alt="${p.title}"></div>
+                        <div class="card-body">
+                            <span class="tag">${p.tag}</span>
                             <h3>${p.title}</h3>
                         </div>
                     `;
-                    pTarget.appendChild(card);
-                });
-
-                this.printData.forEach(s => {
-                    const item = document.createElement('div');
-                    item.className = 'print-item';
-                    item.innerHTML = `<i class="fa-solid ${s.icon}"></i><h4>${s.name}</h4>`;
-                    sTarget.appendChild(item);
-                });
-            }
-        }
-
-        /**
-         * CLASS: StudioApp
-         * Controls WebGL, Interactions, and Security.
-         */
-        class StudioApp {
-            constructor() {
-                this.initWebGL();
-                this.initCursor();
-                this.initAnimations();
-                this.initSecurity();
-                this.startClock();
-            }
-
-            // 1. GPU BACKGROUND (THREE.JS)
-            initWebGL() {
-                const canvas = document.querySelector('#webgl-canvas');
-                const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-                const scene = new THREE.Scene();
-                const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-                
-                renderer.setSize(window.innerWidth, window.innerHeight);
-                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-                camera.position.z = 10;
-
-                const geometry = new THREE.TorusKnotGeometry(4, 1.3, 100, 16);
-                const material = new THREE.MeshBasicMaterial({ 
-                    color: 0xa855f7, 
-                    wireframe: true, 
-                    transparent: true, 
-                    opacity: 0.15 
-                });
-                const mesh = new THREE.Mesh(geometry, material);
-                scene.add(mesh);
-
-                const animate = () => {
-                    requestAnimationFrame(animate);
-                    mesh.rotation.x += 0.002;
-                    mesh.rotation.y += 0.003;
-                    renderer.render(scene, camera);
-                };
-                animate();
-
-                window.addEventListener('resize', () => {
-                    camera.aspect = window.innerWidth / window.innerHeight;
-                    camera.updateProjectionMatrix();
-                    renderer.setSize(window.innerWidth, window.innerHeight);
+                    container.appendChild(card);
                 });
             }
 
-            // 2. CURSOR ENGINE
-            initCursor() {
-                const main = document.getElementById('cursor-main');
-                const follow = document.getElementById('cursor-follower');
-
-                window.addEventListener('mousemove', (e) => {
-                    gsap.to(main, { x: e.clientX, y: e.clientY, duration: 0 });
-                    gsap.to(follow, { x: e.clientX - 22, y: e.clientY - 22, duration: 0.2 });
-                });
-
-                document.querySelectorAll('a, .btn, .card-p, .print-item, #secure-reveal').forEach(el => {
-                    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-                    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+            renderServices() {
+                const container = document.getElementById('print-container');
+                SERVICE_DATA.forEach(s => {
+                    const box = document.createElement('div');
+                    box.className = 'print-box';
+                    box.innerHTML = `<i class="fa-solid ${s.i}"></i><h4>${s.n}</h4>`;
+                    container.appendChild(box);
                 });
             }
 
-            // 3. GSAP REVEALS
             initAnimations() {
                 gsap.registerPlugin(ScrollTrigger);
                 
-                document.querySelectorAll('[data-reveal]').forEach(el => {
+                gsap.from(".hero-content h1", { opacity: 0, y: 50, duration: 1, ease: "power4.out" });
+                gsap.from(".hero-content p", { opacity: 0, y: 30, duration: 1, delay: 0.3 });
+
+                document.querySelectorAll('.project-card, .print-box').forEach(el => {
                     gsap.from(el, {
-                        y: 100,
-                        opacity: 0,
-                        duration: 1.2,
-                        ease: "power4.out",
-                        scrollTrigger: {
-                            trigger: el,
-                            start: "top 90%",
-                        }
+                        scrollTrigger: { trigger: el, start: "top 90%" },
+                        opacity: 0, y: 30, duration: 0.8
                     });
                 });
+            }
 
+            handleScroll() {
                 window.addEventListener('scroll', () => {
-                    const nav = document.getElementById('navbar');
-                    if(window.scrollY > 100) nav.classList.add('active');
-                    else nav.classList.remove('active');
+                    const header = document.getElementById('header');
+                    if(window.scrollY > 50) header.classList.add('scrolled');
+                    else header.classList.remove('scrolled');
                 });
-            }
-
-            // 4. SECURITY PROTOCOLS
-            initSecurity() {
-                // Email Obfuscation
-                document.getElementById('secure-reveal').addEventListener('click', function() {
-                    const u = "sumanthg2904"; const d = "gmail.com";
-                    this.innerText = `${u}@${d}`;
-                    this.style.borderStyle = "solid";
-                });
-
-                // WhatsApp Logic
-                document.getElementById('wa-link').addEventListener('click', (e) => {
-                    e.preventDefault();
-                    window.open(`https://wa.me/917892647479?text=Studio_Inquiry_2026`, '_blank');
-                });
-
-                // Anti-DevTools Shortcodes
-                document.onkeydown = (e) => {
-                    if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74))) {
-                        console.warn("RESTRICTED AREA: DevTools disabled by Security Policy.");
-                        return false;
-                    }
-                };
-            }
-
-            startClock() {
-                setInterval(() => {
-                    document.getElementById('sys-clock').innerText = new Date().toLocaleTimeString();
-                }, 1000);
             }
         }
 
-        // ENTRY POINT
-        window.onload = () => {
-            const engine = new ContentEngine();
-            engine.render();
-            new StudioApp();
-            
-            console.log("%c SUMANTH G %c SECURE BUILD 2026 ", "background:#a855f7; color:#fff; padding:5px;", "background:#000; color:#0f0; padding:5px;");
-        };
+        // Initialize Studio
+        document.addEventListener('DOMContentLoaded', () => new DesignStudio());
     </script>
 </body>
 </html>
