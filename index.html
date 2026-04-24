@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Sumanth G - Senior Graphic Designer & Print Specialist in Bengaluru">
-    <title>Sumanth G | Creative Design & Industrial Print Studio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="author" content="Sumanth G">
+    <title>Sumanth G | Senior Graphic Designer & Print Specialist</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Poppins:wght@300;400;600&family=Noto+Sans+Kannada:wght@400;700&family=Space+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Poppins:wght@300;400;600&family=Noto+Sans+Kannada:wght@400;700&family=Space+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -14,37 +14,59 @@
 
     <style>
         /* ========================================================================
-           1. CORE DESIGN TOKENS
+           1. COMPREHENSIVE STYLE RESET & TOKENS
            ======================================================================== */
         :root {
             --white: #FFFFFF;
             --orange: #FF6B00;
+            --orange-hover: #E65A00;
             --blue: #003366;
-            --blue-deep: #001F3F;
-            --grey-100: #F8F9FA;
-            --grey-200: #E9ECEF;
-            --grey-800: #212529;
+            --blue-light: #004D99;
+            --text-dark: #1A1A1A;
+            --text-light: #666666;
+            --border-color: #EEEEEE;
             --font-head: 'Montserrat', sans-serif;
             --font-body: 'Poppins', sans-serif;
             --font-kan: 'Noto Sans Kannada', sans-serif;
             --font-mono: 'Space Mono', monospace;
-            --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            --shadow-soft: 0 10px 30px rgba(0, 51, 102, 0.08);
-            --shadow-hard: 0 20px 40px rgba(0, 51, 102, 0.15);
+            --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+            --shadow-sm: 0 4px 6px rgba(0,0,0,0.05);
+            --shadow-lg: 0 20px 40px rgba(0, 51, 102, 0.1);
         }
 
-        /* Security & Base */
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        * {
+            margin: 0; padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html { scroll-behavior: smooth; overflow-x: hidden; }
+
         body {
-            background-color: var(--white);
-            color: var(--grey-800);
+            background: var(--white);
+            color: var(--text-dark);
             font-family: var(--font-body);
             overflow-x: hidden;
-            line-height: 1.7;
+            cursor: default;
         }
 
-        /* Background Paint Splash Engine */
-        #splash-container {
+        /* Responsive Cursor (Hidden on Mobile) */
+        #custom-cursor {
+            position: fixed;
+            width: 12px; height: 12px;
+            background: var(--orange);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transition: transform 0.1s;
+        }
+
+        @media (max-width: 1024px) { #custom-cursor { display: none; } }
+
+        /* ========================================================================
+           2. DYNAMIC PAINT SPLASH BACKGROUND
+           ======================================================================== */
+        #splash-layer {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
@@ -53,72 +75,44 @@
             overflow: hidden;
         }
 
-        .paint-splatter {
+        .splash {
             position: absolute;
+            filter: blur(50px);
+            opacity: 0.15;
             border-radius: 50%;
-            filter: blur(60px);
-            opacity: 0.12;
-            animation: pulseSplash 15s infinite alternate ease-in-out;
+            animation: moveSplash 30s infinite alternate;
         }
 
-        @keyframes pulseSplash {
-            0% { transform: scale(1) translate(0, 0); }
-            100% { transform: scale(1.3) translate(50px, -30px); }
+        @keyframes moveSplash {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            100% { transform: translate(100px, 100px) rotate(90deg) scale(1.5); }
         }
 
         /* ========================================================================
-           2. INTERACTIVE CURSOR
-           ======================================================================== */
-        #cursor-dot {
-            position: fixed;
-            width: 8px; height: 8px;
-            background: var(--orange);
-            border-radius: 50%;
-            z-index: 10001;
-            pointer-events: none;
-        }
-
-        #cursor-ring {
-            position: fixed;
-            width: 35px; height: 35px;
-            border: 1.5px solid var(--blue);
-            border-radius: 50%;
-            z-index: 10000;
-            pointer-events: none;
-            transition: width 0.3s, height 0.3s, background 0.3s;
-        }
-
-        .is-hovering #cursor-ring {
-            width: 60px; height: 60px;
-            background: rgba(0, 51, 102, 0.05);
-            border-color: var(--orange);
-        }
-
-        /* ========================================================================
-           3. NAVIGATION & HEADER
+           3. NAVIGATION
            ======================================================================== */
         header {
             position: fixed;
             top: 0; width: 100%;
-            padding: 35px 8%;
+            padding: 25px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            transition: var(--transition-smooth);
+            transition: all 0.4s var(--ease-out);
         }
 
-        header.sticky {
-            padding: 15px 8%;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(15px);
-            box-shadow: var(--shadow-soft);
+        header.scrolled {
+            padding: 15px 5%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-sm);
         }
 
         .logo {
             font-family: var(--font-head);
+            font-size: 1.5rem;
             font-weight: 900;
-            font-size: 1.6rem;
             color: var(--blue);
             text-decoration: none;
             letter-spacing: -1px;
@@ -126,36 +120,54 @@
 
         .logo span { color: var(--orange); }
 
-        nav ul { display: flex; list-style: none; gap: 40px; }
-        nav a {
+        .nav-links { display: flex; gap: 30px; list-style: none; }
+        .nav-links a {
             text-decoration: none;
             color: var(--blue);
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             transition: 0.3s;
         }
 
-        nav a:hover { color: var(--orange); }
+        .nav-links a:hover { color: var(--orange); }
+
+        .mobile-toggle { display: none; font-size: 1.5rem; color: var(--blue); cursor: pointer; }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .mobile-toggle { display: block; }
+        }
 
         /* ========================================================================
            4. HERO SECTION
            ======================================================================== */
         .hero {
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             align-items: center;
-            padding: 0 8%;
+            padding: 100px 5% 50px;
             position: relative;
         }
 
-        .hero-text { max-width: 850px; z-index: 10; }
+        .hero-content { max-width: 800px; }
+
+        .hero-tag {
+            display: inline-block;
+            padding: 8px 15px;
+            background: rgba(255, 107, 0, 0.1);
+            color: var(--orange);
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            border-left: 3px solid var(--orange);
+        }
 
         .hero h1 {
             font-family: var(--font-head);
-            font-size: clamp(3rem, 8vw, 6rem);
-            font-weight: 900;
+            font-size: clamp(2.5rem, 8vw, 5.5rem);
             color: var(--blue);
             line-height: 1.1;
             margin-bottom: 25px;
@@ -164,384 +176,385 @@
         .hero h1 em { font-style: normal; color: var(--orange); }
 
         .hero p {
-            font-size: 1.3rem;
-            color: var(--grey-800);
-            max-width: 650px;
-            margin-bottom: 45px;
-            border-left: 6px solid var(--orange);
-            padding-left: 25px;
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-light);
+            margin-bottom: 40px;
+            line-height: 1.6;
         }
 
-        .hero-btns { display: flex; gap: 20px; }
+        .btn-group { display: flex; gap: 15px; flex-wrap: wrap; }
 
         .btn {
-            padding: 20px 45px;
-            border-radius: 4px;
+            padding: 18px 35px;
+            border-radius: 5px;
             text-decoration: none;
             font-weight: 700;
+            font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            transition: var(--transition-smooth);
-            font-size: 0.8rem;
+            transition: 0.4s var(--ease-out);
+            text-align: center;
         }
 
-        .btn-primary { background: var(--orange); color: var(--white); box-shadow: 0 10px 20px rgba(255, 107, 0, 0.2); }
-        .btn-primary:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(255, 107, 0, 0.35); }
+        .btn-orange { background: var(--orange); color: white; }
+        .btn-orange:hover { background: var(--orange-hover); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(255, 107, 0, 0.3); }
 
-        .btn-outline { border: 2px solid var(--blue); color: var(--blue); }
-        .btn-outline:hover { background: var(--blue); color: var(--white); }
+        .btn-blue { border: 2px solid var(--blue); color: var(--blue); }
+        .btn-blue:hover { background: var(--blue); color: white; }
 
         /* ========================================================================
-           5. DYNAMIC GALLERY (WITH HIDDEN ITEMS)
+           5. PORTFOLIO & SERVICES GRIDS
            ======================================================================== */
-        .section-wrap { padding: 120px 8%; }
+        .section-padding { padding: 100px 5%; }
 
-        .sec-title { margin-bottom: 70px; }
-        .sec-title h2 { font-family: var(--font-head); font-size: 3.5rem; color: var(--blue); }
-        .sec-title .kannada-sub { font-family: var(--font-kan); color: var(--orange); font-weight: 700; font-size: 1.2rem; }
+        .section-header { margin-bottom: 60px; }
+        .section-header .kan-text { font-family: var(--font-kan); color: var(--orange); font-size: 1.2rem; display: block; margin-bottom: 10px; }
+        .section-header h2 { font-family: var(--font-head); font-size: 3rem; color: var(--blue); letter-spacing: -1px; }
 
-        .grid-container {
+        .grid-layout {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-            gap: 40px;
-        }
-
-        /* Project Cards */
-        .project-item {
-            background: var(--white);
-            border: 1px solid var(--grey-200);
-            overflow: hidden;
-            transition: var(--transition-smooth);
-            display: none; /* Initially hidden, JS will reveal 6 */
-        }
-
-        .project-item.visible { display: block; animation: fadeInUp 0.8s forwards; }
-
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-
-        .project-item:hover { transform: translateY(-15px); border-color: var(--orange); box-shadow: var(--shadow-hard); }
-
-        .item-thumb { height: 280px; background: var(--grey-100); overflow: hidden; position: relative; }
-        .item-thumb img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s; opacity: 0.9; }
-        .project-item:hover .item-thumb img { transform: scale(1.1); opacity: 1; }
-
-        .item-info { padding: 35px; }
-        .item-info .category { font-family: var(--font-mono); color: var(--orange); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
-        .item-info h3 { color: var(--blue-deep); margin-top: 10px; font-family: var(--font-head); }
-
-        /* Load More UI */
-        .load-more-area { text-align: center; margin-top: 80px; }
-        .btn-load {
-            background: transparent;
-            border: 1px solid var(--blue);
-            color: var(--blue);
-            padding: 15px 50px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
-            font-family: var(--font-head);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-        .btn-load:hover { background: var(--blue); color: #fff; }
-
-        /* ========================================================================
-           6. PRINT SERVICES GRID
-           ======================================================================== */
-        .print-section { background: var(--grey-100); }
-        
-        .print-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 25px;
         }
 
-        .print-card {
-            background: var(--white);
+        /* Project Cards */
+        .card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.4s var(--ease-out);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover { transform: translateY(-10px); border-color: var(--orange); box-shadow: var(--shadow-lg); }
+
+        .card-image {
+            width: 100%; height: 220px;
+            background: var(--grey-200);
+            overflow: hidden;
+        }
+
+        .card-image img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
+        .card:hover .card-image img { transform: scale(1.1); }
+
+        .card-content { padding: 25px; flex-grow: 1; }
+        .card-content .category { color: var(--orange); font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; }
+        .card-content h3 { font-size: 1.1rem; color: var(--blue); margin-top: 8px; }
+
+        /* Icon Cards for Print */
+        .icon-card {
             padding: 50px 30px;
             text-align: center;
-            border-bottom: 5px solid var(--blue);
-            transition: var(--transition-smooth);
-            display: none; /* Initially hidden */
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            transition: 0.4s;
         }
 
-        .print-card.visible { display: block; animation: fadeInUp 0.6s forwards; }
+        .icon-card:hover { background: var(--blue); border-color: var(--blue); }
+        .icon-card i { font-size: 2.5rem; color: var(--orange); margin-bottom: 20px; transition: 0.4s; }
+        .icon-card:hover i { color: white; transform: rotateY(180deg); }
+        .icon-card h4 { font-family: var(--font-head); font-size: 0.9rem; color: var(--blue); transition: 0.4s; }
+        .icon-card:hover h4 { color: white; }
 
-        .print-card:hover { background: var(--blue); color: var(--white); border-color: var(--orange); transform: scale(1.05); }
-        .print-card i { font-size: 2.8rem; color: var(--orange); margin-bottom: 25px; transition: 0.4s; }
-        .print-card:hover i { color: var(--white); transform: rotateY(180deg); }
+        /* Responsive Grid Logic */
+        @media (max-width: 1200px) { .grid-layout { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 900px) { .grid-layout { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { .grid-layout { grid-template-columns: 1fr; } .hero h1 { font-size: 3rem; } }
 
         /* ========================================================================
-           7. CONTACT & FOOTER
+           6. CONTACT & FOOTER
            ======================================================================== */
-        footer {
-            background: var(--blue-deep);
-            color: var(--white);
-            padding: 120px 8% 60px;
+        .footer-cta {
+            background: var(--blue);
+            color: white;
+            padding: 80px 5%;
             text-align: center;
         }
 
-        .cta-footer {
-            background: var(--white);
-            color: var(--blue);
-            max-width: 1000px;
-            margin: -250px auto 100px;
-            padding: 100px 40px;
-            box-shadow: var(--shadow-hard);
-            border-radius: 4px;
+        .footer-cta h2 { font-family: var(--font-head); font-size: 3rem; margin-bottom: 20px; }
+        .footer-cta p { font-size: 1.2rem; margin-bottom: 40px; opacity: 0.8; }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            flex-wrap: wrap;
+            margin-top: 40px;
         }
 
-        .cta-footer h2 { font-family: var(--font-head); font-size: 3rem; margin-bottom: 20px; }
-        .cta-footer .tel { font-size: 2.5rem; color: var(--orange); font-weight: 900; text-decoration: none; display: block; margin: 20px 0; }
+        .contact-item { text-align: center; }
+        .contact-item i { font-size: 1.5rem; color: var(--orange); margin-bottom: 15px; display: block; }
+        .contact-item span { font-weight: 700; font-size: 1.1rem; }
 
-        .wa-fab {
+        footer {
+            padding: 50px 5%;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            background: white;
+        }
+
+        .wa-float {
             position: fixed;
-            bottom: 40px; right: 40px;
+            bottom: 30px; right: 30px;
             background: #25D366;
-            width: 75px; height: 75px;
+            width: 65px; height: 65px;
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 2.2rem;
-            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
+            color: white; font-size: 2rem;
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
             text-decoration: none;
-            z-index: 1000;
+            z-index: 999;
             transition: 0.3s;
         }
 
-        .wa-fab:hover { transform: scale(1.1) rotate(10deg); }
+        .wa-float:hover { transform: scale(1.1) rotate(15deg); }
 
-        .copyright { margin-top: 50px; opacity: 0.5; font-size: 0.75rem; letter-spacing: 2px; }
-
-        @media (max-width: 768px) {
-            header { padding: 25px 5%; }
-            nav { display: none; }
-            .hero h1 { font-size: 3rem; }
-            .cta-footer { padding: 60px 20px; }
-            .cta-footer h2 { font-size: 2rem; }
-            .cta-footer .tel { font-size: 1.5rem; }
-        }
     </style>
 </head>
 <body>
 
-    <div id="splash-container"></div>
-    <div id="cursor-dot"></div>
-    <div id="cursor-ring"></div>
+    <div id="custom-cursor"></div>
+    <div id="splash-layer"></div>
 
-    <a href="https://wa.me/917892647479" class="wa-fab" target="_blank">
+    <a href="https://wa.me/917892647479" class="wa-float" target="_blank">
         <i class="fa-brands fa-whatsapp"></i>
     </a>
 
-    <header id="main-nav">
+    <header id="header">
         <a href="#" class="logo">SUMANTH<span>.</span>G</a>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#portfolio">Works</a></li>
-                <li><a href="#print">Print Hub</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
+        <div class="mobile-toggle" id="menu-btn"><i class="fa-solid fa-bars-staggered"></i></div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#designs">Design Portfolio</a></li>
+            <li><a href="#printing">Print Services</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
     </header>
 
     <section class="hero" id="home">
-        <div class="hero-text">
-            <h1>ELITE <em>DESIGN</em> & INDUSTRIAL <em>PRINT</em>.</h1>
-            <p>I am <strong>Sumanth G</strong>, a Senior Graphic Designer from <strong>Kannalli, Bengaluru</strong>. Specialized in industrial branding, agricultural packaging, and expert Kannada typography.</p>
-            <div class="hero-btns">
-                <a href="#portfolio" class="btn btn-primary">Gallery</a>
-                <a href="#contact" class="btn btn-outline">Consultation</a>
+        <div class="hero-content">
+            <span class="hero-tag">SENIOR GRAPHIC DESIGNER</span>
+            <h1>CRAFTING <em>BRANDS</em><br>DRIVING <em>IMPACT</em>.</h1>
+            <p>Specializing in industrial packaging, agricultural branding, and regional language typography. Based in Kannalli, Bengaluru, I transform ideas into high-fidelity visual systems.</p>
+            <div class="btn-group">
+                <a href="#designs" class="btn btn-orange">View Portfolio</a>
+                <a href="#contact" class="btn btn-blue">Start Project</a>
             </div>
         </div>
     </section>
 
-    <section class="section-wrap" id="portfolio">
-        <div class="sec-title">
-            <span class="kannada-sub">ನನ್ನ ವಿನ್ಯಾಸಗಳು</span>
-            <h2>Portfolio Archive</h2>
+    <section class="section-padding" id="designs">
+        <div class="section-header">
+            <span class="kan-text">ವಿನ್ಯಾಸ ಗ್ಯಾಲರಿ</span>
+            <h2>CREATIVE ARCHIVE</h2>
         </div>
-        <div class="grid-container" id="project-box">
+        <div class="grid-layout" id="project-grid">
             </div>
-        <div class="load-more-area">
-            <button class="btn-load" id="more-projects">Explore More Projects</button>
-        </div>
     </section>
 
-    <section class="section-wrap print-section" id="print">
-        <div class="sec-title">
-            <span class="kannada-sub">ಮುದ್ರಣ ಸೇವೆಗಳು</span>
-            <h2>Industrial Print Hub</h2>
+    <section class="section-padding" style="background: #F9FAFB;" id="printing">
+        <div class="section-header">
+            <span class="kan-text">ಮುದ್ರಣ ಸೇವೆಗಳು</span>
+            <h2>PRINT CAPABILITIES</h2>
         </div>
-        <div class="print-grid" id="print-box">
+        <div class="grid-layout" id="print-grid">
             </div>
-        <div class="load-more-area">
-            <button class="btn-load" id="more-prints">View All Print Services</button>
-        </div>
     </section>
 
-    <section id="contact" style="padding-top: 150px;"></section>
-    <div class="cta-footer">
-        <h2>Start Your Brand Journey</h2>
-        <p>Premium branding solutions for Agriculture, Industry, and Corporate sectors.</p>
-        <a href="tel:7892647479" class="tel">+91 7892647479</a>
-        <p style="font-weight: 700; color: var(--grey-800);">Kannalli, Bengaluru, Karnataka - 562130</p>
-    </div>
+    <section class="footer-cta" id="contact">
+        <h2>LET'S CONNECT</h2>
+        <p>Premium solutions for your branding and high-volume printing needs.</p>
+        
+        <div class="contact-info">
+            <div class="contact-item">
+                <i class="fa-solid fa-phone"></i>
+                <span>+91 7892647479</span>
+            </div>
+            <div class="contact-item">
+                <i class="fa-solid fa-location-dot"></i>
+                <span>Kannalli, Bengaluru, Karnataka</span>
+            </div>
+        </div>
+    </section>
 
     <footer>
-        <div style="font-family: var(--font-head); font-weight: 900; font-size: 1.5rem;">SUMANTH G</div>
-        <div style="margin: 20px 0; opacity: 0.7; font-size: 0.8rem;">
-            CorelDRAW Expert | Photoshop Pro | Illustrator Artist | Nudi Typographer | Web Developer
-        </div>
-        <div class="copyright">
-            &copy; 2026 DESIGNED BY SUMANTH G. ALL RIGHTS RESERVED. SECURED VIA AES-256.
+        <p style="font-weight: 700; margin-bottom: 10px;">SUMANTH G | SENIOR GRAPHIC DESIGNER</p>
+        <p style="font-size: 0.8rem; color: #999;">&copy; 2026 Creative Studio. Built for Excellence.</p>
+        <div style="margin-top: 20px; font-family: var(--font-mono); font-size: 0.6rem; opacity: 0.4;">
+            SYSTEM_ID: DESIGN_ENGINE_V4 | LOC: 12.9716° N, 77.5946° E
         </div>
     </footer>
 
     <script>
         /**
-         * PROJECT DATA REPOSITORY (24 ITEMS)
+         * CLASS: AssetManager
+         * Manages unique image sources and service data to prevent repetition.
          */
-        const DATA_PROJECTS = [
-            { t: "Jenushree Agritech", c: "Branding", i: "625244724123-1ed302969799" },
-            { t: "Bio-Fertilizer Pouch", c: "Packaging", i: "1589923188900-85dae523342b" },
-            { t: "3D Villa Elevation", c: "Architecture", i: "1512917774080-9991f1c4c750" },
-            { t: "State Welfare Campaign", c: "Govt Branding", i: "1542744173-0592b0286627" },
-            { t: "Industrial Bucket Art", c: "Label Design", i: "1584622650111-993a426fbf0a" },
-            { t: "Corporate Logomark", c: "Identity", i: "1626785774573-4b799315345d" },
-            { t: "Kannada News Weekly", c: "Typography", i: "1585829365306-3343b0845811" },
-            { t: "Flex Hoarding Pro", c: "Outdoor", i: "1533750357893-5d9f095024e0" },
-            { t: "Luxury Business Card", c: "Stationery", i: "1515934751635-c81c6bc9a2d8" },
-            { t: "Agri-Chemical Bottle", c: "Labeling", i: "1616423641454-da066b199859" },
-            { t: "Portfolio Web App", c: "Development", i: "1498050108023-c5249f4df085" },
-            { t: "Organic Seed Pack", c: "Agri-Design", i: "625244724123-1ed302969799" },
-            { t: "Modern Duplex 3D", c: "Architecture", i: "1512917774080-9991f1c4c750" },
-            { t: "Exhibition Stand", c: "Event 3D", i: "1533750357893-5d9f095024e0" },
-            { t: "Brand Refresh 2026", c: "Corporate", i: "1626785774573-4b799315345d" },
-            { t: "Bio-Stimulant Pack", c: "Agriculture", i: "1589923188900-85dae523342b" },
-            { t: "Product Catalog", c: "Print Media", i: "1585829365306-3343b0845811" },
-            { t: "Vehicle Wrap Design", c: "Advertising", i: "1533750357893-5d9f095024e0" },
-            { t: "Kannada Magazine", c: "Nudi Script", i: "1585829365306-3343b0845811" },
-            { t: "UI Interface Kit", c: "Digital", i: "1498050108023-c5249f4df085" },
-            { t: "Industrial ACP Panel", c: "Signage", i: "1584622650111-993a426fbf0a" },
-            { t: "Agricultural Ads", c: "Campaign", i: "625244724123-1ed302969799" },
-            { t: "Luxury Wedding Card", c: "Custom Print", i: "1515934751635-c81c6bc9a2d8" },
-            { t: "Software UI Design", c: "Tech Branding", i: "1498050108023-c5249f4df085" }
-        ];
-
-        /**
-         * PRINT SERVICES DATA (22 ITEMS)
-         */
-        const DATA_PRINTS = [
-            { n: "Flex Banners", icon: "fa-scroll" }, { n: "Visiting Cards", icon: "fa-address-card" },
-            { n: "Brochures", icon: "fa-book-open" }, { n: "Name Boards", icon: "fa-id-badge" },
-            { n: "No Parking Boards", icon: "fa-ban" }, { n: "Wedding Cards", icon: "fa-heart" },
-            { n: "Digital Print", icon: "fa-print" }, { n: "ID Cards", icon: "fa-user-tag" },
-            { n: "Bill Books", icon: "fa-file-invoice" }, { n: "Stickers", icon: "fa-note-sticky" },
-            { n: "Envelopes", icon: "fa-envelope" }, { n: "Letter Heads", icon: "fa-heading" },
-            { n: "Certificates", icon: "fa-certificate" }, { n: "Calendars", icon: "fa-calendar-days" },
-            { n: "Menu Cards", icon: "fa-utensils" }, { n: "Sunpack Sheets", icon: "fa-border-all" },
-            { n: "ACP Panels", icon: "fa-shield-halved" }, { n: "LED Boards", icon: "fa-lightbulb" },
-            { n: "Canopy", icon: "fa-tent" }, { n: "Standees", icon: "fa-person-rays" },
-            { n: "Rubber Stamps", icon: "fa-stamp" }, { n: "Screen Printing", icon: "fa-palette" }
-        ];
-
-        /**
-         * STUDIO ENGINE CLASS
-         */
-        class StudioEngine {
+        class AssetManager {
             constructor() {
-                this.projectIndex = 6;
-                this.printIndex = 8;
-                this.initSplashes();
-                this.initCursor();
-                this.renderAll();
-                this.bindEvents();
-                this.initScrollAnims();
+                // 24 Unique Design Projects
+                this.designProjects = [
+                    { title: "Jenushree Agritech Branding", cat: "Agriculture", id: "1625244724123-1ed302969799" },
+                    { title: "Bio-Fertilizer Packaging", cat: "Product Design", id: "1589923188900-85dae523342b" },
+                    { title: "3D Front Elevation - Villa", cat: "Architecture", id: "1512917774080-9991f1c4c750" },
+                    { title: "Government Welfare Ads", cat: "Campaign", id: "1542744173-0592b0286627" },
+                    { title: "Industrial Bucket Label", cat: "Packaging", id: "1584622650111-993a426fbf0a" },
+                    { title: "Kannada News Layout", cat: "Typography", id: "1585829365306-3343b0845811" },
+                    { title: "Corporate Flex Banner", cat: "Outdoor", id: "1533750357893-5d9f095024e0" },
+                    { title: "Premium Business Cards", cat: "Print Identity", id: "1515934751635-c81c6bc9a2d8" },
+                    { title: "Agri-Chemical Bottle Art", cat: "Labeling", id: "1616423641454-da066b199859" },
+                    { title: "Minimalist Brand Identity", cat: "Branding", id: "1626785774573-4b799315345d" },
+                    { title: "Website UI Portfolio", cat: "Development", id: "1498050108023-c5249f4df085" },
+                    { title: "Agricultural Seed Pack", cat: "Packaging", id: "1615412723439-554560d33d41" },
+                    { title: "Modern Duplex 3D", cat: "Visualization", id: "1600585154340-be98fe2099a1" },
+                    { title: "Nudi Kannada Typography", cat: "Art", id: "1593113503719-b4d0097bc7d7" },
+                    { title: "Event Backdrop Design", cat: "Exhibition", id: "1505373630302-3f1025d5adcd" },
+                    { title: "Product Bottle Mockup", cat: "Digital", id: "1523213121991-aa3dfae7b674" },
+                    { title: "Luxury Wedding Invitation", cat: "Print", id: "1607193061155-23f93c2059ff" },
+                    { title: "Vector Logo Redesign", cat: "Graphic", id: "1572044160714-d95a88a06f31" },
+                    { title: "Industrial Safety Manual", cat: "Editorial", id: "1455390582263-d4bd604a75bb" },
+                    { title: "High-Resolution Hoarding", cat: "Billboard", id: "1560174031-127e0825524b" },
+                    { title: "Biostimulant Pack Design", cat: "Industrial", id: "1631190276023-66236b99a807" },
+                    { title: "Architectural 3D Sketch", cat: "Design", id: "1503387762223-f29c46c7fb5d" },
+                    { title: "Stationery System", cat: "Identity", id: "1586717791821-3f44a563eb4c" },
+                    { title: "Digital Marketing Ads", cat: "Social Media", id: "1611162617624-76dad0405d7b" }
+                ];
+
+                // 22 Unique Print Services
+                this.printServices = [
+                    { name: "Flex Banners", icon: "fa-scroll", img: "1533750357893-5d9f095024e0" },
+                    { name: "Visiting Cards", icon: "fa-address-card", img: "1515934751635-c81c6bc9a2d8" },
+                    { name: "Brochures", icon: "fa-book-open", img: "1585829365306-3343b0845811" },
+                    { name: "Name Boards", icon: "fa-id-badge", img: "1584622650111-993a426fbf0a" },
+                    { name: "No Parking Boards", icon: "fa-ban", img: "1560174031-127e0825524b" },
+                    { name: "Wedding Cards", icon: "fa-heart", img: "1607193061155-23f93c2059ff" },
+                    { name: "Digital Print", icon: "fa-print", img: "1455390582263-d4bd604a75bb" },
+                    { name: "ID Cards", icon: "fa-user-tag", img: "1631190276023-66236b99a807" },
+                    { name: "Bill Books", icon: "fa-file-invoice", img: "1586717791821-3f44a563eb4c" },
+                    { name: "Stickers", icon: "fa-note-sticky", img: "1611162617624-76dad0405d7b" },
+                    { name: "Envelopes", icon: "fa-envelope", img: "1593113503719-b4d0097bc7d7" },
+                    { name: "Letter Heads", icon: "fa-heading", img: "1512917774080-9991f1c4c750" },
+                    { name: "Certificates", icon: "fa-certificate", img: "1626785774573-4b799315345d" },
+                    { name: "Calendars", icon: "fa-calendar-days", img: "1600585154340-be98fe2099a1" },
+                    { name: "Menu Cards", icon: "fa-utensils", img: "1505373630302-3f1025d5adcd" },
+                    { name: "Sunpack Sheets", icon: "fa-border-all", img: "1523213121991-aa3dfae7b674" },
+                    { name: "ACP Panels", icon: "fa-shield-halved", img: "1572044160714-d95a88a06f31" },
+                    { name: "LED Boards", icon: "fa-lightbulb", img: "1542744173-0592b0286627" },
+                    { name: "Canopy", icon: "fa-tent", img: "1589923188900-85dae523342b" },
+                    { name: "Standees", icon: "fa-person-rays", img: "1625244724123-1ed302969799" },
+                    { name: "Rubber Stamps", icon: "fa-stamp", img: "1616423641454-da066b199859" },
+                    { name: "Screen Printing", icon: "fa-palette", img: "1615412723439-554560d33d41" }
+                ];
             }
 
-            initSplashes() {
-                const colors = ['#FF6B00', '#003366', '#FF9E5E', '#001F3F'];
-                const container = document.getElementById('splash-container');
-                for(let i=0; i<15; i++) {
-                    const splash = document.createElement('div');
-                    splash.className = 'paint-splatter';
-                    const size = Math.random() * 450 + 250;
-                    splash.style.width = `${size}px`;
-                    splash.style.height = `${size}px`;
-                    splash.style.left = `${Math.random() * 100}%`;
-                    splash.style.top = `${Math.random() * 100}%`;
-                    splash.style.background = colors[Math.floor(Math.random() * colors.length)];
-                    splash.style.animationDelay = `${Math.random() * 5}s`;
-                    container.appendChild(splash);
-                }
+            render() {
+                const pGrid = document.getElementById('project-grid');
+                const sGrid = document.getElementById('print-grid');
+
+                // Generate Projects
+                this.designProjects.forEach(p => {
+                    const el = document.createElement('div');
+                    el.className = 'card';
+                    el.innerHTML = `
+                        <div class="card-image">
+                            <img src="https://images.unsplash.com/photo-${p.id}?auto=format&fit=crop&q=80&w=600" alt="${p.title}" loading="lazy">
+                        </div>
+                        <div class="card-content">
+                            <span class="category">${p.cat}</span>
+                            <h3>${p.title}</h3>
+                        </div>
+                    `;
+                    pGrid.appendChild(el);
+                });
+
+                // Generate Services
+                this.printServices.forEach(s => {
+                    const el = document.createElement('div');
+                    el.className = 'icon-card';
+                    el.innerHTML = `
+                        <i class="fa-solid ${s.icon}"></i>
+                        <h4>${s.name}</h4>
+                    `;
+                    sGrid.appendChild(el);
+                });
+            }
+        }
+
+        /**
+         * CLASS: UiEngine
+         * Manages interactions, animations, and splashes.
+         */
+        class UiEngine {
+            constructor() {
+                this.initCursor();
+                this.initSplashes();
+                this.initScrollHeader();
+                this.initAnimations();
             }
 
             initCursor() {
-                const dot = document.getElementById('cursor-dot');
-                const ring = document.getElementById('cursor-ring');
-                window.addEventListener('mousemove', (e) => {
-                    gsap.to(dot, { x: e.clientX, y: e.clientY, duration: 0 });
-                    gsap.to(ring, { x: e.clientX - 17, y: e.clientY - 17, duration: 0.15 });
+                const cursor = document.getElementById('custom-cursor');
+                document.addEventListener('mousemove', (e) => {
+                    gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
                 });
-                document.querySelectorAll('a, button, .project-item, .print-card').forEach(el => {
-                    el.addEventListener('mouseenter', () => document.body.classList.add('is-hovering'));
-                    el.addEventListener('mouseleave', () => document.body.classList.remove('is-hovering'));
+
+                document.querySelectorAll('a, .btn, .card, .icon-card').forEach(el => {
+                    el.addEventListener('mouseenter', () => cursor.style.transform = 'scale(4)');
+                    el.addEventListener('mouseleave', () => cursor.style.transform = 'scale(1)');
                 });
             }
 
-            renderAll() {
-                const pBox = document.getElementById('project-box');
-                DATA_PROJECTS.forEach((p, i) => {
-                    const item = document.createElement('div');
-                    item.className = `project-item ${i < this.projectIndex ? 'visible' : ''}`;
-                    item.innerHTML = `
-                        <div class="item-thumb"><img src="https://images.unsplash.com/photo-${p.i}?auto=format&fit=crop&q=80&w=600" alt="${p.t}"></div>
-                        <div class="item-info">
-                            <span class="category">${p.c}</span>
-                            <h3>${p.t}</h3>
-                        </div>
-                    `;
-                    pBox.appendChild(item);
-                });
-
-                const sBox = document.getElementById('print-box');
-                DATA_PRINTS.forEach((s, i) => {
-                    const item = document.createElement('div');
-                    item.className = `print-card ${i < this.printIndex ? 'visible' : ''}`;
-                    item.innerHTML = `<i class="fa-solid ${s.icon}"></i><h4>${s.n}</h4>`;
-                    sBox.appendChild(item);
-                });
+            initSplashes() {
+                const container = document.getElementById('splash-layer');
+                const colors = ['#FF6B00', '#003366', '#E9ECEF'];
+                for(let i=0; i<15; i++) {
+                    const div = document.createElement('div');
+                    div.className = 'splash';
+                    const size = Math.random() * 400 + 150;
+                    div.style.width = size + 'px';
+                    div.style.height = size + 'px';
+                    div.style.background = colors[Math.floor(Math.random()*colors.length)];
+                    div.style.top = Math.random() * 100 + '%';
+                    div.style.left = Math.random() * 100 + '%';
+                    div.style.animationDelay = Math.random() * 5 + 's';
+                    container.appendChild(div);
+                }
             }
 
-            bindEvents() {
-                document.getElementById('more-projects').addEventListener('click', (e) => {
-                    const items = document.querySelectorAll('.project-item:not(.visible)');
-                    items.forEach((item, idx) => { if(idx < 6) item.classList.add('visible'); });
-                    if(document.querySelectorAll('.project-item:not(.visible)').length === 0) e.target.style.display = 'none';
-                });
-
-                document.getElementById('more-prints').addEventListener('click', (e) => {
-                    const items = document.querySelectorAll('.print-card:not(.visible)');
-                    items.forEach((item, idx) => { if(idx < 8) item.classList.add('visible'); });
-                    if(document.querySelectorAll('.print-card:not(.visible)').length === 0) e.target.style.display = 'none';
-                });
-
+            initScrollHeader() {
                 window.addEventListener('scroll', () => {
-                    const nav = document.getElementById('main-nav');
-                    if(window.scrollY > 80) nav.classList.add('sticky');
-                    else nav.classList.remove('sticky');
+                    const header = document.getElementById('header');
+                    if(window.scrollY > 100) header.classList.add('scrolled');
+                    else header.classList.remove('scrolled');
                 });
             }
 
-            initScrollAnims() {
+            initAnimations() {
                 gsap.registerPlugin(ScrollTrigger);
-                gsap.from(".hero-text h1", { opacity: 0, y: 100, duration: 1.2, ease: "power4.out" });
-                gsap.from(".hero-text p", { opacity: 0, x: -50, duration: 1, delay: 0.4 });
+                
+                gsap.from('.hero-content > *', {
+                    y: 50, opacity: 0, duration: 1, stagger: 0.2, ease: 'power3.out'
+                });
+
+                document.querySelectorAll('.card, .icon-card').forEach(el => {
+                    gsap.from(el, {
+                        scrollTrigger: { trigger: el, start: 'top 90%' },
+                        y: 30, opacity: 0, duration: 0.8
+                    });
+                });
             }
         }
 
         // Initialize Application
-        document.addEventListener('DOMContentLoaded', () => new StudioEngine());
+        document.addEventListener('DOMContentLoaded', () => {
+            const assets = new AssetManager();
+            assets.render();
+            new UiEngine();
+            console.log("%c Sumanth G %c Build v4.28 Secured ", "background:#FF6B00; color:#fff; padding:5px;", "background:#003366; color:#fff; padding:5px;");
+        });
     </script>
 </body>
 </html>
