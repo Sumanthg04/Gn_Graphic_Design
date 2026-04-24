@@ -6,86 +6,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     
-    <title>Sumanth G | Secure Design & Print Studio</title>
+    <title>Sumanth G | High-Fidelity Design & Secure Print Studio</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;400;600;700;800&family=Noto+Sans+Kannada:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@200;400;600;800&family=Noto+Sans+Kannada:wght@400;700&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
     <style>
         /* ========================================================================
-        1. THEME & SECURITY UTILITIES (350+ lines of CSS)
+        1. ARCHITECTURAL TOKENS & RESET
         ========================================================================
         */
         :root {
-            --primary: #8b5cf6;
-            --secondary: #06b6d4;
-            --bg-dark: #020203;
-            --surface: rgba(15, 15, 20, 0.85);
-            --border: rgba(255, 255, 255, 0.08);
-            --text-white: #ffffff;
-            --text-dim: #94a3b8;
-            --ease: cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        /* Prevent Image Dragging (Security Feature) */
-        img {
-            -webkit-user-drag: none;
-            -khtml-user-drag: none;
-            -moz-user-drag: none;
-            -o-user-drag: none;
-            user-select: none;
+            --primary: #a855f7;
+            --primary-glow: rgba(168, 85, 247, 0.4);
+            --secondary: #22d3ee;
+            --bg-deep: #050507;
+            --surface-glass: rgba(15, 15, 25, 0.7);
+            --border-light: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-kan: #fbbf24;
+            --ease-main: cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * {
             margin: 0; padding: 0;
             box-sizing: border-box;
-            cursor: none; /* Custom interaction cursor */
+            cursor: none !important; /* Managed by custom cursor */
         }
 
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-white);
+            background-color: var(--bg-deep);
+            color: var(--text-main);
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            user-select: none; /* Prevents text scraping */
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            user-select: none; /* Anti-scraping */
         }
 
-        #canvas-3d {
+        canvas#canvas-bg {
             position: fixed;
             top: 0; left: 0;
             z-index: -1;
             width: 100vw; height: 100vh;
+            filter: contrast(1.1) brightness(0.8);
         }
-
-        .container { max-width: 1400px; margin: 0 auto; padding: 0 6%; }
-        .section-p { padding: 140px 0; }
 
         /* ========================================================================
-        2. INTERACTIVE CURSOR
+        2. CUSTOM INTERACTIVE CURSOR
         ========================================================================
         */
-        #cursor-dot {
-            position: fixed;
-            width: 8px; height: 8px;
-            background: #fff;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 10000;
-        }
-
-        #cursor-circle {
+        .cursor-follower {
             position: fixed;
             width: 40px; height: 40px;
             border: 1px solid var(--primary);
             border-radius: 50%;
             pointer-events: none;
-            z-index: 9999;
-            transition: transform 0.15s ease-out;
+            z-index: 10000;
+            transition: transform 0.1s ease-out, width 0.3s, height 0.3s, background 0.3s;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-dot {
+            position: fixed;
+            width: 6px; height: 6px;
+            background: #fff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10001;
+            transform: translate(-50%, -50%);
         }
 
         /* ========================================================================
-        3. NAVIGATION (SECURE BLUR)
+        3. SECURE NAVIGATION (NEOMORPHIC GLASS)
         ========================================================================
         */
         nav {
@@ -95,404 +91,575 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 6%;
+            padding: 0 8%;
             z-index: 1000;
-            transition: 0.4s var(--ease);
+            transition: all 0.5s var(--ease-main);
         }
 
-        nav.scrolled {
-            height: 70px;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
+        nav.sticky {
+            height: 75px;
+            background: var(--surface-glass);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border-light);
         }
 
-        .logo {
+        .brand-logo {
             font-family: 'Syncopate', sans-serif;
             font-weight: 700;
-            font-size: 1.2rem;
-            color: #fff;
+            font-size: 1.4rem;
+            letter-spacing: -1px;
             text-decoration: none;
+            color: #fff;
         }
 
-        .logo span { color: var(--primary); }
+        .brand-logo .dot { color: var(--primary); }
 
-        .nav-links { display: flex; gap: 40px; list-style: none; }
-        .nav-links a {
+        .nav-menu {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-item a {
             text-decoration: none;
-            color: var(--text-dim);
-            font-size: 0.7rem;
-            font-weight: 700;
+            color: var(--text-muted);
+            font-size: 0.65rem;
+            font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .nav-item a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px; left: 0;
+            width: 0; height: 1px;
+            background: var(--primary);
             transition: 0.3s;
         }
 
-        .nav-links a:hover { color: var(--primary); }
+        .nav-item a:hover { color: #fff; }
+        .nav-item a:hover::after { width: 100%; }
 
         /* ========================================================================
-        4. HERO SECTION
+        4. HERO SECTION (TYPOGRAPHIC EXPLOSION)
         ========================================================================
         */
         .hero {
             height: 100vh;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
+            align-items: center;
             position: relative;
+            padding: 0 8%;
         }
 
-        .secure-badge {
-            background: rgba(37, 211, 102, 0.1);
-            color: #25d366;
-            padding: 6px 12px;
-            border-radius: 50px;
-            font-size: 0.65rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .hero-content { max-width: 900px; z-index: 10; }
+
+        .shield-tag {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 25px;
-            width: fit-content;
+            gap: 10px;
+            padding: 8px 16px;
+            background: rgba(168, 85, 247, 0.1);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 4px;
+            color: var(--primary);
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(168, 85, 247, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0); }
         }
 
         .hero h1 {
             font-family: 'Syncopate', sans-serif;
-            font-size: clamp(2rem, 7vw, 5.5rem);
-            line-height: 0.95;
-            margin-bottom: 30px;
+            font-size: clamp(2.5rem, 8vw, 6rem);
+            line-height: 0.9;
+            margin-bottom: 25px;
+            font-weight: 700;
         }
 
-        .grad-text {
-            background: linear-gradient(90deg, #fff, var(--primary), var(--secondary));
+        .text-gradient {
+            background: linear-gradient(to right, #fff 20%, var(--primary) 50%, var(--secondary) 80%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-size: 200%;
-            animation: flow 8s linear infinite;
+            background-size: 200% auto;
+            animation: shine 5s linear infinite;
         }
 
-        @keyframes flow { 100% { background-position: 200% center; } }
+        @keyframes shine { to { background-position: 200% center; } }
 
         .hero p {
-            max-width: 600px;
-            color: var(--text-dim);
             font-size: 1.1rem;
-            margin-bottom: 45px;
+            color: var(--text-muted);
+            max-width: 550px;
+            margin-bottom: 40px;
+            font-weight: 300;
         }
 
-        .btn-wrap { display: flex; gap: 20px; }
+        .cta-group { display: flex; gap: 20px; }
 
-        .btn {
-            padding: 22px 44px;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: 700;
+        .btn-main {
+            padding: 20px 40px;
+            border-radius: 2px;
+            font-size: 0.75rem;
+            font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 2px;
-            font-size: 0.75rem;
-            transition: 0.4s;
-        }
-
-        .btn-p { background: var(--primary); color: #fff; }
-        .btn-p:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(139, 92, 246, 0.3); }
-
-        /* ========================================================================
-        5. PROJECT 3D GRID
-        ========================================================================
-        */
-        .section-header { margin-bottom: 80px; }
-        .section-header h2 { font-family: 'Syncopate', sans-serif; font-size: 2.5rem; }
-        .kan-sub { font-family: 'Noto Sans Kannada', sans-serif; color: var(--primary); }
-
-        .grid-3d {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 30px;
-        }
-
-        .card-3d {
-            height: 500px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
+            text-decoration: none;
+            transition: 0.4s var(--ease-main);
+            position: relative;
             overflow: hidden;
-            position: relative;
-            transition: 0.5s var(--ease);
         }
 
-        .card-inner {
-            height: 100%; width: 100%;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.1s;
-        }
+        .btn-solid { background: var(--primary); color: #fff; }
+        .btn-solid:hover { background: #fff; color: #000; transform: translateY(-5px); }
 
-        .card-img {
-            position: absolute;
-            inset: 0;
-            background-size: cover;
-            background-position: center;
-            opacity: 0.5;
-            transition: 0.8s;
-        }
-
-        .card-3d:hover .card-img { opacity: 0.9; transform: scale(1.05); }
-
-        .card-overlay {
-            position: absolute;
-            bottom: 0; width: 100%;
-            padding: 40px;
-            background: linear-gradient(0deg, #000 0%, transparent 100%);
-            z-index: 5;
-        }
-
-        .card-overlay h3 { font-family: 'Syncopate', sans-serif; font-size: 1.2rem; }
+        .btn-outline { border: 1px solid var(--border-light); color: #fff; }
+        .btn-outline:hover { background: rgba(255,255,255,0.05); }
 
         /* ========================================================================
-        6. SERVICE CATALOG (PRINTING FOCUS)
+        5. PORTFOLIO GRID (3D PARALLAX)
         ========================================================================
         */
-        .catalog-grid {
+        .section-container { padding: 140px 8%; position: relative; }
+
+        .section-title {
+            margin-bottom: 80px;
+        }
+
+        .section-title .kan-label {
+            font-family: 'Noto Sans Kannada', sans-serif;
+            color: var(--accent-kan);
+            font-size: 1.2rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .section-title h2 {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 3rem;
+            letter-spacing: -2px;
+        }
+
+        .work-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+        }
+
+        .work-card {
+            position: relative;
+            height: 600px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #111;
+            perspective: 1000px;
+        }
+
+        .work-card img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            opacity: 0.6;
+            transition: 1s var(--ease-main);
+        }
+
+        .work-card:hover img { transform: scale(1.1); opacity: 0.8; }
+
+        .work-info {
+            position: absolute;
+            bottom: 0; left: 0;
+            padding: 50px;
+            width: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            z-index: 2;
+        }
+
+        .work-info h3 { font-family: 'Syncopate', sans-serif; font-size: 1.5rem; margin-bottom: 10px; }
+        .work-info p { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* ========================================================================
+        6. PRINT CATALOG (ISOMETRIC LIST)
+        ========================================================================
+        */
+        .services-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
         }
 
-        .catalog-item {
-            padding: 40px;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            text-align: center;
-            transition: 0.4s;
+        .service-box {
+            padding: 50px;
+            background: var(--surface-glass);
+            border: 1px solid var(--border-light);
+            transition: 0.5s;
+            position: relative;
         }
 
-        .catalog-item:hover {
-            background: var(--primary);
+        .service-box:hover {
             border-color: var(--primary);
-            transform: translateY(-8px);
+            background: rgba(168, 85, 247, 0.05);
+            transform: translateY(-10px);
         }
 
-        .catalog-item i { font-size: 2rem; margin-bottom: 20px; }
-        .catalog-item h4 { font-family: 'Syncopate', sans-serif; font-size: 0.8rem; }
+        .service-box i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 30px;
+        }
+
+        .service-box h4 {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .service-box p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
 
         /* ========================================================================
-        7. SECURITY FOOTER & WHATSAPP
+        7. SECURITY & FOOTER
         ========================================================================
         */
-        .whatsapp-secure {
+        footer {
+            padding: 100px 8% 40px;
+            background: #010102;
+            border-top: 1px solid var(--border-light);
+            text-align: center;
+        }
+
+        .secure-contact {
+            max-width: 600px;
+            margin: 0 auto 60px;
+        }
+
+        #decrypt-email {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            cursor: pointer;
+            padding: 20px;
+            border: 1px dashed var(--primary);
+            display: inline-block;
+            margin: 20px 0;
+            transition: 0.3s;
+        }
+
+        #decrypt-email:hover { background: var(--primary); color: #fff; }
+
+        .whatsapp-fab {
             position: fixed;
             bottom: 40px; right: 40px;
-            width: 65px; height: 65px;
+            width: 70px; height: 70px;
             background: #25d366;
             color: #fff;
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-size: 1.8rem;
-            z-index: 2000;
-            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
+            font-size: 2rem;
+            z-index: 1000;
+            box-shadow: 0 15px 30px rgba(37, 211, 102, 0.4);
             text-decoration: none;
-            transition: 0.3s;
+            transition: 0.4s;
         }
 
-        .whatsapp-secure:hover { transform: scale(1.1); }
+        .whatsapp-fab:hover { transform: scale(1.1) rotate(10deg); }
 
-        footer {
-            padding: 100px 6% 50px;
-            background: #000;
-            border-top: 1px solid var(--border);
-            text-align: center;
-        }
-
-        .secure-lock {
-            font-size: 0.7rem;
-            color: #333;
-            margin-top: 40px;
-            letter-spacing: 1px;
+        .copyright {
+            margin-top: 80px;
+            font-size: 0.6rem;
             text-transform: uppercase;
+            letter-spacing: 4px;
+            color: #334155;
         }
 
-        /* Animations */
-        [data-reveal] { opacity: 0; transform: translateY(30px); transition: 1s var(--ease); }
-        [data-reveal].active { opacity: 1; transform: translateY(0); }
+        /* ========================================================================
+        8. ANIMATIONS & REVEALS
+        ========================================================================
+        */
+        [data-aos] {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: 1.2s var(--ease-main);
+        }
+
+        [data-aos].revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .work-grid { grid-template-columns: 1fr; }
+            nav { padding: 0 5%; }
+            .hero h1 { font-size: 4rem; }
+        }
     </style>
 </head>
-<body oncontextmenu="return false;"> <canvas id="canvas-3d"></canvas>
+<body oncontextmenu="return false;">
 
-    <div id="cursor-dot"></div>
-    <div id="cursor-circle"></div>
+    <canvas id="canvas-bg"></canvas>
 
-    <a href="#" id="wa-link" class="whatsapp-secure">
+    <div class="cursor-follower" id="cursor-follower"></div>
+    <div class="cursor-dot" id="cursor-dot"></div>
+
+    <a href="#" class="whatsapp-fab" id="wa-trigger">
         <i class="fa-brands fa-whatsapp"></i>
     </a>
 
-    <nav id="navbar">
-        <a href="#" class="logo">SUMANTH<span>.</span>G</a>
-        <ul class="nav-links">
-            <li><a href="#hero">Start</a></li>
-            <li><a href="#design">Design</a></li>
-            <li><a href="#print">Print</a></li>
-            <li><a href="#contact">Contact</a></li>
+    <nav id="main-nav">
+        <a href="#" class="brand-logo">SUMANTH G<span class="dot">.</span></a>
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="#home">Focus</a></li>
+            <li class="nav-item"><a href="#portfolio">Studio</a></li>
+            <li class="nav-item"><a href="#services">Print</a></li>
+            <li class="nav-item"><a href="#secure">Secure</a></li>
         </ul>
     </nav>
 
-    <section class="hero container" id="hero">
-        <div data-reveal class="active">
-            <div class="secure-badge"><i class="fa-solid fa-shield-halved"></i> Verified Secure Portfolio</div>
-            <h1><span class="grad-text">DESIGN ARTISTRY.</span><br>PRECISION PRINT.</h1>
-            <p>A specialized studio for Logo Identity, Industrial Packaging, and High-Resolution Printing. Based in Bengaluru, serving brands with absolute creative integrity.</p>
-            <div class="btn-wrap">
-                <a href="#design" class="btn btn-p">The Showcase</a>
-                <a href="#print" class="btn btn-s">Services</a>
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="shield-tag">
+                <i class="fa-solid fa-shield-virus"></i> Encrypted Portfolio Session
+            </div>
+            <h1 data-aos>CRAFTING <br><span class="text-gradient">VISUAL ARMOR.</span></h1>
+            <p data-aos>Specialized in High-Security Identity Design, Industrial Print Solutions, and Precision Brand Engineering for the Digital Age.</p>
+            <div class="cta-group" data-aos>
+                <a href="#portfolio" class="btn-main btn-solid">View Showcase</a>
+                <a href="#services" class="btn-main btn-outline">Print Services</a>
             </div>
         </div>
     </section>
 
-    <section class="section-p container" id="design">
-        <div class="section-header" data-reveal>
-            <span class="kan-sub">ಲೋಗೋ ಮತ್ತು ಪ್ಯಾಕೇಜಿಂಗ್ ಡಿಸೈನ್</span>
-            <h2>CREATIVE WORK</h2>
+    <section class="section-container" id="portfolio">
+        <div class="section-title" data-aos>
+            <span class="kan-label">ಸೃಜನಾತ್ಮಕ ವಿನ್ಯಾಸಗಳು</span>
+            <h2>SELECTED ARCHIVE</h2>
         </div>
 
-        <div class="grid-3d">
-            <div class="card-3d" onmousemove="tilt(event, this)" onmouseleave="reset(this)" data-reveal>
-                <div class="card-inner">
-                    <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=800');"></div>
-                    <div class="card-overlay"><h3>Identity & Logos</h3></div>
+        <div class="work-grid">
+            <div class="work-card" data-aos>
+                <img src="https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=1200" alt="Identity">
+                <div class="work-info">
+                    <h3>Brand Identity</h3>
+                    <p>Minimalist vector systems and typography.</p>
                 </div>
             </div>
-            <div class="card-3d" onmousemove="tilt(event, this)" onmouseleave="reset(this)" data-reveal>
-                <div class="card-inner">
-                    <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1616423641454-da066b199859?auto=format&fit=crop&q=80&w=800');"></div>
-                    <div class="card-overlay"><h3>Packaging Design</h3></div>
+            <div class="work-card" data-aos>
+                <img src="https://images.unsplash.com/photo-1586717791821-3f44a563eb4c?auto=format&fit=crop&q=80&w=1200" alt="Packaging">
+                <div class="work-info">
+                    <h3>Premium Packaging</h3>
+                    <p>Industrial grade structural design.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="section-p container" id="print">
-        <div class="section-header" data-reveal>
-            <span class="kan-sub">ಉತ್ತಮ ಗುಣಮಟ್ಟದ ಮುದ್ರಣ ಸೇವೆಗಳು</span>
-            <h2>PRINT PRODUCTION</h2>
+    <section class="section-container" id="services">
+        <div class="section-title" data-aos>
+            <span class="kan-label">ಮುದ್ರಣ ಸೇವೆಗಳ ಪಟ್ಟಿ</span>
+            <h2>PRINT CAPABILITIES</h2>
         </div>
 
-        <div class="catalog-grid">
-            <div class="catalog-item" data-reveal><i class="fa-solid fa-scroll"></i><h4>Flex Banners</h4></div>
-            <div class="catalog-item" data-reveal><i class="fa-solid fa-address-card"></i><h4>Visiting Cards</h4></div>
-            <div class="catalog-item" data-reveal><i class="fa-solid fa-id-badge"></i><h4>Name Boards</h4></div>
-            <div class="catalog-item" data-reveal><i class="fa-solid fa-ban"></i><h4>No Parking</h4></div>
-            <div class="catalog-item" data-reveal><i class="fa-solid fa-book-open"></i><h4>Brouchers</h4></div>
-            <div class="catalog-item" data-reveal><i class="fa-solid fa-heart"></i><h4>Wedding Cards</h4></div>
-            <div class="catalog-item" data-reveal><i class="fa-solid fa-print"></i><h4>Digital Print</h4></div>
-            <div class="catalog-item" data-reveal><i class="fa-solid fa-ellipsis"></i><h4>Many More</h4></div>
+        <div class="services-list">
+            <div class="service-box" data-aos>
+                <i class="fa-solid fa-layer-group"></i>
+                <h4>Flex & Vinyl</h4>
+                <p>Large format weather-resistant prints for outdoor dominance.</p>
+            </div>
+            <div class="service-box" data-aos>
+                <i class="fa-solid fa-address-book"></i>
+                <h4>Corporate Stationery</h4>
+                <p>Premium textured visiting cards and letterheads.</p>
+            </div>
+            <div class="service-box" data-aos>
+                <i class="fa-solid fa-certificate"></i>
+                <h4>Wedding Art</h4>
+                <p>Bespoke invitations with foil stamping and intricate detail.</p>
+            </div>
+            <div class="service-box" data-aos>
+                <i class="fa-solid fa-shield"></i>
+                <h4>Industrial Plates</h4>
+                <p>High-durability name boards and safety signage.</p>
+            </div>
+            <div class="service-box" data-aos>
+                <i class="fa-solid fa-box-open"></i>
+                <h4>Digital Production</h4>
+                <p>On-demand brochure and catalog printing at 2400 DPI.</p>
+            </div>
+            <div class="service-box" data-aos>
+                <i class="fa-solid fa-ellipsis-h"></i>
+                <h4>Custom Fabrication</h4>
+                <p>If you can imagine the design, we can print the reality.</p>
+            </div>
         </div>
     </section>
 
-    <footer id="contact">
-        <div data-reveal>
-            <h2 style="font-family: 'Syncopate'; font-size: 2.5rem; margin-bottom: 30px;">SECURE INQUIRY</h2>
-            <p id="secure-email" style="font-weight: 700; color: var(--primary); font-size: 1.2rem; cursor: pointer;">[Click to Reveal Email]</p>
-            <p style="margin-top: 15px; color: var(--text-dim);">+91 7892647479</p>
+    <footer id="secure">
+        <div class="secure-contact" data-aos>
+            <h2 style="font-family: 'Syncopate'; margin-bottom: 20px;">READY TO COMMENCE?</h2>
+            <p style="color: var(--text-muted); margin-bottom: 30px;">Direct encrypted channel for project inquiries.</p>
+            
+            <div id="decrypt-email">DECRYPT CONTACT EMAIL</div>
+            
+            <div style="margin-top: 30px;">
+                <p style="font-weight: 700; font-size: 1.5rem;">+91 7892647479</p>
+                <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 10px;">Bengaluru, Karnataka, India</p>
+            </div>
         </div>
-        <div class="secure-lock">
-            <i class="fa-solid fa-lock"></i> SSL ENCRYPTED CONNECTION RECOMMENDED | AES-256 ENCRYPTION READY
+
+        <div class="security-status" style="border-top: 1px solid #111; padding-top: 40px; font-size: 0.65rem; color: #444;">
+            <i class="fa-solid fa-lock"></i> AES-256 BIT TRANSFER ACTIVE | NODE_ID: SG-STUDIO-2026
         </div>
-        <p style="margin-top: 50px; font-size: 0.6rem; color: #222;">© 2026 SUMANTH G. PROPRIETARY CODE. ALL RIGHTS RESERVED.</p>
+        
+        <p class="copyright">© 2026 Sumanth G Studio. Unauthorized duplication of code or design is strictly prohibited.</p>
     </footer>
 
     <script>
-        /* 1. MOUSE CONTROLLER */
-        const dot = document.getElementById('cursor-dot');
-        const circle = document.getElementById('cursor-circle');
-
-        document.addEventListener('mousemove', (e) => {
-            dot.style.left = e.clientX + 'px';
-            dot.style.top = e.clientY + 'px';
-            circle.style.left = (e.clientX - 20) + 'px';
-            circle.style.top = (e.clientY - 20) + 'px';
-        });
-
-        /* 2. THREE.JS SECURE BACKGROUND
-           Animated "Shield Grid" effect.
-        */
+        /**
+         * 1. THEME ENGINE: Three.js "Digital Silk" Background
+         */
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ canvas: document.querySelector('#canvas-3d'), antialias: true, alpha: true });
+        const renderer = new THREE.WebGLRenderer({ canvas: document.querySelector('#canvas-bg'), antialias: true, alpha: true });
         
         renderer.setSize(window.innerWidth, window.innerHeight);
-        camera.position.z = 30;
+        renderer.setPixelRatio(window.devicePixelRatio);
+        camera.position.z = 5;
 
-        const group = new THREE.Group();
-        const geo = new THREE.SphereGeometry(1, 10, 10);
-        
-        for(let i=0; i<60; i++){
-            const mat = new THREE.MeshBasicMaterial({ color: 0x8b5cf6, wireframe: true, transparent: true, opacity: 0.1 });
-            const mesh = new THREE.Mesh(geo, mat);
-            mesh.position.set((Math.random()-0.5)*70, (Math.random()-0.5)*70, (Math.random()-0.5)*70);
-            group.add(mesh);
-        }
-        scene.add(group);
+        // Geometry: A moving wireframe mountain/grid
+        const geometry = new THREE.PlaneGeometry(20, 20, 40, 40);
+        const material = new THREE.MeshBasicMaterial({ 
+            color: 0x8b5cf6, 
+            wireframe: true, 
+            transparent: true, 
+            opacity: 0.15 
+        });
+        const plane = new THREE.Mesh(geometry, material);
+        plane.rotation.x = -Math.PI / 2.5;
+        scene.add(plane);
 
-        function animate() {
-            requestAnimationFrame(animate);
-            group.rotation.y += 0.002;
+        // Interaction state
+        let mouseX = 0, mouseY = 0;
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth) - 0.5;
+            mouseY = (e.clientY / window.innerHeight) - 0.5;
+        });
+
+        function animateBG() {
+            requestAnimationFrame(animateBG);
+            
+            // Subtle wave motion
+            const time = Date.now() * 0.001;
+            const vertices = plane.geometry.attributes.position.array;
+            
+            for (let i = 0; i < vertices.length; i += 3) {
+                vertices[i + 2] = Math.sin(vertices[i] + time) * 0.5;
+            }
+            plane.geometry.attributes.position.needsUpdate = true;
+            
+            // Mouse reaction
+            plane.rotation.z += 0.001;
+            camera.position.x += (mouseX * 2 - camera.position.x) * 0.05;
+            camera.position.y += (-mouseY * 2 - camera.position.y) * 0.05;
+            camera.lookAt(scene.position);
+
             renderer.render(scene, camera);
         }
-        animate();
+        animateBG();
 
-        /* 3. SECURITY: BOT PROTECTION (Obfuscated Contact) */
-        const waUser = "917892647479";
-        const emailUser = "sumanthg2904";
-        const domain = "gmail.com";
+        /**
+         * 2. CURSOR LOGIC
+         */
+        const dot = document.getElementById('cursor-dot');
+        const circle = document.getElementById('cursor-follower');
 
-        document.getElementById('wa-link').addEventListener('click', (e) => {
-            e.preventDefault();
-            window.open(`https://wa.me/${waUser}?text=Secure%20Inquiry%20from%20Portfolio`, '_blank');
+        window.addEventListener('mousemove', (e) => {
+            gsap.to(dot, { x: e.clientX, y: e.clientY, duration: 0 });
+            gsap.to(circle, { x: e.clientX - 20, y: e.clientY - 20, duration: 0.15 });
         });
 
-        document.getElementById('secure-email').addEventListener('click', function() {
-            this.innerText = `${emailUser}@${domain}`;
-            this.style.cursor = 'default';
-        });
-
-        /* 4. SECURITY: PROTECTION LOGIC */
-        // Force HTTPS
-        if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
-            // location.replace(`https:${location.href.substring(location.protocol.length)}`);
-        }
-
-        // Disable Developer Tools Shortcut (Basic)
-        document.onkeydown = function(e) {
-            if(e.keyCode == 123) return false; // F12
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false;
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false;
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false;
-            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
-        };
-
-        /* 5. UI LOGIC */
-        function tilt(e, card) {
-            const rect = card.getBoundingClientRect();
-            const x = (e.clientX - rect.left) / rect.width;
-            const y = (e.clientY - rect.top) / rect.height;
-            card.querySelector('.card-inner').style.transform = `rotateY(${(x - 0.5) * 20}deg) rotateX(${(0.5 - y) * 20}deg)`;
-        }
-
-        function reset(card) {
-            card.querySelector('.card-inner').style.transform = `rotateY(0deg) rotateX(0deg)`;
-        }
-
-        window.addEventListener('scroll', () => {
-            const nav = document.getElementById('navbar');
-            if(window.scrollY > 80) nav.classList.add('scrolled');
-            else nav.classList.remove('scrolled');
-
-            document.querySelectorAll('[data-reveal]').forEach(el => {
-                if(el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('active');
+        document.querySelectorAll('a, .btn-main, #decrypt-email').forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                circle.style.transform = 'scale(1.8)';
+                circle.style.background = 'rgba(168, 85, 247, 0.2)';
+            });
+            link.addEventListener('mouseleave', () => {
+                circle.style.transform = 'scale(1)';
+                circle.style.background = 'transparent';
             });
         });
+
+        /**
+         * 3. SECURITY: ANTI-SCRAPE & DECRYPTION
+         */
+        const userHash = "sumanthg2904";
+        const hostHash = "gmail.com";
+
+        document.getElementById('decrypt-email').addEventListener('click', function() {
+            this.innerText = `${userHash}@${hostHash}`;
+            this.style.borderStyle = "solid";
+            gsap.from(this, { scale: 0.9, duration: 0.4, ease: "elastic.out" });
+        });
+
+        document.getElementById('wa-trigger').addEventListener('click', (e) => {
+            e.preventDefault();
+            const phone = "917892647479";
+            window.open(`https://wa.me/${phone}?text=Secure%20Project%20Inquiry`, '_blank');
+        });
+
+        // Basic Shortcut Blocking
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "F12" || 
+               (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "C" || e.key === "J")) || 
+               (e.ctrlKey && e.key === "U")) {
+                e.preventDefault();
+                console.warn("Security Policy: Source inspection disabled.");
+            }
+        });
+
+        /**
+         * 4. SCROLL & UI INTERACTION
+         */
+        const navbar = document.getElementById('main-nav');
+        const revealElements = document.querySelectorAll('[data-aos]');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        revealElements.forEach(el => observer.observe(el));
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) navbar.classList.add('sticky');
+            else navbar.classList.remove('sticky');
+        });
+
+        // Responsive Resizing
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        console.log("%c Sumanth G Studio %c v4.0.1 Secure Build ", "background:#a855f7; color:white; padding:5px;", "background:#22d3ee; color:black; padding:5px;");
+
     </script>
 </body>
 </html>
