@@ -3,26 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sumanth G | 3D Portfolio & Graphic Design Architect</title>
+    <title>Sumanth G | Design Architect & Print Logistics | Bengaluru</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Kannada:wght@400;700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <style>
         /* ========================================================================
-        1. THEME DESIGN SYSTEM (200+ lines of CSS foundation)
+        1. THEME & DESIGN SYSTEM (250+ lines of CSS core)
         ========================================================================
         */
         :root {
-            --primary: #6366f1;
-            --accent: #00f2ff;
-            --bg-dark: #030303;
-            --card-glass: rgba(15, 15, 20, 0.7);
-            --border: rgba(255, 255, 255, 0.1);
-            --text-white: #ffffff;
-            --text-gray: #a0a0a0;
+            --primary: #6366f1;       /* Indigo Design Accent */
+            --secondary: #ec4899;     /* Pink Print Accent */
+            --bg-deep: #020203;
+            --bg-surface: #0a0a0c;
+            --glass-card: rgba(18, 18, 22, 0.8);
+            --border: rgba(255, 255, 255, 0.06);
+            --text-main: #f1f5f9;
+            --text-dim: #94a3b8;
             --ease: cubic-bezier(0.23, 1, 0.32, 1);
+            -- ease-out: cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         * {
@@ -30,17 +34,19 @@
             padding: 0;
             box-sizing: border-box;
             outline: none;
+            cursor: none; /* Custom Cursor required for premium feel */
         }
 
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-white);
+            background-color: var(--bg-deep);
+            color: var(--text-main);
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            cursor: default;
+            line-height: 1.6;
         }
 
-        #webgl-canvas {
+        /* 3D WebGL Background Container */
+        #threed-canvas {
             position: fixed;
             top: 0;
             left: 0;
@@ -49,243 +55,286 @@
             height: 100vh;
         }
 
+        /* Standard Layout Utility */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+
+        .section-p { padding: 140px 0; }
+
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: var(--bg-deep); }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+
         /* ========================================================================
-        2. NAVIGATION
+        2. CUSTOM CURSOR
+        ========================================================================
+        */
+        #cursor {
+            position: fixed;
+            width: 8px; height: 8px;
+            background: #fff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s;
+        }
+
+        #cursor-follower {
+            position: fixed;
+            width: 30px; height: 30px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transition: transform 0.15s ease-out, opacity 0.3s, border 0.3s;
+        }
+
+        /* ========================================================================
+        3. NAVIGATION
         ========================================================================
         */
         nav {
             position: fixed;
-            top: 0;
-            width: 100%;
+            top: 0; width: 100%;
             height: 100px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 0 8%;
+            justify-content: space-between;
+            padding: 0 5%;
             z-index: 1000;
-            transition: all 0.5s var(--ease);
+            transition: 0.5s var(--ease);
         }
 
         nav.scrolled {
             height: 70px;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(15px);
+            background: rgba(2, 2, 3, 0.8);
+            backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
         }
 
         .logo {
             font-family: 'Syncopate', sans-serif;
-            font-size: 1.4rem;
             font-weight: 700;
-            letter-spacing: -1px;
-            color: #fff;
+            font-size: 1.2rem;
             text-decoration: none;
+            color: #fff;
         }
 
-        .logo span { color: var(--primary); }
-
-        .nav-links {
-            display: flex;
-            gap: 40px;
-            list-style: none;
+        .logo span {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
+        .nav-links { display: flex; gap: 40px; list-style: none; }
         .nav-links a {
             text-decoration: none;
-            color: var(--text-gray);
+            color: var(--text-dim);
             font-size: 0.8rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 2px;
             transition: 0.3s;
         }
-
-        .nav-links a:hover {
-            color: var(--primary);
-        }
+        .nav-links a:hover { color: #fff; }
 
         /* ========================================================================
-        3. HERO SECTION
+        4. HERO SECTION
         ========================================================================
         */
         .hero {
             height: 100vh;
             display: flex;
-            align-items: center;
-            padding: 0 10%;
+            flex-direction: column;
+            justify-content: center;
             position: relative;
-        }
-
-        .hero-content {
-            z-index: 10;
-            max-width: 900px;
         }
 
         .hero h1 {
             font-family: 'Syncopate', sans-serif;
-            font-size: clamp(2.5rem, 8vw, 6rem);
-            line-height: 0.9;
-            margin-bottom: 25px;
-            perspective: 1000px;
+            font-size: clamp(2.5rem, 7vw, 5.5rem);
+            line-height: 1;
+            margin-bottom: 30px;
+            font-weight: 700;
         }
 
-        .hero h1 span {
+        .hero .grad-text {
             display: block;
-            background: linear-gradient(90deg, #fff, var(--primary), var(--accent));
+            background: linear-gradient(90deg, #fff 0%, var(--primary) 50%, var(--secondary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: textFlow 8s infinite linear;
             background-size: 200%;
+            animation: gradientMove 10s infinite linear;
         }
 
-        @keyframes textFlow {
+        @keyframes gradientMove {
             0% { background-position: 0% 50%; }
             100% { background-position: 200% 50%; }
         }
 
         .hero p {
-            font-size: 1.2rem;
-            color: var(--text-gray);
-            max-width: 550px;
-            margin-bottom: 40px;
-            line-height: 1.6;
+            font-size: 1.3rem;
+            color: var(--text-dim);
+            max-width: 650px;
+            margin-bottom: 50px;
         }
 
-        .hero-btns {
-            display: flex;
-            gap: 20px;
-        }
+        .btn-group { display: flex; gap: 20px; }
 
         .btn {
-            padding: 20px 40px;
+            position: relative;
+            padding: 18px 36px;
             border-radius: 5px;
             text-decoration: none;
             font-weight: 700;
+            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 2px;
-            font-size: 0.8rem;
-            transition: all 0.4s var(--ease);
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
+            transition: 0.4s var(--ease);
+            overflow: hidden;
         }
 
-        .btn-p {
+        .btn-design {
             background: var(--primary);
             color: #fff;
-            border: 1px solid var(--primary);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
         }
 
-        .btn-p:hover {
-            background: transparent;
-            box-shadow: 0 0 30px var(--primary);
-        }
-
-        .btn-s {
-            border: 1px solid var(--border);
+        .btn-print {
+            border: 1px solid rgba(255,255,255,0.1);
             color: #fff;
             backdrop-filter: blur(5px);
         }
 
+        .btn:hover {
+            transform: translateY(-5px);
+        }
+
         /* ========================================================================
-        4. PROJECT CARDS (3D Hover Effect)
+        5. SERVICES (GRID & EXAMPLES)
         ========================================================================
         */
-        .section { padding: 150px 10%; }
+        .section-title {
+            margin-bottom: 100px;
+            perspective: 1000px;
+        }
 
-        .section-header { margin-bottom: 80px; }
-        .section-header h2 {
+        .section-title h2 {
             font-family: 'Syncopate', sans-serif;
             font-size: 3rem;
             margin-bottom: 15px;
         }
 
-        .grid-3d {
+        .section-title .nudi {
+            font-family: 'Noto Sans Kannada', sans-serif;
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            font-weight: 400;
+        }
+
+        .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 40px;
-            perspective: 2000px;
+            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+            gap: 30px;
         }
 
-        .card-3d {
+        /* Service Cards with 3D Tilt Hook */
+        .service-card {
             height: 550px;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.1s ease;
-            cursor: pointer;
-        }
-
-        .card-inner {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: var(--card-glass);
+            background: var(--bg-surface);
             border: 1px solid var(--border);
             border-radius: 20px;
             overflow: hidden;
-            backdrop-filter: blur(10px);
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 40px;
+            position: relative;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease;
         }
 
-        .card-inner::before {
-            content: '';
+        .service-card img {
+            width: 100%; height: 100%;
+            object-fit: cover;
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, transparent 60%);
-            z-index: 1;
-        }
-
-        .card-img {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-size: cover;
-            background-position: center;
+            top: 0; left: 0;
             z-index: 0;
-            filter: grayscale(0.5);
-            transition: 0.5s var(--ease);
+            filter: grayscale(1) contrast(1.1);
+            transition: 1s var(--ease);
         }
 
-        .card-3d:hover .card-img {
-            filter: grayscale(0);
+        .service-card:hover img {
+            filter: grayscale(0) contrast(1);
             transform: scale(1.1);
         }
 
-        .card-info {
-            position: relative;
-            z-index: 2;
-            transform: translateZ(50px);
+        .service-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 70%);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            z-index: 1;
         }
 
-        .card-info h3 { font-size: 1.8rem; margin-bottom: 10px; font-family: 'Syncopate'; }
-        .card-info span { color: var(--primary); font-weight: 800; font-size: 0.8rem; text-transform: uppercase; }
+        .service-overlay h3 {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .service-overlay span {
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+
+        .print-category .service-overlay span { color: var(--secondary); }
 
         /* ========================================================================
-        5. STATS & EXPERIENCE
+        6. PRINTING LOGISTICS LIST
         ========================================================================
         */
-        .stats-bar {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
+        .print-logistics {
+            background: var(--bg-surface);
+            padding: 100px 5%;
+            border-radius: 40px;
             margin-top: 100px;
         }
 
-        .stat-item {
-            padding: 40px;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid var(--border);
-            border-radius: 15px;
-            text-align: center;
+        .print-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-top: 60px;
         }
 
-        .stat-item h4 { font-size: 2.5rem; color: var(--primary); margin-bottom: 10px; }
-        .stat-item p { color: var(--text-gray); font-size: 0.8rem; text-transform: uppercase; }
+        .print-item {
+            padding: 30px;
+            border-bottom: 1px solid var(--border);
+            transition: 0.3s;
+        }
+
+        .print-item:hover {
+            background: rgba(255,255,255,0.01);
+            border-color: var(--secondary);
+        }
+
+        .print-item i {
+            color: var(--secondary);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
 
         /* ========================================================================
-        6. WHATSAPP & FOOTER
+        7. FLOATING WHATSAPP & FOOTER
         ========================================================================
         */
         .whatsapp-fixed {
@@ -295,273 +344,322 @@
             width: 70px;
             height: 70px;
             background: #25d366;
+            color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
-            color: white;
+            font-size: 2.2rem;
             text-decoration: none;
             z-index: 2000;
             box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
-            transition: 0.4s var(--ease);
+            transition: 0.4s var(--ease-out);
         }
 
         .whatsapp-fixed:hover {
-            transform: scale(1.1) rotate(10deg);
+            transform: scale(1.15) rotate(10deg);
         }
 
         footer {
-            padding: 100px 10%;
             background: #000;
             border-top: 1px solid var(--border);
+            padding: 80px 0 40px;
+        }
+
+        .footer-wrap {
             display: grid;
             grid-template-columns: 2fr 1fr;
             gap: 50px;
+            margin-bottom: 50px;
         }
 
-        .footer-cta h2 { font-family: 'Syncopate'; font-size: 3rem; margin-bottom: 30px; }
+        .footer-contact h2 {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .email-link {
+            font-size: 1.4rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+        }
 
         /* ========================================================================
-        7. RESPONSIVE ENGINE
+        8. ANIMATIONS & REVEALS
         ========================================================================
         */
+        [data-reveal] {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: 1s var(--ease);
+        }
+
+        [data-reveal].active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         @media (max-width: 900px) {
-            .grid-3d { grid-template-columns: 1fr; }
-            .stats-bar { grid-template-columns: 1fr 1fr; }
-            footer { grid-template-columns: 1fr; }
-            nav .nav-links { display: none; }
+            .services-grid, .print-grid, .footer-wrap {
+                grid-template-columns: 1fr;
+            }
+            .nav-links { display: none; }
         }
     </style>
 </head>
 <body>
 
-    <canvas id="webgl-canvas"></canvas>
+    <canvas id="threed-canvas"></canvas>
+
+    <div id="cursor"></div>
+    <div id="cursor-follower"></div>
 
     <nav id="navbar">
         <a href="#" class="logo">SUMANTH<span>.</span>G</a>
         <ul class="nav-links">
             <li><a href="#hero">Intro</a></li>
-            <li><a href="#projects">Showcase</a></li>
-            <li><a href="#skills">Toolbox</a></li>
+            <li><a href="#design">Design</a></li>
+            <li><a href="#print">Printing</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
     </nav>
 
-    <a href="https://wa.me/917892647479?text=Hi%20Sumanth,%20let's%20discuss%20a%20project." class="whatsapp-fixed" target="_blank">
+    <a href="https://wa.me/917892647479?text=Hi%20Sumanth,%20I'm%20inquiring%20about%20Design%20and%20Printing%20services." class="whatsapp-fixed" target="_blank">
         <i class="fa-brands fa-whatsapp"></i>
     </a>
 
-    <section class="hero" id="hero">
-        <div class="hero-content">
-            <span style="letter-spacing: 5px; color: var(--primary); font-weight: 700;">SENIOR GRAPHIC DESIGNER</span>
-            <h1><span>DIGITAL</span><br>ARCHITECT</h1>
-            <p>Merging industrial precision with creative design. As an MCA Professional based in Bengaluru, I build high-impact brand identities and functional web ecosystems.</p>
-            <div class="hero-btns">
-                <a href="#projects" class="btn btn-p">View Projects <i class="fa-solid fa-arrow-right"></i></a>
-                <a href="mailto:sumanthg2904@gmail.com" class="btn btn-s">Email Me</a>
+    <section class="hero container" id="hero">
+        <div data-reveal class="active">
+            <span style="letter-spacing: 5px; color: var(--text-dim);">BENGALURU, KA</span>
+            <h1><span class="grad-text">Creative Design.</span><br>Logistics Print.</h1>
+            <p>From iconic logo design and premium agricultural packaging to high-visibility hoardings and full-service commercial printing. We bridge artistry with production.</p>
+            <div class="btn-group">
+                <a href="#design" class="btn btn-design">Request Design</a>
+                <a href="#print" class="btn btn-print">Print Services <i class="fa-solid fa-print"></i></a>
             </div>
-            
-            <div class="stats-bar">
-                <div class="stat-item">
-                    <h4>02+</h4>
-                    <p>Years Experience</p>
+        </div>
+    </section>
+
+    <section class="section-p container" id="design">
+        <div class="section-title" data-reveal>
+            <h2>CREATIVE ARTISTRY</h2>
+            <p class="nudi">ಕಲ್ಪನಾಶೀಲ ವಿನ್ಯಾಸ: ಲೋಗೋ, ಪ್ಯಾಕೇಜಿಂಗ್ ಮತ್ತು ದೊಡ್ಡ ಪ್ರಮಾಣದ ಪ್ರಿಂಟ್.</p>
+        </div>
+
+        <div class="services-grid">
+            <div class="service-card design-category" onmousemove="tiltCard(event, this)" onmouseleave="resetCard(this)" data-reveal>
+                <img src="https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=800" alt="Logo Design Example">
+                <div class="service-overlay">
+                    <span>Identity Systems</span>
+                    <h3>Iconic Logo Design</h3>
                 </div>
-                <div class="stat-item">
-                    <h4>50+</h4>
-                    <p>Agri-Brands</p>
+            </div>
+
+            <div class="service-card design-category" onmousemove="tiltCard(event, this)" onmouseleave="resetCard(this)" data-reveal>
+                <img src="https://images.unsplash.com/photo-1616423641454-da066b199859?auto=format&fit=crop&q=80&w=800" alt="Agricultural Packaging Example">
+                <div class="service-overlay">
+                    <span>Industrial Specialist</span>
+                    <h3>Premium Packaging</h3>
                 </div>
-                <div class="stat-item">
-                    <h4>100%</h4>
-                    <p>Nudi Typography</p>
-                </div>
-                <div class="stat-item">
-                    <h4>MCA</h4>
-                    <p>Post Graduate</p>
+            </div>
+
+            <div class="service-card design-category" onmousemove="tiltCard(event, this)" onmouseleave="resetCard(this)" data-reveal>
+                <img src="https://images.unsplash.com/photo-1517730424553-6a9788f62a98?auto=format&fit=crop&q=80&w=800" alt="Hoarding & Flex Example">
+                <div class="service-overlay">
+                    <span>Large-Scale Media</span>
+                    <h3>Flex & Hoardings</h3>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="section" id="projects">
-        <div class="section-header">
-            <h2>LATEST WORKS</h2>
-            <p style="color: var(--text-gray);">Hover over cards for 3D depth interaction.</p>
-        </div>
+    <section class="section-p" id="print">
+        <div class="container">
+            <div class="section-title" data-reveal>
+                <h2>PRINT PRODUCTION</h2>
+                <p>High-quality production logistics for all commercial and personal needs.</p>
+            </div>
 
-        <div class="grid-3d">
-            <div class="card-3d" onmousemove="handleTilt(event, this)" onmouseleave="resetTilt(this)">
-                <div class="card-inner">
-                    <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1616423641454-da066b199859?auto=format&fit=crop&q=80&w=800');"></div>
-                    <div class="card-info">
-                        <span>Industrial Branding</span>
-                        <h3>Jenushree Agritech</h3>
+            <div class="services-grid print-section">
+                <div class="service-card print-category" onmousemove="tiltCard(event, this)" onmouseleave="resetCard(this)" data-reveal>
+                    <img src="https://images.unsplash.com/photo-1549416878-b9967651a798?auto=format&fit=crop&q=80&w=800" alt="Broucher Printing Example">
+                    <div class="service-overlay">
+                        <span>Commercial Production</span>
+                        <h3>Broucher Printing</h3>
+                    </div>
+                </div>
+
+                <div class="service-card print-category" onmousemove="tiltCard(event, this)" onmouseleave="resetCard(this)" data-reveal>
+                    <img src="https://images.unsplash.com/photo-1589311685816-7589578278f2?auto=format&fit=crop&q=80&w=800" alt="Visiting Card Example">
+                    <div class="service-overlay">
+                        <span>Corporate Stationery</span>
+                        <h3>Visiting Cards</h3>
+                    </div>
+                </div>
+
+                <div class="service-card print-category" onmousemove="tiltCard(event, this)" onmouseleave="resetCard(this)" data-reveal>
+                    <img src="https://images.unsplash.com/photo-1542646271-240b90e9ccca?auto=format&fit=crop&q=80&w=800" alt="Wedding Card Printing Example">
+                    <div class="service-overlay">
+                        <span>Events</span>
+                        <h3>Wedding Cards</h3>
                     </div>
                 </div>
             </div>
 
-            <div class="card-3d" onmousemove="handleTilt(event, this)" onmouseleave="resetTilt(this)">
-                <div class="card-inner">
-                    <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1635405074683-96d6921a2a2c?auto=format&fit=crop&q=80&w=800');"></div>
-                    <div class="card-info">
-                        <span>Large Format Media</span>
-                        <h3>SMPS Hoardings</h3>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card-3d" onmousemove="handleTilt(event, this)" onmouseleave="resetTilt(this)">
-                <div class="card-inner">
-                    <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800');"></div>
-                    <div class="card-info">
-                        <span>Development</span>
-                        <h3>Custom Web CMS</h3>
-                    </div>
+            <div class="print-logistics" data-reveal>
+                <h3>COMPLETE PRINT LOGISTICS</h3>
+                <div class="print-grid">
+                    <div class="print-item"><i class="fa-solid fa-scroll"></i><h4>Flex Banners</h4></div>
+                    <div class="print-item"><i class="fa-solid fa-address-card"></i><h4>Visiting Cards</h4></div>
+                    <div class="print-item"><i class="fa-solid fa-id-badge"></i><h4>Name Boards</h4></div>
+                    <div class="print-item"><i class="fa-solid fa-ban"></i><h4>No Parking Boards</h4></div>
+                    <div class="print-item"><i class="fa-solid fa-book-open"></i><h4>Brouchers</h4></div>
+                    <div class="print-item"><i class="fa-solid fa-heart"></i><h4>Wedding Cards</h4></div>
                 </div>
             </div>
         </div>
     </section>
 
     <footer id="contact">
-        <div class="footer-cta">
-            <h2>LEAVE A MARK.</h2>
-            <p style="color: var(--text-gray); margin-bottom: 40px;">Ready to transform your industrial or corporate vision into a visual masterpiece?</p>
-            <a href="https://wa.me/917892647479" class="btn btn-p" style="display: inline-flex;">Message via WhatsApp</a>
-        </div>
-        <div class="footer-details">
-            <h3 style="font-family: 'Syncopate'; margin-bottom: 20px;">Contact</h3>
-            <p>sumanthg2904@gmail.com</p>
-            <p>+91 7892647479</p>
-            <p style="margin-top: 20px;">Bengaluru, KA</p>
-            
-            <div style="margin-top: 40px; display: flex; gap: 20px; font-size: 1.5rem;">
-                <i class="fa-brands fa-linkedin"></i>
-                <i class="fa-brands fa-github"></i>
-                <i class="fa-brands fa-instagram"></i>
+        <div class="container">
+            <div class="footer-wrap">
+                <div class="footer-contact" data-reveal>
+                    <h2>LET'S CREATE<br>THE IDEAL.</h2>
+                    <a href="mailto:sumanthg2904@gmail.com" class="email-link">sumanthg2904@gmail.com</a>
+                    <p style="margin-top: 15px;">+91 7892647479</p>
+                </div>
+                <div class="footer-socials" data-reveal>
+                    <p style="color: var(--text-dim); margin-bottom: 20px;">Connect</p>
+                    <a href="#" style="color: #fff; margin-right: 20px;"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="#" style="color: #fff;"><i class="fa-brands fa-instagram"></i></a>
+                </div>
             </div>
+            <p style="font-size: 0.8rem; color: #222; text-align: center; border-top: 1px solid #111; padding-top: 30px;">© 2026 Sumanth G. MCA Portfolio | Design Architect | Print Logistics. Bengaluru.</p>
         </div>
     </footer>
 
     <script>
-        /* THREE.JS BACKGROUND ENGINE 
-           -------------------------
-           Creates a particle starfield that reacts to mouse movement.
+        /* 1. CUSTOM CURSOR UX
+           -------------------
+        */
+        const cursor = document.getElementById('cursor');
+        const follower = document.getElementById('cursor-follower');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            setTimeout(() => {
+                follower.style.left = e.clientX - 11 + 'px';
+                follower.style.top = e.clientY - 11 + 'px';
+            }, 50);
+        });
+
+        /* 2. THREE.JS 3D BACKGROUND
+           ------------------------
+           Creates an active vortex particle effect.
         */
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({
-            canvas: document.querySelector('#webgl-canvas'),
+            canvas: document.querySelector('#threed-canvas'),
             antialias: true,
             alpha: true
         });
 
-        renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight);
         camera.position.setZ(30);
 
-        // Particle Geometry
+        // Vortex Geometry
+        const vortexGeometry = new THREE.TorusGeometry(15, 3, 16, 100);
         const particlesGeometry = new THREE.BufferGeometry();
-        const particlesCount = 2500;
-        const posArray = new Float32Array(particlesCount * 3);
+        const count = 3000;
+        const posArray = new Float32Array(count * 3);
 
-        for(let i = 0; i < particlesCount * 3; i++) {
-            posArray[i] = (Math.random() - 0.5) * 100;
+        for(let i = 0; i < count * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 80;
         }
-
         particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
 
-        // Material
-        const material = new THREE.PointsMaterial({
-            size: 0.08,
+        // Material (Interactive Indigo)
+        const pointsMaterial = new THREE.PointsMaterial({
+            size: 0.07,
             color: 0x6366f1,
             transparent: true,
-            opacity: 0.8,
             blending: THREE.AdditiveBlending
         });
 
-        const particlesMesh = new THREE.Points(particlesGeometry, material);
+        const particlesMesh = new THREE.Points(particlesGeometry, pointsMaterial);
         scene.add(particlesMesh);
 
-        // Mouse Interactivity for 3D
+        // Animation Loop
         let mouseX = 0;
         let mouseY = 0;
-
-        document.addEventListener('mousemove', (event) => {
-            mouseX = event.clientX;
-            mouseY = event.clientY;
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
         });
 
         function animate() {
             requestAnimationFrame(animate);
-
-            particlesMesh.rotation.y = mouseX * 0.0001;
-            particlesMesh.rotation.x = -mouseY * 0.0001;
-
+            particlesMesh.rotation.y = mouseX * 0.00008;
+            particlesMesh.rotation.x = -mouseY * 0.00008;
             renderer.render(scene, camera);
         }
         animate();
 
-        // Handle Resize
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-
-        /* 3D CARD TILT ENGINE
-           ------------------
+        /* 3. 3D CARD TILT ENGINE
+           --------------------
         */
-        function handleTilt(e, card) {
-            const cardRect = card.getBoundingClientRect();
-            const x = e.clientX - cardRect.left;
-            const y = e.clientY - cardRect.top;
+        function tiltCard(e, card) {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
             
-            const centerX = cardRect.width / 2;
-            const centerY = cardRect.height / 2;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
             
-            const tiltX = (y - centerY) / 10;
-            const tiltY = (centerX - x) / 10;
+            const tiltX = (y - centerY) / 8;
+            const tiltY = (centerX - x) / 8;
             
             card.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
         }
 
-        function resetTilt(card) {
+        function resetCard(card) {
             card.style.transform = `rotateX(0deg) rotateY(0deg)`;
         }
 
-        /* SCROLL EFFECTS
-           -------------
+        /* 4. SCROLL REVEAL ENGINE
+           ---------------------
+        */
+        const reveals = document.querySelectorAll('[data-reveal]');
+        const revealOnScroll = () => {
+            reveals.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if(rect.top < window.innerHeight - 150) {
+                    el.classList.add('active');
+                }
+            });
+        };
+        window.addEventListener('scroll', revealOnScroll);
+        window.addEventListener('load', revealOnScroll);
+
+        /* 5. NAV SCROLL EFFECT
+           ------------------
         */
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                nav.classList.add('scrolled');
-            } else {
-                nav.classList.remove('scrolled');
-            }
+            if(window.scrollY > 100) nav.classList.add('scrolled');
+            else nav.classList.remove('scrolled');
         });
 
-        // Smooth Anchor Links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-
-        /*
-           ADDITIONAL LOGIC
-           ---------------
-           (This section expands the code to 800+ lines in logic weight 
-           by defining complex behavior for the 3D particles and responsive tweaks)
-        */
-        
-        // Dynamic Particle Color Shift based on scroll
+        // Dynamic Color Shift based on scroll
         window.addEventListener('scroll', () => {
             const fraction = window.scrollY / document.body.offsetHeight;
-            material.color.setHSL(0.6 + fraction * 0.2, 0.8, 0.5);
+            // Shift Indigo towards Pink as user scrolls down to Print Section
+            pointsMaterial.color.setHSL(0.6 + (fraction * 0.2), 0.8, 0.5);
         });
 
     </script>
