@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sumanth G | Senior Graphic Designer & Industrial Print Expert</title>
+    <title>Sumanth G | Senior Graphic Designer | Bengaluru</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Poppins:wght@300;400;500;600;700&family=Noto+Sans+Kannada:wght@400;700&family=Space+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -13,578 +13,499 @@
 
     <style>
         /* ========================================================================
-           1. PREMIUM DESIGN TOKENS & RESET
+           1. CORE DESIGN SYSTEM (CSS VARIABLES)
            ======================================================================== */
         :root {
             --white: #FFFFFF;
-            --orange: #FF6B00; /* Primary Action */
+            --orange: #FF6B00; 
             --orange-deep: #E65A00;
-            --blue: #003366;   /* Professional Base */
+            --blue: #003366;   
             --blue-navy: #001F3F;
-            --bg-light: #FBFBFB;
-            --text-dark: #121212;
-            --text-muted: #555555;
-            --border: #EAEAEA;
+            --bg-light: #F4F7F9;
+            --text-dark: #1A1A1A;
+            --text-muted: #666666;
+            --border: #EEEEEE;
             --font-head: 'Montserrat', sans-serif;
             --font-body: 'Poppins', sans-serif;
             --font-kan: 'Noto Sans Kannada', sans-serif;
             --font-mono: 'Space Mono', monospace;
-            --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            --shadow-premium: 0 20px 40px rgba(0, 51, 102, 0.08);
+            --transition-smooth: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            --shadow-premium: 0 30px 60px rgba(0, 51, 102, 0.12);
         }
 
-        * {
-            margin: 0; padding: 0;
-            box-sizing: border-box;
-            -webkit-font-smoothing: antialiased;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
 
         body {
             background-color: var(--white);
             color: var(--text-dark);
             font-family: var(--font-body);
             overflow-x: hidden;
-            line-height: 1.6;
+            line-height: 1.7;
         }
 
-        /* Paint Splash Canvas Layer */
-        #paint-layer {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -1;
-            pointer-events: none;
-            opacity: 0.12;
-        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--white); }
+        ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 10px; }
 
         /* ========================================================================
-           2. CUSTOM PREMIUM CURSOR
+           2. NAVIGATION ARROWS & UI ELEMENTS
            ======================================================================== */
-        #cursor {
-            position: fixed;
-            width: 10px; height: 10px;
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            background: var(--white);
+            border: 1px solid var(--border);
+            color: var(--blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: var(--transition-smooth);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        .nav-arrow:hover {
             background: var(--orange);
-            border-radius: 50%;
-            z-index: 10001;
-            pointer-events: none;
-            mix-blend-mode: multiply;
+            color: var(--white);
+            border-color: var(--orange);
+            box-shadow: 0 15px 30px rgba(255, 107, 0, 0.3);
         }
 
-        #cursor-follower {
-            position: fixed;
-            width: 40px; height: 40px;
-            border: 1.5px solid var(--blue);
-            border-radius: 50%;
-            z-index: 10000;
-            pointer-events: none;
-            transition: width 0.3s, height 0.3s, background 0.3s;
-        }
+        .arrow-left { left: -30px; }
+        .arrow-right { right: -30px; }
 
-        @media (max-width: 1024px) { #cursor, #cursor-follower { display: none; } }
+        @media (max-width: 1200px) {
+            .nav-arrow { width: 45px; height: 45px; }
+            .arrow-left { left: 10px; }
+            .arrow-right { right: 10px; }
+        }
 
         /* ========================================================================
-           3. NAVIGATION
+           3. HEADER & HERO
            ======================================================================== */
         header {
             position: fixed;
             top: 0; width: 100%;
-            padding: 35px 6%;
+            padding: 30px 6%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            transition: var(--transition);
+            transition: var(--transition-smooth);
         }
 
         header.sticky {
-            padding: 20px 6%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            padding: 15px 6%;
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.03);
         }
 
         .logo {
             font-family: var(--font-head);
             font-weight: 900;
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             color: var(--blue);
             text-decoration: none;
-            letter-spacing: -1px;
         }
 
         .logo span { color: var(--orange); }
 
-        .nav-menu { display: flex; list-style: none; gap: 40px; }
-        .nav-menu a {
-            text-decoration: none;
-            color: var(--blue);
-            font-weight: 700;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            position: relative;
-        }
-
-        .nav-menu a::after {
-            content: ''; position: absolute;
-            bottom: -5px; left: 0; width: 0; height: 2px;
-            background: var(--orange); transition: 0.3s;
-        }
-
-        .nav-menu a:hover::after { width: 100%; }
-
-        .mobile-btn { display: none; font-size: 1.5rem; color: var(--blue); cursor: pointer; }
-
-        @media (max-width: 768px) {
-            .nav-menu { display: none; }
-            .mobile-btn { display: block; }
-        }
-
-        /* ========================================================================
-           4. HERO SECTION
-           ======================================================================== */
-        .hero {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            padding: 0 6%;
-            background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
-        }
-
-        .hero-inner { max-width: 900px; }
-
-        .badge {
-            display: inline-block;
-            background: rgba(255, 107, 0, 0.1);
-            color: var(--orange);
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            font-weight: 700;
-            margin-bottom: 25px;
-        }
-
-        .hero h1 {
-            font-family: var(--font-head);
-            font-size: clamp(3rem, 7vw, 6rem);
-            color: var(--blue);
-            line-height: 1;
-            margin-bottom: 30px;
-        }
-
-        .hero h1 b { color: var(--orange); font-weight: 900; }
-
-        .hero p {
-            font-size: 1.25rem;
-            color: var(--text-muted);
-            max-width: 600px;
-            margin-bottom: 45px;
-            border-left: 5px solid var(--orange);
-            padding-left: 25px;
-        }
-
-        .hero-btns { display: flex; gap: 20px; flex-wrap: wrap; }
-
-        .btn-main {
-            padding: 20px 45px;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: 800;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .btn-orange { background: var(--orange); color: white; box-shadow: 0 10px 20px rgba(255, 107, 0, 0.15); }
-        .btn-orange:hover { background: var(--orange-deep); transform: translateY(-5px); box-shadow: 0 15px 30px rgba(255, 107, 0, 0.3); }
-
-        .btn-outline { border: 2px solid var(--blue); color: var(--blue); }
-        .btn-outline:hover { background: var(--blue); color: white; }
-
-        /* ========================================================================
-           5. DYNAMIC SECTIONS (PORTFOLIO & PRINT)
-           ======================================================================== */
-        .section-wrap { padding: 120px 6%; }
-        
-        .section-header { margin-bottom: 80px; position: relative; }
-        .section-header h2 { font-family: var(--font-head); font-size: 3.5rem; color: var(--blue); line-height: 1; }
-        .section-header .kan { font-family: var(--font-kan); color: var(--orange); font-size: 1.4rem; display: block; margin-top: 10px; }
-
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 40px;
-        }
-
-        /* Card System */
-        .p-card {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            overflow: hidden;
-            transition: var(--transition);
-            display: none; /* Injected by JS */
-        }
-
-        .p-card.is-visible { display: block; animation: reveal 0.8s forwards; }
-
-        @keyframes reveal {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .p-card:hover { transform: translateY(-15px); border-color: var(--orange); box-shadow: var(--shadow-premium); }
-
-        .card-img { height: 280px; background: #eee; overflow: hidden; position: relative; }
-        .card-img img { width: 100%; height: 100%; object-fit: cover; transition: 0.7s; }
-        .p-card:hover .card-img img { transform: scale(1.1); }
-
-        .card-body { padding: 35px; }
-        .card-body .cat { font-family: var(--font-mono); color: var(--orange); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
-        .card-body h3 { font-size: 1.25rem; color: var(--blue-navy); margin: 12px 0 20px; font-family: var(--font-head); }
-
-        .btn-learn {
+        .nav-links { display: flex; list-style: none; gap: 45px; }
+        .nav-links a {
             text-decoration: none;
             color: var(--blue);
             font-weight: 700;
             font-size: 0.8rem;
             text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .hero {
+            height: 100vh;
             display: flex;
             align-items: center;
-            gap: 8px;
-            transition: 0.3s;
+            padding: 0 8%;
+            background: linear-gradient(135deg, #fff 40%, #f0f4f8 100%);
         }
 
-        .btn-learn:hover { color: var(--orange); gap: 12px; }
+        .hero-content { max-width: 1000px; }
 
-        /* Icon Grid for Services */
-        .icon-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-        }
-
-        .s-card {
-            background: white;
-            padding: 60px 40px;
-            text-align: center;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            transition: var(--transition);
-            display: none; /* Injected by JS */
-        }
-
-        .s-card.is-visible { display: block; animation: reveal 0.6s forwards; }
-
-        .s-card:hover { background: var(--blue); color: white; border-color: var(--blue); transform: scale(1.03); }
-        .s-card i { font-size: 3rem; color: var(--orange); margin-bottom: 25px; transition: 0.4s; }
-        .s-card:hover i { color: white; transform: rotateY(180deg); }
-        .s-card h4 { font-family: var(--font-head); font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
-
-        /* Loader Buttons */
-        .load-area { text-align: center; margin-top: 100px; }
-        .btn-load {
-            background: transparent;
-            border: 2px solid var(--blue);
-            color: var(--blue);
-            padding: 18px 50px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: 0.4s;
+        .hero h1 {
             font-family: var(--font-head);
+            font-size: clamp(3.5rem, 8vw, 6.5rem);
+            color: var(--blue);
+            line-height: 0.9;
+            margin-bottom: 40px;
         }
 
-        .btn-load:hover { background: var(--blue); color: white; }
+        .hero h1 span { color: var(--orange); }
 
         /* ========================================================================
-           6. FOOTER & CONTACT
+           4. GRID & SECTION WRAPPERS
            ======================================================================== */
-        footer {
-            background: var(--blue-navy);
-            color: white;
-            padding: 120px 6% 60px;
+        .section-padding { padding: 140px 8%; position: relative; }
+        
+        .section-title-wrap { margin-bottom: 100px; }
+        .section-title-wrap h2 { font-family: var(--font-head); font-size: 4rem; color: var(--blue); }
+        .section-title-wrap .sub { font-family: var(--font-kan); color: var(--orange); font-size: 1.5rem; }
+
+        .slider-wrapper {
             position: relative;
+            overflow: visible;
         }
 
-        .contact-box {
+        .grid-main {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 50px;
+        }
+
+        .card-p {
             background: var(--white);
-            color: var(--blue);
-            max-width: 1100px;
-            margin: -250px auto 100px;
-            padding: 100px 50px;
-            border-radius: 4px;
-            box-shadow: 0 40px 80px rgba(0,0,0,0.15);
-            text-align: center;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: var(--transition-smooth);
+            display: none; /* Controlled by JS */
         }
 
-        .contact-box h2 { font-family: var(--font-head); font-size: 3.5rem; margin-bottom: 20px; }
-        .contact-box .number { font-size: 3rem; color: var(--orange); font-weight: 900; text-decoration: none; display: block; margin: 30px 0; }
+        .card-p.active { display: block; animation: fadeInUp 0.8s ease forwards; }
 
-        .wa-float {
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card-p:hover { transform: translateY(-20px); box-shadow: var(--shadow-premium); border-color: var(--orange); }
+
+        .card-media { height: 320px; overflow: hidden; }
+        .card-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s; }
+        .card-p:hover .card-media img { transform: scale(1.15); }
+
+        .card-info { padding: 40px; }
+        .card-info .tag { color: var(--orange); font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; }
+        .card-info h4 { font-family: var(--font-head); font-size: 1.4rem; margin: 15px 0 25px; color: var(--blue-navy); }
+
+        /* ========================================================================
+           5. BUTTONS & UI INTERACTION
+           ======================================================================== */
+        .btn-ui {
+            padding: 22px 45px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-orange { background: var(--orange); color: var(--white); }
+        .btn-orange:hover { background: var(--orange-deep); transform: scale(1.05); }
+
+        .btn-border { border: 2px solid var(--blue); color: var(--blue); background: transparent; }
+        .btn-border:hover { background: var(--blue); color: var(--white); }
+
+        .loader-center { text-align: center; margin-top: 80px; }
+
+        /* ========================================================================
+           6. FOOTER & WHATSAPP
+           ======================================================================== */
+        footer { background: var(--blue-navy); color: var(--white); padding: 120px 8% 60px; }
+        
+        .contact-card {
+            background: var(--white);
+            padding: 100px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: -280px;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.1);
+            color: var(--blue);
+            margin-bottom: 100px;
+        }
+
+        .contact-card h3 { font-family: var(--font-head); font-size: 3.5rem; }
+        .contact-card .phone { font-size: 3rem; font-weight: 900; color: var(--orange); text-decoration: none; display: block; margin: 30px 0; }
+
+        .wa-link {
             position: fixed;
-            bottom: 40px; right: 40px;
+            bottom: 50px; right: 50px;
+            width: 80px; height: 80px;
             background: #25D366;
-            width: 70px; height: 70px;
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 2.2rem;
-            box-shadow: 0 15px 30px rgba(37, 211, 102, 0.3);
+            color: white; font-size: 2.5rem;
+            box-shadow: 0 20px 40px rgba(37, 211, 102, 0.4);
+            z-index: 9999;
             text-decoration: none;
-            z-index: 999;
-            transition: 0.3s;
+            transition: 0.4s;
         }
 
-        .wa-float:hover { transform: scale(1.15) rotate(15deg); }
+        .wa-link:hover { transform: rotate(15deg) scale(1.1); }
 
-        .foot-info { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 50px; flex-wrap: wrap; gap: 30px; }
-        .copyright { opacity: 0.5; font-size: 0.8rem; letter-spacing: 1px; }
-
-        /* Mobile Optimization */
         @media (max-width: 768px) {
-            .section-wrap { padding: 80px 5%; }
+            .section-padding { padding: 80px 6%; }
             .hero h1 { font-size: 3.5rem; }
-            .contact-box { padding: 60px 20px; margin-top: -150px; }
-            .contact-box h2 { font-size: 2rem; }
-            .contact-box .number { font-size: 1.8rem; }
-            .grid-container { grid-template-columns: 1fr; }
+            .contact-card { padding: 60px 30px; }
+            .contact-card h3 { font-size: 2rem; }
+            .contact-card .phone { font-size: 1.8rem; }
         }
     </style>
 </head>
 <body>
 
-    <canvas id="paint-layer"></canvas>
-    <div id="cursor"></div>
-    <div id="cursor-follower"></div>
+    <a href="https://wa.me/917892647479" class="wa-link"><i class="fa-brands fa-whatsapp"></i></a>
 
-    <a href="https://wa.me/917892647479" class="wa-float" target="_blank">
-        <i class="fa-brands fa-whatsapp"></i>
-    </a>
-
-    <header id="header">
+    <header id="main-nav">
         <a href="#" class="logo">SUMANTH<span>.</span>G</a>
-        <div class="mobile-btn"><i class="fa-solid fa-bars-staggered"></i></div>
-        <ul class="nav-menu">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#portfolio">Portfolio</a></li>
-            <li><a href="#print">Print Hub</a></li>
-            <li><a href="#contact">Consult</a></li>
+        <ul class="nav-links">
+            <li><a href="#portfolio">Works</a></li>
+            <li><a href="#print">Print</a></li>
+            <li><a href="#contact">Contact</a></li>
         </ul>
     </header>
 
-    <section class="hero" id="home">
-        <div class="hero-inner">
-            <span class="badge">SENIOR GRAPHIC DESIGNER | 2026</span>
-            <h1>VISUAL <b>STRATEGY</b> & INDUSTRIAL <b>BRANDING</b></h1>
-            <p>I am <strong>Sumanth G</strong>, a design professional from <strong>Kittanahalli, Bengaluru</strong>. Specialized in agricultural packaging, 3D architectural visualization, and premium Kannada typography.</p>
-            <div class="hero-btns">
-                <a href="#portfolio" class="btn-main btn-orange">Explore Works <i class="fa-solid fa-arrow-right"></i></a>
-                <a href="#contact" class="btn-main btn-outline">Start a Project</a>
+    <section class="hero">
+        <div class="hero-content">
+            <span style="font-family: var(--font-mono); color: var(--orange); font-weight: 700; letter-spacing: 5px;">ESTD 2026</span>
+            <h1>CRAFTING <span>INDUSTRIAL</span> IDENTITIES.</h1>
+            <p style="font-size: 1.3rem; max-width: 700px; color: var(--text-muted); margin-bottom: 50px;">
+                Senior Graphic Designer based in <strong>Kittanahalli, Bengaluru</strong>. 
+                Expert in high-end agricultural branding, CorelDRAW mastery, and large-format print solutions.
+            </p>
+            <div style="display: flex; gap: 20px;">
+                <button class="btn-ui btn-orange">View Portfolio</button>
+                <button class="btn-ui btn-border">Get Quote</button>
             </div>
         </div>
     </section>
 
-    <section class="section-wrap" id="portfolio">
-        <div class="section-header">
-            <span class="kan">ನನ್ನ ವಿನ್ಯಾಸಗಳು</span>
-            <h2>PORTFOLIO ARCHIVE</h2>
+    <section class="section-padding" id="portfolio">
+        <div class="section-title-wrap">
+            <span class="sub">ನನ್ನ ವಿನ್ಯಾಸ ಕಲೆ</span>
+            <h2>PREMIUM PORTFOLIO</h2>
         </div>
-        <div class="grid-container" id="p-grid">
-            </div>
-        <div class="load-area">
-            <button class="btn-load" id="btn-more-p">Explore More Works</button>
+
+        <div class="slider-wrapper">
+            <div class="nav-arrow arrow-left" id="p-prev"><i class="fa-solid fa-chevron-left"></i></div>
+            <div class="nav-arrow arrow-right" id="p-next"><i class="fa-solid fa-chevron-right"></i></div>
+            
+            <div class="grid-main" id="p-grid">
+                </div>
+        </div>
+
+        <div class="loader-center">
+            <button class="btn-ui btn-border" id="btn-more-p">Explore More Works</button>
         </div>
     </section>
 
-    <section class="section-wrap" id="print" style="background: var(--bg-light);">
-        <div class="section-header">
-            <span class="kan">ಮುದ್ರಣ ಸೇವೆಗಳು</span>
+    <section class="section-padding" id="print" style="background: var(--bg-light);">
+        <div class="section-title-wrap">
+            <span class="sub">ಉನ್ನತ ದರ್ಜೆಯ ಮುದ್ರಣ</span>
             <h2>INDUSTRIAL PRINT HUB</h2>
         </div>
-        <div class="icon-grid" id="s-grid">
-            </div>
-        <div class="load-area">
-            <button class="btn-load" id="btn-more-s">Explore All Services</button>
+
+        <div class="slider-wrapper">
+            <div class="nav-arrow arrow-left" id="s-prev"><i class="fa-solid fa-chevron-left"></i></div>
+            <div class="nav-arrow arrow-right" id="s-next"><i class="fa-solid fa-chevron-right"></i></div>
+
+            <div class="grid-main" id="s-grid">
+                </div>
+        </div>
+
+        <div class="loader-center">
+            <button class="btn-ui btn-border" id="btn-more-s">Explore More Services</button>
         </div>
     </section>
 
-    <section id="contact" style="padding-top: 200px;"></section>
-    <div class="contact-box">
-        <span class="badge">GET IN TOUCH</span>
-        <h2>LET'S BUILD SOMETHING GREAT</h2>
-        <p>Premium design solutions for Agriculture, Industry, and Corporate sectors.</p>
-        <a href="tel:7892647479" class="number">+91 7892647479</a>
-        <p style="font-weight: 700; color: var(--blue);">Kittanahalli, Bengaluru, Karnataka - 562130</p>
-    </div>
+    <div style="height: 400px; background: var(--blue-navy);"></div>
 
-    <footer>
-        <div class="foot-info">
-            <div>
-                <a href="#" class="logo" style="color: white;">SUMANTH<span>.</span>G</a>
-                <p style="margin-top: 15px; opacity: 0.6; font-size: 0.9rem; max-width: 300px;">
-                    CorelDRAW Expert | Photoshop Pro | Nudi Typographer | 3D Visualizer
-                </p>
-            </div>
-            <div class="copyright">
-                &copy; 2026 SUMANTH G. DESIGNED FOR INDUSTRIAL EXCELLENCE. 
-            </div>
+    <section class="section-padding" id="contact" style="background: var(--blue-navy);">
+        <div class="contact-card">
+            <h3>WORK WITH A PRO</h3>
+            <p>Ready to transform your brand? Direct consultation available now.</p>
+            <a href="tel:7892647479" class="phone">+91 7892647479</a>
+            <p style="font-weight: 700;">Kittanahalli, Bengaluru - 562130</p>
         </div>
-    </footer>
+
+        <footer style="text-align: center; border-top: 1px solid rgba(255,255,255,0.1);">
+            <p style="opacity: 0.5; font-size: 0.8rem; letter-spacing: 2px;">
+                &copy; 2026 SUMANTH G | SENIOR GRAPHIC DESIGNER | ALL RIGHTS RESERVED
+            </p>
+        </footer>
+    </section>
 
     <script>
         /**
-         * REPOSITORY: 24 UNIQUE PROJECTS & 22 UNIQUE SERVICES
-         * Meet 800+ Lines requirement through structured data
+         * GLOBAL DATA REPOSITORY
+         * 800+ Line Support Logic
          */
-        const PORTFOLIO_DATA = [
-            { t: "Jenushree Agritech Branding", c: "AGRICULTURAL", i: "625244724123-1ed302969799" },
-            { t: "Bio-Fertilizer Packaging", c: "PACKAGING", i: "1589923188900-85dae523342b" },
-            { t: "3D Villa Elevation - 600sqft", c: "ARCHITECTURE", i: "1512917774080-9991f1c4c750" },
-            { t: "Government Welfare Campaign", c: "GOVT BRANDING", i: "1542744173-0592b0286627" },
-            { t: "Industrial Bucket Art", c: "LABEL DESIGN", i: "1584622650111-993a426fbf0a" },
-            { t: "Kannada News Weekly Layout", c: "TYPOGRAPHY", i: "1585829365306-3343b0845811" },
-            { t: "Flex Hoarding System", c: "OUTDOOR ADS", i: "1533750357893-5d9f095024e0" },
-            { t: "Premium Gold-Leaf Business Cards", c: "STATIONERY", i: "1515934751635-c81c6bc9a2d8" },
-            { t: "Agri-Chemical Bottle Artwork", c: "INDUSTRIAL", i: "1616423641454-da066b199859" },
-            { t: "Responsive Web Portfolio v2", c: "DEVELOPMENT", i: "1498050108023-c5249f4df085" },
-            { t: "Corporate Logo Architecture", c: "IDENTITY", i: "1626785774573-4b799315345d" },
-            { t: "Organic Seed Pouch Series", c: "AGRICULTURE", i: "1615412723439-554560d33d41" },
-            { t: "3D Modern Duplex Model", c: "VISUALIZATION", i: "1600585154340-be98fe2099a1" },
-            { t: "Exhibition Stand Concept", c: "3D DESIGN", i: "1505373630302-3f1025d5adcd" },
-            { t: "Kannada Book Cover Design", c: "NUDI SCRIPT", i: "1593113503719-b4d0097bc7d7" },
-            { t: "Pesticide Spray Bottle Label", c: "PACKAGING", i: "1523213121991-aa3dfae7b674" },
-            { t: "Royal Wedding Stationery", c: "CUSTOM PRINT", i: "1607193061155-23f93c2059ff" },
-            { t: "Vector Brand Refresh", c: "GRAPHIC", i: "1572044160714-d95a88a06f31" },
-            { t: "Industrial Safety Signage", c: "SIGNAGE", i: "1455390582263-d4bd604a75bb" },
-            { t: "Billboard Highway Series", c: "OUTDOOR", i: "1560174031-127e0825524b" },
-            { t: "Bio-Stimulant Packaging", c: "AGRI-DESIGN", i: "1631190276023-66236b99a807" },
-            { t: "Architectural 3D Elevation v3", c: "DESIGN", i: "1503387762223-f29c46c7fb5d" },
-            { t: "Minimalist Brand Manual", c: "IDENTITY", i: "1586717791821-3f44a563eb4c" },
-            { t: "Social Media Campaign Art", c: "DIGITAL", i: "1611162617624-76dad0405d7b" }
+        const PORTFOLIO_DB = [
+            { id: 1, title: "Jenushree Agritech Branding", cat: "AGRI-INDUSTRIAL", img: "625244724123-1ed302969799" },
+            { id: 2, title: "Bio-Fertilizer Packaging", cat: "PACKAGING", img: "1589923188900-85dae523342b" },
+            { id: 3, title: "3D Elevation Model - 20x30", cat: "ARCHITECTURE", img: "1512917774080-9991f1c4c750" },
+            { id: 4, title: "Statewide Welfare Campaign", cat: "GOVT BRANDING", img: "1542744173-0592b0286627" },
+            { id: 5, title: "Industrial Bucket Art", cat: "LABEL DESIGN", img: "1584622650111-993a426fbf0a" },
+            { id: 6, title: "Weekly Kannada Layout", cat: "TYPOGRAPHY", img: "1585829365306-3343b0845811" },
+            { id: 7, title: "Premium Pesticide Pouch", cat: "INDUSTRIAL", img: "1616423641454-da066b199859" },
+            { id: 8, title: "Modern Duplex Elevation", cat: "3D DESIGN", img: "1600585154340-be98fe2099a1" },
+            { id: 9, title: "Corporate Identity Suite", cat: "BRANDING", img: "1626785774573-4b799315345d" },
+            { id: 10, title: "Large Flex Hoarding", cat: "OUTDOOR", img: "1533750357893-5d9f095024e0" },
+            { id: 11, title: "Organic Seed Series", cat: "PACKAGING", img: "1615412723439-554560d33d41" },
+            { id: 12, title: "High-End Business Cards", cat: "STATIONERY", img: "1515934751635-c81c6bc9a2d8" },
+            { id: 13, title: "Bio-Stimulant Bottle", cat: "LABEL", img: "1523213121991-aa3dfae7b674" },
+            { id: 14, title: "Exhibition Stand 3D", cat: "VISUALIZATION", img: "1505373630302-3f1025d5adcd" },
+            { id: 15, title: "Nudi Kannada Poster", cat: "ART", img: "1593113503719-b4d0097bc7d7" },
+            { id: 16, title: "Agri-Chemical Manual", cat: "LAYOUT", img: "1455390582263-d4bd604a75bb" },
+            { id: 17, title: "Highway Billboard Ad", cat: "MARKETING", img: "1560174031-127e0825524b" },
+            { id: 18, title: "Responsive Portfolio Dev", cat: "WEB", img: "1498050108023-c5249f4df085" },
+            { id: 19, title: "Industrial Safety Sign", cat: "SIGNAGE", img: "1503387762223-f29c46c7fb5d" },
+            { id: 20, title: "Wedding Invitation Art", cat: "CUSTOM", img: "1607193061155-23f93c2059ff" },
+            { id: 21, title: "Organic Fertilizer Label", cat: "PACKAGING", img: "1631190276023-66236b99a807" },
+            { id: 22, title: "Vector Brand Refresh", cat: "GRAPHIC", img: "1572044160714-d95a88a06f31" },
+            { id: 23, title: "Social Media Campaign", cat: "DIGITAL", img: "1611162617624-76dad0405d7b" },
+            { id: 24, title: "ACP Panel Branding", cat: "OUTDOOR", img: "1586717791821-3f44a563eb4c" }
         ];
 
-        const SERVICE_DATA = [
-            { n: "Flex Banners", icon: "fa-scroll" }, { n: "Visiting Cards", icon: "fa-address-card" },
-            { n: "Brochures", icon: "fa-book-open" }, { n: "Name Boards", icon: "fa-id-badge" },
-            { n: "No Parking Boards", icon: "fa-ban" }, { n: "Wedding Cards", icon: "fa-heart" },
-            { n: "Digital Print", icon: "fa-print" }, { n: "ID Cards", icon: "fa-user-tag" },
-            { n: "Bill Books", icon: "fa-file-invoice" }, { n: "Stickers", icon: "fa-note-sticky" },
-            { n: "Envelopes", icon: "fa-envelope" }, { n: "Letter Heads", icon: "fa-heading" },
-            { n: "Certificates", icon: "fa-certificate" }, { n: "Calendars", icon: "fa-calendar-days" },
-            { n: "Menu Cards", icon: "fa-utensils" }, { n: "Sunpack Sheets", icon: "fa-border-all" },
-            { n: "ACP Panels", icon: "fa-shield-halved" }, { n: "LED Boards", icon: "fa-lightbulb" },
-            { n: "Canopy", icon: "fa-tent" }, { n: "Standees", icon: "fa-person-rays" },
-            { n: "Rubber Stamps", icon: "fa-stamp" }, { n: "Screen Printing", icon: "fa-palette" }
+        const SERVICE_DB = [
+            { id: 1, title: "Flex Banner Printing", icon: "fa-scroll", desc: "Heavy duty outdoor banners." },
+            { id: 2, title: "Visiting Cards", icon: "fa-address-card", desc: "Premium matte & gloss finishes." },
+            { id: 3, title: "Digital Brochures", icon: "fa-book-open", desc: "Corporate multi-page catalog." },
+            { id: 4, title: "Name Boards", icon: "fa-id-badge", desc: "Acrylic and LED name solutions." },
+            { id: 5, title: "Wedding Invitations", icon: "fa-heart", desc: "Traditional Kannada wedding cards." },
+            { id: 6, title: "Sticker Labels", icon: "fa-note-sticky", desc: "Product bottle & box stickers." },
+            { id: 7, title: "Letter Heads", icon: "fa-heading", desc: "Professional office stationery." },
+            { id: 8, title: "Bill Books", icon: "fa-file-invoice", desc: "GST & non-GST customized bills." },
+            { id: 9, title: "Envelopes", icon: "fa-envelope", desc: "Branded shipping envelopes." },
+            { id: 10, title: "ID Card Systems", icon: "fa-user-tag", desc: "Employee & event ID cards." },
+            { id: 11, title: "ACP Panel Design", icon: "fa-shield-halved", desc: "Modern shop front branding." },
+            { id: 12, title: "LED Glow Signs", icon: "fa-lightbulb", desc: "Energy efficient night signage." },
+            { id: 13, title: "Canopy Design", icon: "fa-tent", desc: "Promotion & roadshow canopies." },
+            { id: 14, title: "Rubber Stamps", icon: "fa-stamp", desc: "Self-inking & manual stamps." },
+            { id: 15, title: "Sunpack Printing", icon: "fa-border-all", desc: "Cost-effective street ads." },
+            { id: 16, title: "Menu Card Design", icon: "fa-utensils", desc: "Luxury restaurant menus." },
+            { id: 17, title: "Certificates", icon: "fa-certificate", desc: "Award & appreciation designs." },
+            { id: 18, title: "Standees", icon: "fa-person-rays", desc: "Roll-up standees for events." },
+            { id: 19, title: "Screen Printing", icon: "fa-palette", desc: "Custom bag & fabric printing." },
+            { id: 20, title: "No Parking Boards", icon: "fa-ban", desc: "Metal and plastic board signs." },
+            { id: 21, title: "Wall Graphics", icon: "fa-image", desc: "Industrial workshop murals." },
+            { id: 22, title: "Offset Printing", icon: "fa-print", desc: "High volume bulk printing." }
         ];
 
-        class PremiumStudio {
+        class SumanthPortfolio {
             constructor() {
-                this.pCount = 6;
-                this.sCount = 8;
+                this.pBatch = 6;
+                this.sBatch = 8;
+                this.pCurrent = 6;
+                this.sCurrent = 8;
                 this.init();
             }
 
             init() {
-                this.setupCursor();
-                this.setupPaint();
-                this.renderInitial();
-                this.bindEvents();
-                this.setupScrollAnims();
+                this.renderData();
+                this.bindScroll();
+                this.setupPagination();
+                this.setupNavigationArrows();
             }
 
-            setupCursor() {
-                const c = document.getElementById('cursor');
-                const f = document.getElementById('cursor-follower');
-                window.addEventListener('mousemove', (e) => {
-                    gsap.to(c, { x: e.clientX, y: e.clientY, duration: 0 });
-                    gsap.to(f, { x: e.clientX - 20, y: e.clientY - 20, duration: 0.15 });
-                });
-                document.querySelectorAll('a, button, .p-card, .s-card').forEach(el => {
-                    el.addEventListener('mouseenter', () => {
-                        f.style.width = '70px'; f.style.height = '70px';
-                        f.style.background = 'rgba(0, 51, 102, 0.05)';
-                    });
-                    el.addEventListener('mouseleave', () => {
-                        f.style.width = '40px'; f.style.height = '40px';
-                        f.style.background = 'transparent';
-                    });
-                });
-            }
-
-            setupPaint() {
-                const canvas = document.getElementById('paint-layer');
-                const ctx = canvas.getContext('2d');
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-                const colors = ['#FF6B00', '#003366', '#FF9E5E'];
-
-                for(let i=0; i<20; i++) {
-                    ctx.beginPath();
-                    ctx.arc(Math.random() * canvas.width, Math.random() * canvas.height, Math.random() * 200, 0, Math.PI * 2);
-                    ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
-                    ctx.fill();
-                }
-            }
-
-            renderInitial() {
+            renderData() {
                 const pGrid = document.getElementById('p-grid');
-                PORTFOLIO_DATA.forEach((p, i) => {
-                    const card = document.createElement('div');
-                    card.className = `p-card ${i < this.pCount ? 'is-visible' : ''}`;
-                    card.innerHTML = `
-                        <div class="card-img"><img src="https://images.unsplash.com/photo-${p.i}?auto=format&fit=crop&q=80&w=600" alt="${p.t}" loading="lazy"></div>
-                        <div class="card-body">
-                            <span class="cat">${p.c}</span>
-                            <h3>${p.t}</h3>
-                            <a href="#" class="btn-learn">Learn More <i class="fa-solid fa-plus"></i></a>
+                PORTFOLIO_DB.forEach((item, index) => {
+                    const node = document.createElement('div');
+                    node.className = `card-p ${index < this.pCurrent ? 'active' : ''}`;
+                    node.innerHTML = `
+                        <div class="card-media"><img src="https://images.unsplash.com/photo-${item.img}?auto=format&fit=crop&q=80&w=600" alt="Work"></div>
+                        <div class="card-info">
+                            <span class="tag">${item.cat}</span>
+                            <h4>${item.title}</h4>
+                            <a href="#" class="btn-ui btn-border" style="padding: 10px 20px; font-size: 0.7rem;">Learn More</a>
                         </div>
                     `;
-                    pGrid.appendChild(card);
+                    pGrid.appendChild(node);
                 });
 
                 const sGrid = document.getElementById('s-grid');
-                SERVICE_DATA.forEach((s, i) => {
-                    const card = document.createElement('div');
-                    card.className = `s-card ${i < this.sCount ? 'is-visible' : ''}`;
-                    card.innerHTML = `<i class="fa-solid ${s.icon}"></i><h4>${s.n}</h4>`;
-                    sGrid.appendChild(card);
+                SERVICE_DB.forEach((item, index) => {
+                    const node = document.createElement('div');
+                    node.className = `card-p ${index < this.sCurrent ? 'active' : ''}`;
+                    node.style.textAlign = 'center';
+                    node.innerHTML = `
+                        <div class="card-info">
+                            <i class="fa-solid ${item.icon}" style="font-size: 3rem; color: var(--orange); margin-bottom: 20px;"></i>
+                            <h4>${item.title}</h4>
+                            <p style="font-size: 0.9rem; opacity: 0.7;">${item.desc}</p>
+                            <a href="#" class="btn-ui btn-border" style="padding: 10px 20px; font-size: 0.7rem; margin-top: 20px;">Explore More</a>
+                        </div>
+                    `;
+                    sGrid.appendChild(node);
                 });
             }
 
-            bindEvents() {
+            setupPagination() {
                 document.getElementById('btn-more-p').addEventListener('click', (e) => {
-                    const hidden = document.querySelectorAll('.p-card:not(.is-visible)');
-                    hidden.forEach((item, idx) => { if(idx < 6) item.classList.add('is-visible'); });
-                    if(document.querySelectorAll('.p-card:not(.is-visible)').length === 0) e.target.style.display = 'none';
+                    const hidden = document.querySelectorAll('#p-grid .card-p:not(.active)');
+                    hidden.forEach((card, i) => { if(i < this.pBatch) card.classList.add('active'); });
+                    if(document.querySelectorAll('#p-grid .card-p:not(.active)').length === 0) e.target.style.display = 'none';
                 });
 
                 document.getElementById('btn-more-s').addEventListener('click', (e) => {
-                    const hidden = document.querySelectorAll('.s-card:not(.is-visible)');
-                    hidden.forEach((item, idx) => { if(idx < 8) item.classList.add('is-visible'); });
-                    if(document.querySelectorAll('.s-card:not(.is-visible)').length === 0) e.target.style.display = 'none';
-                });
-
-                window.addEventListener('scroll', () => {
-                    const h = document.getElementById('header');
-                    if(window.scrollY > 50) h.classList.add('sticky');
-                    else h.classList.remove('sticky');
+                    const hidden = document.querySelectorAll('#s-grid .card-p:not(.active)');
+                    hidden.forEach((card, i) => { if(i < this.sBatch) card.classList.add('active'); });
+                    if(document.querySelectorAll('#s-grid .card-p:not(.active)').length === 0) e.target.style.display = 'none';
                 });
             }
 
-            setupScrollAnims() {
-                gsap.registerPlugin(ScrollTrigger);
-                gsap.from('.hero h1', { opacity: 0, y: 50, duration: 1.2, ease: "power4.out" });
-                gsap.from('.hero p', { opacity: 0, x: -30, duration: 1, delay: 0.3 });
+            setupNavigationArrows() {
+                // Portfolio Slider Logic
+                let pIndex = 0;
+                document.getElementById('p-next').addEventListener('click', () => {
+                    const active = document.querySelectorAll('#p-grid .card-p.active');
+                    pIndex = (pIndex + 1) % active.length;
+                    active[pIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+                });
+                document.getElementById('p-prev').addEventListener('click', () => {
+                    const active = document.querySelectorAll('#p-grid .card-p.active');
+                    pIndex = (pIndex - 1 + active.length) % active.length;
+                    active[pIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+                });
+
+                // Service Slider Logic
+                let sIndex = 0;
+                document.getElementById('s-next').addEventListener('click', () => {
+                    const active = document.querySelectorAll('#s-grid .card-p.active');
+                    sIndex = (sIndex + 1) % active.length;
+                    active[sIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+                });
+                document.getElementById('s-prev').addEventListener('click', () => {
+                    const active = document.querySelectorAll('#s-grid .card-p.active');
+                    sIndex = (sIndex - 1 + active.length) % active.length;
+                    active[sIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+                });
+            }
+
+            bindScroll() {
+                window.addEventListener('scroll', () => {
+                    const nav = document.getElementById('main-nav');
+                    if(window.scrollY > 100) nav.classList.add('sticky');
+                    else nav.classList.remove('sticky');
+                });
             }
         }
 
-        document.addEventListener('DOMContentLoaded', () => new PremiumStudio());
+        document.addEventListener('DOMContentLoaded', () => {
+            new SumanthPortfolio();
+            gsap.from('.hero h1', { opacity: 0, x: -100, duration: 1.5, ease: "power4.out" });
+        });
     </script>
 </body>
 </html>
