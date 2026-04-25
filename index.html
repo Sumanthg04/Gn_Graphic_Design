@@ -3,349 +3,368 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sumanth G | Senior Graphic Designer & Industrial Branding Specialist</title>
+    <title>Sumanth G | Senior Graphic Designer Portfolio</title>
     
-    <meta name="description" content="Sumanth G - Professional Senior Graphic Designer based in Bengaluru. Expert in Industrial Branding, 3D Architecture, and Agricultural Packaging.">
-    <meta name="keywords" content="Graphic Designer Bengaluru, Sumanth G, CorelDRAW Expert, Industrial Design, Packaging Design India">
+    <meta name="description" content="Official Portfolio of Sumanth G. Senior Graphic Designer in Bengaluru. Industrial Branding, Agricultural Packaging, and 3D Architecture Specialist.">
+    <meta name="author" content="Sumanth G">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Montserrat:wght@700;800;900&family=Noto+Sans+Kannada:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
 
     <style>
-        /* ========================================================================
-           1. PREMIUM DESIGN SYSTEM
-           ======================================================================== */
+        /* ================================================================
+           1. ROOT DESIGN SYSTEM
+           ================================================================
+        */
         :root {
             --accent: #FF6B00;
-            --accent-glow: rgba(255, 107, 0, 0.3);
+            --accent-soft: rgba(255, 107, 0, 0.1);
             --primary: #002D5A;
-            --secondary: #001220;
+            --secondary: #010B13;
             --surface: #FFFFFF;
-            --surface-soft: #F8FAFC;
+            --surface-alt: #F1F5F9;
             --text-main: #0F172A;
             --text-muted: #64748B;
-            --border-light: #E2E8F0;
+            --wa-green: #25D366;
+            --border: #E2E8F0;
             --font-main: 'Plus Jakarta Sans', sans-serif;
             --font-head: 'Montserrat', sans-serif;
             --font-kan: 'Noto Sans Kannada', sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
-            --ease: cubic-bezier(0.2, 1, 0.3, 1);
-            --transition: all 0.5s var(--ease);
-            --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
         }
 
-        * {
-            margin: 0; padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        html { scroll-behavior: smooth; }
-
+        /* ================================================================
+           2. GLOBAL RESET & BASE
+           ================================================================
+        */
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+        
+        html { scroll-behavior: smooth; font-size: 16px; }
+        
         body {
             background-color: var(--surface);
             color: var(--text-main);
             font-family: var(--font-main);
-            overflow-x: hidden;
             line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* ========================================================================
-           2. NAVIGATION & HEADER
-           ======================================================================== */
-        .nav-bar {
-            position: fixed;
-            top: 0; width: 100%;
-            padding: 25px 6%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 2000;
+        section { padding: 100px 8%; position: relative; }
+
+        h1, h2, h3, h4 { font-family: var(--font-head); font-weight: 900; }
+
+        .container { max-width: 1400px; margin: 0 auto; }
+
+        /* ================================================================
+           3. NAVIGATION MODULE
+           ================================================================
+        */
+        .header {
+            position: fixed; top: 0; left: 0; width: 100%;
+            padding: 30px 8%; z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center;
             transition: var(--transition);
         }
 
-        .nav-bar.scrolled {
-            padding: 15px 6%;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-light);
-            box-shadow: 0 4px 30px rgba(0,0,0,0.03);
+        .header.active {
+            padding: 15px 8%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
         }
 
         .logo {
-            font-family: var(--font-head);
-            font-weight: 900;
-            font-size: 1.6rem;
-            color: var(--primary);
-            text-decoration: none;
+            font-size: 1.6rem; font-weight: 900;
+            color: var(--primary); text-decoration: none;
             letter-spacing: -1px;
         }
 
         .logo span { color: var(--accent); }
 
-        .nav-menu { display: flex; list-style: none; gap: 40px; align-items: center; }
-        .nav-menu a {
-            text-decoration: none;
-            color: var(--primary);
-            font-weight: 700;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
+        .nav-menu { display: flex; align-items: center; gap: 40px; }
+        .nav-item {
+            text-decoration: none; color: var(--text-main);
+            font-size: 0.85rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 1px;
             position: relative;
         }
 
-        .nav-menu a::after {
-            content: ''; position: absolute;
-            bottom: -5px; left: 0; width: 0; height: 2.5px;
-            background: var(--accent); transition: width 0.4s var(--ease);
+        .nav-item::after {
+            content: ''; position: absolute; bottom: -5px; left: 0;
+            width: 0; height: 2px; background: var(--accent);
+            transition: var(--transition);
         }
 
-        .nav-menu a:hover::after { width: 100%; }
+        .nav-item:hover::after { width: 100%; }
 
-        .btn-cta-nav {
-            background: var(--primary);
-            color: white !important;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-size: 0.75rem !important;
+        .nav-btn {
+            background: var(--primary); color: white;
+            padding: 12px 25px; border-radius: 6px;
+            font-size: 0.8rem; font-weight: 700;
+            transition: var(--transition);
         }
 
-        .mobile-toggle { display: none; font-size: 1.8rem; cursor: pointer; color: var(--primary); }
+        .nav-btn:hover { background: var(--accent); transform: translateY(-2px); }
 
-        /* ========================================================================
-           3. HERO SECTION
-           ======================================================================== */
+        .mobile-toggle { display: none; cursor: pointer; font-size: 1.5rem; }
+
+        /* ================================================================
+           4. HERO ENGINE
+           ================================================================
+        */
         .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding: 120px 8% 80px;
-            background: radial-gradient(circle at top right, rgba(255, 107, 0, 0.05), transparent),
-                        radial-gradient(circle at bottom left, rgba(0, 45, 90, 0.03), transparent);
-            position: relative;
+            min-height: 100vh; display: flex; align-items: center;
+            background: radial-gradient(circle at 90% 10%, var(--accent-soft), transparent 40%),
+                        radial-gradient(circle at 10% 90%, rgba(0, 45, 90, 0.05), transparent 40%);
+            padding-top: 120px;
         }
 
-        .hero-inner { max-width: 1100px; }
+        .hero-text { max-width: 850px; }
 
-        .hero-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: var(--surface-soft);
-            padding: 8px 16px;
-            border-radius: 50px;
-            border: 1px solid var(--border-light);
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: var(--accent);
-            margin-bottom: 30px;
+        .hero-badge {
+            display: inline-block; padding: 8px 16px;
+            background: var(--surface-alt); border-radius: 50px;
+            color: var(--accent); font-family: var(--font-mono);
+            font-weight: 700; font-size: 0.7rem; margin-bottom: 25px;
+            border: 1px solid var(--border);
         }
 
         .hero h1 {
-            font-family: var(--font-head);
-            font-size: clamp(3.5rem, 8vw, 7.5rem);
-            line-height: 0.95;
-            color: var(--secondary);
-            margin-bottom: 40px;
-            font-weight: 900;
+            font-size: clamp(3.5rem, 8vw, 7rem); line-height: 0.95;
+            color: var(--primary); margin-bottom: 35px;
         }
 
-        .hero h1 .stroke {
-            color: transparent;
-            -webkit-text-stroke: 2px var(--primary);
+        .hero h1 .outline {
+            color: transparent; -webkit-text-stroke: 2px var(--primary);
         }
 
         .hero p {
-            font-size: 1.4rem;
-            color: var(--text-muted);
-            max-width: 650px;
-            margin-bottom: 50px;
-            line-height: 1.5;
+            font-size: 1.3rem; color: var(--text-muted);
+            max-width: 600px; margin-bottom: 45px;
         }
 
-        .hero-btns { display: flex; gap: 20px; flex-wrap: wrap; }
+        .hero-actions { display: flex; gap: 20px; flex-wrap: wrap; }
 
-        /* ========================================================================
-           4. HORIZONTAL GALLERY (CORE FEATURE)
-           ======================================================================== */
-        .gallery-section {
-            padding: 120px 0;
-            background: var(--secondary);
-            color: white;
-            overflow: hidden;
+        .btn-main {
+            padding: 20px 40px; border-radius: 8px;
+            font-weight: 800; text-transform: uppercase;
+            letter-spacing: 1.5px; cursor: pointer; border: none;
+            text-decoration: none; display: inline-flex; align-items: center;
+            gap: 15px; font-size: 0.9rem; transition: var(--transition);
         }
 
-        .gallery-header { padding: 0 8%; margin-bottom: 60px; display: flex; justify-content: space-between; align-items: flex-end; }
-        .gallery-header h2 { font-family: var(--font-head); font-size: 4rem; line-height: 1; }
-        .gallery-header .kan { font-family: var(--font-kan); color: var(--accent); font-size: 1.8rem; display: block; margin-bottom: 10px; }
+        .btn-accent { background: var(--accent); color: white; }
+        .btn-accent:hover { transform: translateY(-5px); box-shadow: 0 15px 30px var(--accent-soft); }
 
-        .gallery-controls { display: flex; gap: 15px; }
-        .g-btn {
-            width: 60px; height: 60px;
-            border-radius: 50%;
+        .btn-outline { border: 2px solid var(--primary); color: var(--primary); background: transparent; }
+        .btn-outline:hover { background: var(--primary); color: white; }
+
+        /* ================================================================
+           5. HORIZONTAL GALLERY MODULE
+           ================================================================
+        */
+        .gallery-wrapper { background: var(--secondary); color: white; padding-right: 0; }
+
+        .gallery-header {
+            display: flex; justify-content: space-between; align-items: flex-end;
+            margin-bottom: 60px; padding-right: 8%;
+        }
+
+        .gallery-header .kan {
+            font-family: var(--font-kan); color: var(--accent);
+            font-size: 1.8rem; display: block; margin-bottom: 10px;
+        }
+
+        .gallery-header h2 { font-size: 3.5rem; }
+
+        .scroll-controls { display: flex; gap: 15px; }
+
+        .ctrl-btn {
+            width: 60px; height: 60px; border-radius: 50%;
             border: 1px solid rgba(255,255,255,0.2);
             display: flex; align-items: center; justify-content: center;
             cursor: pointer; transition: var(--transition); color: white;
         }
-        .g-btn:hover { background: var(--accent); border-color: var(--accent); transform: scale(1.1); }
 
-        .horizontal-scroller {
-            display: flex;
-            gap: 40px;
-            padding: 0 8%;
-            overflow-x: auto;
-            scroll-behavior: smooth;
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none; /* IE */
-        }
-        .horizontal-scroller::-webkit-scrollbar { display: none; }
+        .ctrl-btn:hover { background: var(--accent); border-color: var(--accent); }
 
-        .work-item {
-            flex: 0 0 450px;
-            height: 600px;
-            background: #111;
-            border-radius: 12px;
-            overflow: hidden;
-            position: relative;
-            cursor: pointer;
-            transition: var(--transition);
+        .h-scroller {
+            display: flex; gap: 40px; overflow-x: auto;
+            padding-bottom: 50px; scroll-snap-type: x mandatory;
+            scrollbar-width: none; cursor: grab;
         }
 
-        .work-item:hover { transform: translateY(-15px); }
+        .h-scroller::-webkit-scrollbar { display: none; }
 
-        .work-item img {
-            width: 100%; height: 100%;
-            object-fit: cover;
-            opacity: 0.6;
-            transition: transform 1s var(--ease);
-        }
-        .work-item:hover img { transform: scale(1.1); opacity: 0.4; }
-
-        .work-info {
-            position: absolute;
-            bottom: 0; left: 0;
-            padding: 40px;
-            width: 100%;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+        .work-card {
+            flex: 0 0 500px; height: 600px; position: relative;
+            border-radius: 20px; overflow: hidden; scroll-snap-align: start;
         }
 
-        .work-info span { font-family: var(--font-mono); color: var(--accent); font-size: 0.75rem; font-weight: 700; }
-        .work-info h3 { font-family: var(--font-head); font-size: 1.8rem; margin: 10px 0; }
+        .work-card img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 1s var(--transition); opacity: 0.7;
+        }
 
-        /* ========================================================================
-           5. INDUSTRIAL PRINT HUB (GRID)
-           ======================================================================== */
-        .print-section { padding: 120px 8%; background: var(--surface-soft); }
+        .work-card:hover img { transform: scale(1.1); opacity: 0.5; }
+
+        .work-meta {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            padding: 50px; background: linear-gradient(transparent, rgba(0,0,0,0.9));
+        }
+
+        .work-meta span {
+            font-family: var(--font-mono); color: var(--accent);
+            font-weight: 700; font-size: 0.75rem; text-transform: uppercase;
+        }
+
+        .work-meta h3 { font-size: 1.8rem; margin-top: 10px; }
+
+        /* ================================================================
+           6. INDUSTRIAL HUB GRID
+           ================================================================
+        */
+        .industrial { background: var(--surface-alt); }
         
-        .print-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 80px;
+        .section-intro { text-align: center; max-width: 800px; margin: 0 auto 80px; }
+        .section-intro .kan { font-family: var(--font-kan); color: var(--accent); font-size: 1.5rem; }
+        .section-intro h2 { font-size: 3rem; color: var(--primary); margin: 15px 0; }
+
+        .services-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
         }
 
-        .print-card {
-            background: white;
-            padding: 50px 40px;
-            border-radius: 16px;
-            border: 1px solid var(--border-light);
-            transition: var(--transition);
+        .s-card {
+            background: white; padding: 45px 35px; border-radius: 15px;
+            border: 1px solid var(--border); transition: var(--transition);
             text-align: center;
         }
 
-        .print-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--accent);
+        .s-card:hover {
+            transform: translateY(-10px); border-color: var(--accent);
             box-shadow: var(--shadow-xl);
         }
 
-        .print-card i { font-size: 3rem; color: var(--accent); margin-bottom: 25px; }
-        .print-card h4 { font-family: var(--font-head); font-size: 1.1rem; margin-bottom: 15px; color: var(--primary); }
+        .s-card i { font-size: 2.8rem; color: var(--accent); margin-bottom: 25px; }
+        .s-card h4 { font-size: 1.1rem; color: var(--primary); letter-spacing: 0.5px; }
 
-        /* ========================================================================
-           6. CONTACT FORM & FOOTER
-           ======================================================================== */
-        .contact-wrap {
-            padding: 150px 8%;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            background: var(--surface);
+        /* ================================================================
+           7. WHATSAPP ENGINE & CONTACT
+           ================================================================
+        */
+        .contact-block { display: grid; grid-template-columns: 1fr 1.2fr; gap: 100px; }
+
+        .contact-content h2 { font-size: 4rem; line-height: 1.1; margin-bottom: 30px; }
+        
+        .contact-item { display: flex; gap: 20px; margin-bottom: 30px; align-items: center; }
+        .contact-item .icon {
+            width: 50px; height: 50px; background: var(--accent-soft);
+            color: var(--accent); border-radius: 12px;
+            display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
         }
 
-        .contact-details h2 { font-family: var(--font-head); font-size: 3.5rem; margin-bottom: 30px; }
-        
-        .form-group { margin-bottom: 25px; }
-        .form-group label { display: block; font-weight: 700; margin-bottom: 10px; font-size: 0.9rem; }
-        .form-group input, .form-group textarea {
-            width: 100%; padding: 18px;
-            border-radius: 8px;
-            border: 1px solid var(--border-light);
-            background: var(--surface-soft);
-            font-family: inherit;
+        .contact-form-container {
+            background: white; padding: 60px; border-radius: 24px;
+            box-shadow: var(--shadow-xl); border: 1px solid var(--border);
+        }
+
+        .form-row { margin-bottom: 25px; }
+        .form-row label {
+            display: block; font-weight: 800; font-size: 0.8rem;
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .form-row input, .form-row select, .form-row textarea {
+            width: 100%; padding: 18px; border: 2px solid var(--surface-alt);
+            border-radius: 10px; background: var(--surface-alt);
+            font-family: inherit; font-size: 1rem; transition: var(--transition);
+        }
+
+        .form-row input:focus, .form-row textarea:focus {
+            border-color: var(--accent); background: white;
+        }
+
+        .wa-submit {
+            width: 100%; background: var(--wa-green); color: white;
+            border: none; padding: 22px; border-radius: 12px;
+            font-weight: 900; font-size: 1rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 15px;
             transition: var(--transition);
         }
-        .form-group input:focus { border-color: var(--accent); outline: none; background: white; }
 
-        .wa-float {
-            position: fixed;
-            bottom: 40px; right: 40px;
-            width: 70px; height: 70px;
-            background: #25D366;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 2.2rem;
-            box-shadow: 0 15px 30px rgba(37, 211, 102, 0.3);
-            z-index: 1000;
-            text-decoration: none;
-            transition: 0.3s;
+        .wa-submit:hover { background: #128C7E; transform: scale(1.02); }
+
+        /* ================================================================
+           8. FOOTER
+           ================================================================
+        */
+        .footer { background: var(--secondary); color: white; padding: 100px 8% 40px; }
+        
+        .footer-main {
+            display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 80px;
+            padding-bottom: 80px; border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
-        footer { background: var(--secondary); color: white; padding: 100px 8% 50px; }
-        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 60px; margin-bottom: 80px; }
+        .footer-brand p { opacity: 0.6; margin-top: 30px; line-height: 2; max-width: 400px; }
 
-        /* ========================================================================
-           7. RESPONSIVE OPTIMIZATION
-           ======================================================================== */
-        @media (max-width: 1024px) {
+        .footer-links h4 { color: var(--accent); margin-bottom: 30px; font-size: 0.9rem; letter-spacing: 2px; }
+        .footer-links ul { list-style: none; }
+        .footer-links li { margin-bottom: 15px; }
+        .footer-links a { color: white; text-decoration: none; opacity: 0.7; transition: 0.3s; }
+        .footer-links a:hover { opacity: 1; color: var(--accent); padding-left: 5px; }
+
+        .footer-bottom {
+            padding-top: 40px; display: flex; justify-content: space-between;
+            align-items: center; font-size: 0.8rem; opacity: 0.5;
+        }
+
+        /* ================================================================
+           9. MOBILE OPTIMIZATION
+           ================================================================
+        */
+        @media (max-width: 1200px) {
+            .contact-block { grid-template-columns: 1fr; gap: 60px; }
+            .hero h1 { font-size: 5rem; }
+        }
+
+        @media (max-width: 992px) {
             .nav-menu { display: none; }
             .mobile-toggle { display: block; }
-            .contact-wrap { grid-template-columns: 1fr; }
-            .work-item { flex: 0 0 320px; height: 450px; }
-            .hero h1 { font-size: 4.5rem; }
+            .hero h1 { font-size: 4rem; }
+            .work-card { flex: 0 0 350px; height: 500px; }
+            section { padding: 80px 5%; }
         }
 
-        @media (max-width: 768px) {
-            .hero { padding-top: 150px; }
-            .hero h1 { font-size: 3.2rem; }
-            .gallery-header { flex-direction: column; align-items: flex-start; gap: 20px; }
-            .gallery-header h2 { font-size: 2.8rem; }
-            .footer-grid { grid-template-columns: 1fr; }
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 3rem; }
+            .hero p { font-size: 1.1rem; }
+            .gallery-header h2 { font-size: 2.2rem; }
+            .contact-form-container { padding: 30px; }
+            .footer-main { grid-template-columns: 1fr; gap: 50px; }
         }
 
-        /* Utility Classes */
-        .btn-p {
-            padding: 20px 40px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            display: inline-block;
-            cursor: pointer;
-            border: none;
-            font-size: 0.8rem;
-            transition: var(--transition);
+        /* Floating WA Bubble */
+        .wa-float {
+            position: fixed; bottom: 30px; right: 30px;
+            width: 65px; height: 65px; background: var(--wa-green);
+            color: white; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; font-size: 2rem;
+            z-index: 2000; box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
+            text-decoration: none; transition: 0.4s;
         }
-        .btn-accent { background: var(--accent); color: white; }
-        .btn-accent:hover { background: #E65A00; transform: translateY(-5px); box-shadow: 0 10px 20px var(--accent-glow); }
-        .btn-outline { border: 2px solid var(--primary); color: var(--primary); background: transparent; }
-        .btn-outline:hover { background: var(--primary); color: white; }
+        .wa-float:hover { transform: rotate(15deg) scale(1.1); }
     </style>
 </head>
 <body>
@@ -354,245 +373,279 @@
         <i class="fa-brands fa-whatsapp"></i>
     </a>
 
-    <nav class="nav-bar" id="nav">
+    <header class="header" id="header">
         <a href="#" class="logo">SUMANTH<span>.</span>G</a>
-        <ul class="nav-menu">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#works">Gallery</a></li>
-            <li><a href="#print">Industrial</a></li>
-            <li><a href="#contact" class="btn-cta-nav">Let's Talk</a></li>
-        </ul>
+        <nav class="nav-menu">
+            <a href="#home" class="nav-item">Introduction</a>
+            <a href="#portfolio" class="nav-item">Portfolio</a>
+            <a href="#services" class="nav-item">Expertise</a>
+            <a href="#contact" class="nav-btn">Start Project</a>
+        </nav>
         <div class="mobile-toggle"><i class="fa-solid fa-bars-staggered"></i></div>
-    </nav>
+    </header>
 
     <section class="hero" id="home">
-        <div class="hero-inner">
-            <div class="hero-tag">
-                <span class="pulse"></span> SENIOR GRAPHIC DESIGNER • 2026
-            </div>
-            <h1>VISUAL <span class="stroke">POWER</span><br>FOR THE INDUSTRY.</h1>
-            <p>Based in <strong>Bengaluru</strong>, I specialize in transforming industrial and agricultural products into premium market leaders through high-end branding.</p>
-            <div class="hero-btns">
-                <a href="#works" class="btn-p btn-accent">View Portfolio <i class="fa-solid fa-arrow-right-long" style="margin-left: 10px;"></i></a>
-                <a href="#contact" class="btn-p btn-outline">Consultation</a>
+        <div class="container">
+            <div class="hero-text">
+                <span class="hero-badge">SENIOR GRAPHIC DESIGNER • 2026</span>
+                <h1>THE INTERSECTION OF <br> <span class="outline">ART & INDUSTRY.</span></h1>
+                <p>Industrial branding expert specializing in agricultural packaging, 3D architectural visualization, and regional language typography.</p>
+                <div class="hero-actions">
+                    <a href="#portfolio" class="btn-main btn-accent">View Gallery <i class="fa-solid fa-arrow-right-long"></i></a>
+                    <a href="#contact" class="btn-main btn-outline">Consultation</a>
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="gallery-section" id="works">
+    <section class="gallery-wrapper" id="portfolio">
         <div class="gallery-header">
             <div>
-                <span class="kan">ವಿನ್ಯಾಸ ಗ್ಯಾಲರಿ</span>
-                <h2>SELECTED WORKS</h2>
+                <span class="kan">ನಮ್ಮ ವಿನ್ಯಾಸ ಗ್ಯಾಲರಿ</span>
+                <h2>CASE STUDIES</h2>
             </div>
-            <div class="gallery-controls">
-                <div class="g-btn" id="slide-prev"><i class="fa-solid fa-arrow-left"></i></div>
-                <div class="g-btn" id="slide-next"><i class="fa-solid fa-arrow-right"></i></div>
+            <div class="scroll-controls">
+                <div class="ctrl-btn" id="go-prev"><i class="fa-solid fa-arrow-left"></i></div>
+                <div class="ctrl-btn" id="go-next"><i class="fa-solid fa-arrow-right"></i></div>
             </div>
         </div>
 
-        <div class="horizontal-scroller" id="scroller">
+        <div class="h-scroller" id="portfolio-scroller">
             </div>
     </section>
 
-    <section class="print-section" id="print">
-        <div style="text-align: center; max-width: 800px; margin: 0 auto 80px;">
-            <span class="kan" style="color: var(--accent);">ಮುದ್ರಣ ಕೇಂದ್ರ</span>
-            <h2 style="font-family: var(--font-head); font-size: 3.5rem; color: var(--primary);">INDUSTRIAL PRINT HUB</h2>
-            <p style="color: var(--text-muted); font-size: 1.2rem;">Complete branding ecosystem for large-scale industrial requirements.</p>
+    <section class="industrial" id="services">
+        <div class="section-intro">
+            <span class="kan">ಕೈಗಾರಿಕಾ ಮತ್ತು ಮುದ್ರಣ ಸೇವೆಗಳು</span>
+            <h2>INDUSTRIAL PRINT HUB</h2>
+            <p>From micro-startups to statewide campaigns, providing a complete ecosystem for print and digital identity.</p>
         </div>
-
-        <div class="print-grid" id="p-grid">
+        <div class="services-grid" id="services-grid">
             </div>
     </section>
 
-    <section class="contact-wrap" id="contact">
-        <div class="contact-details">
-            <span class="kan" style="color: var(--accent);">ಸಂಪರ್ಕಿಸಿ</span>
-            <h2>START A<br>PROJECT.</h2>
-            <p style="margin-bottom: 40px;">Available for freelance and corporate contracts across Karnataka.</p>
-            
-            <div style="margin-top: 50px;">
-                <div style="margin-bottom: 30px;">
-                    <h5 style="color: var(--accent); text-transform: uppercase; font-size: 0.8rem; margin-bottom: 10px;">Phone</h5>
-                    <a href="tel:7892647479" style="font-size: 2rem; font-weight: 800; color: var(--primary); text-decoration: none;">+91 7892647479</a>
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <div class="contact-block">
+                <div class="contact-content">
+                    <span class="kan" style="color:var(--accent)">ಸಂಪರ್ಕಿಸಿ</span>
+                    <h2>LET'S BUILD <br>SOMETHING.</h2>
+                    <p style="margin-bottom: 50px; color: var(--text-muted); font-size: 1.1rem;">
+                        Available for freelance contracts and long-term industrial design partnerships across Bengaluru and Karnataka.
+                    </p>
+                    
+                    <div class="contact-item">
+                        <div class="icon"><i class="fa-solid fa-phone"></i></div>
+                        <div>
+                            <small style="color: var(--accent); font-weight: 800; font-size: 0.7rem; text-transform: uppercase;">Direct Line</small>
+                            <div style="font-size: 1.5rem; font-weight: 900; color: var(--primary);">+91 7892647479</div>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="icon"><i class="fa-solid fa-location-dot"></i></div>
+                        <div>
+                            <small style="color: var(--accent); font-weight: 800; font-size: 0.7rem; text-transform: uppercase;">Location</small>
+                            <div style="font-size: 1.2rem; font-weight: 700; color: var(--primary);">Kannalli, Bengaluru, KA</div>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <h5 style="color: var(--accent); text-transform: uppercase; font-size: 0.8rem; margin-bottom: 10px;">Location</h5>
-                    <p style="font-size: 1.2rem; font-weight: 600;">Kittanahalli, Bengaluru, Karnataka - 562130</p>
+
+                <div class="contact-form-container">
+                    <form id="whatsapp-form">
+                        <div class="form-row">
+                            <label>Full Name</label>
+                            <input type="text" id="form-name" placeholder="Enter your name" required>
+                        </div>
+                        <div class="form-row">
+                            <label>Inquiry For</label>
+                            <select id="form-category">
+                                <option>Agricultural Packaging</option>
+                                <option>3D Front Elevation</option>
+                                <option>Industrial Branding</option>
+                                <option>Outdoor Hoardings</option>
+                                <option>Regional Typography</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <label>Brief Message</label>
+                            <textarea id="form-message" rows="4" placeholder="How can I help you?" required></textarea>
+                        </div>
+                        <button type="submit" class="wa-submit">
+                            <i class="fa-brands fa-whatsapp"></i> SEND TO WHATSAPP
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
-
-        <div class="contact-form">
-            <form id="portfolio-form">
-                <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" placeholder="John Doe" required>
-                </div>
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" placeholder="john@company.com" required>
-                </div>
-                <div class="form-group">
-                    <label>Inquiry Type</label>
-                    <input type="text" placeholder="Branding / Packaging / 3D Design">
-                </div>
-                <div class="form-group">
-                    <label>Message</label>
-                    <textarea rows="5" placeholder="Describe your project requirements..."></textarea>
-                </div>
-                <button type="submit" class="btn-p btn-accent" style="width: 100%;">Send Inquiry</button>
-            </form>
-        </div>
     </section>
 
-    <footer>
-        <div class="footer-grid">
-            <div>
+    <footer class="footer">
+        <div class="footer-main">
+            <div class="footer-brand">
                 <a href="#" class="logo" style="color: white;">SUMANTH<span>.</span>G</a>
-                <p style="margin-top: 30px; opacity: 0.6; line-height: 2;">
-                    Master of Computer Applications (MCA) specialized in high-performance visual communication. 
-                    Serving the agricultural and industrial backbone of India.
-                </p>
+                <p>Expert in visual communication and computer applications (MCA), bridging the gap between creative design and industrial utility.</p>
             </div>
-            <div>
-                <h4 style="margin-bottom: 30px; color: var(--accent);">EXPERTISE</h4>
-                <ul style="list-style: none; opacity: 0.7; line-height: 2.5;">
-                    <li>CorelDRAW Graphics</li>
-                    <li>Adobe Creative Suite</li>
-                    <li>Nudi Kannada Typo</li>
-                    <li>3D Front Elevations</li>
+            <div class="footer-links">
+                <h4>NAVIGATION</h4>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#portfolio">Work Gallery</a></li>
+                    <li><a href="#services">Print Hub</a></li>
+                    <li><a href="#contact">Contact</a></li>
                 </ul>
             </div>
-            <div>
-                <h4 style="margin-bottom: 30px; color: var(--accent);">QUICK LINKS</h4>
-                <ul style="list-style: none; opacity: 0.7; line-height: 2.5;">
-                    <li><a href="#home" style="color: white; text-decoration: none;">Introduction</a></li>
-                    <li><a href="#works" style="color: white; text-decoration: none;">Work Gallery</a></li>
-                    <li><a href="#print" style="color: white; text-decoration: none;">Print Hub</a></li>
-                    <li><a href="https://wa.me/917892647479" style="color: white; text-decoration: none;">WhatsApp</a></li>
+            <div class="footer-links">
+                <h4>CONNECT</h4>
+                <ul>
+                    <li><a href="https://wa.me/917892647479">WhatsApp</a></li>
+                    <li><a href="#">LinkedIn</a></li>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="mailto:sumanth@example.com">Email Me</a></li>
                 </ul>
             </div>
         </div>
-        <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 40px; text-align: center; font-size: 0.8rem; opacity: 0.4;">
-            &copy; 2026 SUMANTH G. DESIGNED IN BENGALURU. ALL RIGHTS RESERVED.
+        <div class="footer-bottom">
+            <div>&copy; 2026 SUMANTH G. ALL RIGHTS RESERVED.</div>
+            <div>BENGALURU • KARNATAKA • INDIA</div>
         </div>
     </footer>
 
     <script>
         /**
-         * 900+ LINE REPOSITORY & LOGIC ENGINE
+         * PORTFOLIO REPOSITORY DATA
+         * Ensuring maximum variety and functional depth.
          */
-        const PROJECTS = [
-            { t: "Jenushree Agritech Branding", c: "Agriculture", i: "625244724123-1ed302969799" },
-            { t: "Bio-Fertilizer Packaging", c: "Packaging", i: "1589923188900-85dae523342b" },
-            { t: "3D Front Elevation - 30x40", c: "Architecture", i: "1512917774080-9991f1c4c750" },
-            { t: "State Awareness Campaign", c: "Govt Branding", i: "1542744173-0592b0286627" },
-            { t: "Industrial Bucket Art", c: "Label Design", i: "1584622650111-993a426fbf0a" },
-            { t: "Kannada News Weekly", c: "Typography", i: "1585829365306-3343b0845811" },
-            { t: "Flex Hoarding System", c: "Outdoor Ads", i: "1533750357893-5d9f095024e0" },
-            { t: "Gold Business Cards", c: "Stationery", i: "1515934751635-c81c6bc9a2d8" },
-            { t: "Agri-Chemical Bottle", c: "Industrial", i: "1616423641454-da066b199859" },
-            { t: "Modern Duplex 3D", c: "Visualization", i: "1600585154340-be98fe2099a1" },
-            { t: "Organic Seed Pouch", c: "Packaging", i: "1615412723439-554560d33d41" },
-            { t: "Corporate Logo Design", c: "Identity", i: "1626785774573-4b799315345d" }
+        const PORTFOLIO_DB = [
+            { id: "101", title: "Jenushree Agritech", tag: "Industrial Branding", img: "625244724123-1ed302969799" },
+            { id: "102", title: "Bio-Fertilizer Pouch", tag: "Packaging", img: "1589923188900-85dae523342b" },
+            { id: "103", title: "3D Elevation - 600sqft", tag: "Architecture", img: "1512917774080-9991f1c4c750" },
+            { id: "104", title: "State Welfare Campaign", tag: "Govt Projects", img: "1542744173-0592b0286627" },
+            { id: "105", title: "Fertilizer Bucket Label", tag: "Print Media", img: "1584622650111-993a426fbf0a" },
+            { id: "106", title: "Kannada News Layout", tag: "Typography", img: "1585829365306-3343b0845811" },
+            { id: "107", title: "Organic Seed Pouch", tag: "Agricultural", img: "1615412723439-554560d33d41" },
+            { id: "108", title: "Industrial Hoardings", tag: "Outdoor Ads", img: "1533750357893-5d9f095024e0" }
         ];
 
-        const SERVICES = [
-            { n: "Flex Banners", icon: "fa-scroll" }, { n: "Visiting Cards", icon: "fa-address-card" },
-            { n: "Brochures", icon: "fa-book-open" }, { n: "Name Boards", icon: "fa-id-badge" },
-            { n: "Wedding Cards", icon: "fa-heart" }, { n: "Digital Print", icon: "fa-print" },
-            { n: "ID Cards", icon: "fa-user-tag" }, { n: "Bill Books", icon: "fa-file-invoice" },
-            { n: "Stickers", icon: "fa-note-sticky" }, { n: "Envelopes", icon: "fa-envelope" },
-            { n: "ACP Panels", icon: "fa-shield-halved" }, { n: "LED Boards", icon: "fa-lightbulb" },
-            { n: "Canopy", icon: "fa-tent" }, { n: "Standees", icon: "fa-person-rays" },
-            { n: "Rubber Stamps", icon: "fa-stamp" }, { n: "Screen Printing", icon: "fa-palette" },
-            { n: "No Parking Boards", icon: "fa-ban" }, { n: "Certificates", icon: "fa-certificate" }
+        const SERVICE_LIST = [
+            { name: "Flex Banners", icon: "fa-scroll" },
+            { name: "Visiting Cards", icon: "fa-address-card" },
+            { name: "Brochures", icon: "fa-book-open" },
+            { name: "Name Boards", icon: "fa-id-badge" },
+            { name: "Wedding Cards", icon: "fa-heart" },
+            { name: "Digital Print", icon: "fa-print" },
+            { name: "Bill Books", icon: "fa-file-invoice" },
+            { name: "Stickers", icon: "fa-note-sticky" },
+            { name: "ID Cards", icon: "fa-user-tag" },
+            { name: "Envelopes", icon: "fa-envelope" },
+            { name: "ACP Panels", icon: "fa-shield-halved" },
+            { name: "LED Boards", icon: "fa-lightbulb" },
+            { name: "Canopy Designs", icon: "fa-tent" },
+            { name: "Rubber Stamps", icon: "fa-stamp" },
+            { name: "No Parking Boards", icon: "fa-ban" },
+            { name: "Certificates", icon: "fa-certificate" },
+            { name: "Screen Print", icon: "fa-palette" },
+            { name: "Letterheads", icon: "fa-file-lines" },
+            { name: "Stamps", icon: "fa-stamp" },
+            { name: "Lanyards", icon: "fa-ribbon" }
         ];
 
-        class PortfolioApp {
+        class PortfolioEngine {
             constructor() {
-                this.scroller = document.getElementById('scroller');
+                this.scroller = document.getElementById('portfolio-scroller');
+                this.grid = document.getElementById('services-grid');
+                this.header = document.getElementById('header');
                 this.init();
             }
 
             init() {
-                this.renderGallery();
+                this.renderPortfolio();
                 this.renderServices();
-                this.setupNavigation();
-                this.setupScrollAnimations();
-                this.handleHorizontalScroll();
+                this.handleScroll();
+                this.initForm();
+                this.initAnimations();
             }
 
-            renderGallery() {
-                PROJECTS.forEach(p => {
-                    const el = document.createElement('div');
-                    el.className = 'work-item';
-                    el.innerHTML = `
-                        <img src="https://images.unsplash.com/photo-${p.i}?auto=format&fit=crop&q=80&w=800" alt="${p.t}" loading="lazy">
-                        <div class="work-info">
-                            <span>${p.c}</span>
-                            <h3>${p.t}</h3>
+            renderPortfolio() {
+                PORTFOLIO_DB.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'work-card';
+                    card.innerHTML = `
+                        <img src="https://images.unsplash.com/photo-${item.img}?auto=format&fit=crop&q=80&w=800" alt="${item.title}" loading="lazy">
+                        <div class="work-meta">
+                            <span>${item.tag}</span>
+                            <h3>${item.title}</h3>
                         </div>
                     `;
-                    this.scroller.appendChild(el);
+                    this.scroller.appendChild(card);
                 });
             }
 
             renderServices() {
-                const grid = document.getElementById('p-grid');
-                SERVICES.forEach(s => {
-                    const card = document.createElement('div');
-                    card.className = 'print-card';
-                    card.innerHTML = `<i class="fa-solid ${s.icon}"></i><h4>${s.n}</h4>`;
-                    grid.appendChild(card);
+                SERVICE_LIST.forEach(s => {
+                    const box = document.createElement('div');
+                    box.className = 's-card';
+                    box.innerHTML = `<i class="fa-solid ${s.icon}"></i><h4>${s.name}</h4>`;
+                    this.grid.appendChild(box);
                 });
             }
 
-            setupNavigation() {
+            handleScroll() {
                 window.addEventListener('scroll', () => {
-                    const nav = document.getElementById('nav');
-                    if(window.scrollY > 50) nav.classList.add('scrolled');
-                    else nav.classList.remove('scrolled');
+                    if (window.scrollY > 50) this.header.classList.add('active');
+                    else this.header.classList.remove('active');
                 });
 
-                document.getElementById('slide-next').addEventListener('click', () => {
-                    this.scroller.scrollBy({ left: 490, behavior: 'smooth' });
-                });
+                document.getElementById('go-next').onclick = () => this.scroller.scrollBy({ left: 540, behavior: 'smooth' });
+                document.getElementById('go-prev').onclick = () => this.scroller.scrollBy({ left: -540, behavior: 'smooth' });
 
-                document.getElementById('slide-prev').addEventListener('click', () => {
-                    this.scroller.scrollBy({ left: -490, behavior: 'smooth' });
-                });
-            }
-
-            handleHorizontalScroll() {
-                // Mouse Wheel to Horizontal Scroll conversion for gallery
-                this.scroller.addEventListener('wheel', (evt) => {
-                    if (window.innerWidth > 1024) {
-                        evt.preventDefault();
-                        this.scroller.scrollLeft += evt.deltaY;
+                // Mouse Wheel to Horizontal for Desktop
+                this.scroller.addEventListener('wheel', (e) => {
+                    if (window.innerWidth > 992) {
+                        e.preventDefault();
+                        this.scroller.scrollLeft += e.deltaY;
                     }
                 }, { passive: false });
             }
 
-            setupScrollAnimations() {
+            initForm() {
+                const form = document.getElementById('whatsapp-form');
+                form.onsubmit = (e) => {
+                    e.preventDefault();
+                    const name = document.getElementById('form-name').value;
+                    const cat = document.getElementById('form-category').value;
+                    const msg = document.getElementById('form-message').value;
+                    const phone = "917892647479";
+
+                    const text = encodeURIComponent(
+                        `*New Inquiry from Sumanth G Portfolio*\n\n` +
+                        `*Client Name:* ${name}\n` +
+                        `*Requirement:* ${cat}\n` +
+                        `*Message:* ${msg}`
+                    );
+
+                    window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
+                };
+            }
+
+            initAnimations() {
                 gsap.registerPlugin(ScrollTrigger);
 
                 gsap.from('.hero h1', { opacity: 0, y: 100, duration: 1.5, ease: "power4.out" });
-                gsap.from('.hero p', { opacity: 0, x: -50, delay: 0.5, duration: 1 });
+                gsap.from('.hero p', { opacity: 0, delay: 0.5, duration: 1 });
+                gsap.from('.btn-main', { opacity: 0, scale: 0.8, stagger: 0.2, delay: 0.8, duration: 1 });
 
-                gsap.utils.toArray('.print-card').forEach(card => {
+                gsap.utils.toArray('.s-card').forEach(card => {
                     gsap.from(card, {
-                        scrollTrigger: { trigger: card, start: "top 90%" },
-                        opacity: 0, y: 30, duration: 0.8
+                        scrollTrigger: { trigger: card, start: "top 95%" },
+                        opacity: 0, y: 30, duration: 0.6
                     });
                 });
             }
         }
 
-        // Execution
-        document.addEventListener('DOMContentLoaded', () => new PortfolioApp());
+        // START ENGINE
+        document.addEventListener('DOMContentLoaded', () => new PortfolioEngine());
     </script>
 </body>
 </html>
