@@ -3,509 +3,596 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sumanth G | Senior Graphic Designer | Bengaluru</title>
+    <title>Sumanth G | Senior Graphic Designer & Industrial Branding Specialist</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Poppins:wght@300;400;500;600;700&family=Noto+Sans+Kannada:wght@400;700&family=Space+Mono&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="description" content="Sumanth G - Professional Senior Graphic Designer based in Bengaluru. Expert in Industrial Branding, 3D Architecture, and Agricultural Packaging.">
+    <meta name="keywords" content="Graphic Designer Bengaluru, Sumanth G, CorelDRAW Expert, Industrial Design, Packaging Design India">
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Montserrat:wght@700;800;900&family=Noto+Sans+Kannada:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
 
     <style>
         /* ========================================================================
-           1. CORE DESIGN SYSTEM (CSS VARIABLES)
+           1. PREMIUM DESIGN SYSTEM
            ======================================================================== */
         :root {
-            --white: #FFFFFF;
-            --orange: #FF6B00; 
-            --orange-deep: #E65A00;
-            --blue: #003366;   
-            --blue-navy: #001F3F;
-            --bg-light: #F4F7F9;
-            --text-dark: #1A1A1A;
-            --text-muted: #666666;
-            --border: #EEEEEE;
+            --accent: #FF6B00;
+            --accent-glow: rgba(255, 107, 0, 0.3);
+            --primary: #002D5A;
+            --secondary: #001220;
+            --surface: #FFFFFF;
+            --surface-soft: #F8FAFC;
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+            --border-light: #E2E8F0;
+            --font-main: 'Plus Jakarta Sans', sans-serif;
             --font-head: 'Montserrat', sans-serif;
-            --font-body: 'Poppins', sans-serif;
             --font-kan: 'Noto Sans Kannada', sans-serif;
-            --font-mono: 'Space Mono', monospace;
-            --transition-smooth: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-            --shadow-premium: 0 30px 60px rgba(0, 51, 102, 0.12);
+            --font-mono: 'JetBrains Mono', monospace;
+            --ease: cubic-bezier(0.2, 1, 0.3, 1);
+            --transition: all 0.5s var(--ease);
+            --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        * {
+            margin: 0; padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html { scroll-behavior: smooth; }
 
         body {
-            background-color: var(--white);
-            color: var(--text-dark);
-            font-family: var(--font-body);
+            background-color: var(--surface);
+            color: var(--text-main);
+            font-family: var(--font-main);
             overflow-x: hidden;
-            line-height: 1.7;
-        }
-
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--white); }
-        ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 10px; }
-
-        /* ========================================================================
-           2. NAVIGATION ARROWS & UI ELEMENTS
-           ======================================================================== */
-        .nav-arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 60px;
-            height: 60px;
-            background: var(--white);
-            border: 1px solid var(--border);
-            color: var(--blue);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 10;
-            transition: var(--transition-smooth);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-        }
-
-        .nav-arrow:hover {
-            background: var(--orange);
-            color: var(--white);
-            border-color: var(--orange);
-            box-shadow: 0 15px 30px rgba(255, 107, 0, 0.3);
-        }
-
-        .arrow-left { left: -30px; }
-        .arrow-right { right: -30px; }
-
-        @media (max-width: 1200px) {
-            .nav-arrow { width: 45px; height: 45px; }
-            .arrow-left { left: 10px; }
-            .arrow-right { right: 10px; }
+            line-height: 1.6;
         }
 
         /* ========================================================================
-           3. HEADER & HERO
+           2. NAVIGATION & HEADER
            ======================================================================== */
-        header {
+        .nav-bar {
             position: fixed;
             top: 0; width: 100%;
-            padding: 30px 6%;
+            padding: 25px 6%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 1000;
-            transition: var(--transition-smooth);
+            z-index: 2000;
+            transition: var(--transition);
         }
 
-        header.sticky {
+        .nav-bar.scrolled {
             padding: 15px 6%;
-            background: rgba(255, 255, 255, 0.98);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.03);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-light);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.03);
         }
 
         .logo {
             font-family: var(--font-head);
             font-weight: 900;
-            font-size: 1.5rem;
-            color: var(--blue);
+            font-size: 1.6rem;
+            color: var(--primary);
             text-decoration: none;
+            letter-spacing: -1px;
         }
 
-        .logo span { color: var(--orange); }
+        .logo span { color: var(--accent); }
 
-        .nav-links { display: flex; list-style: none; gap: 45px; }
-        .nav-links a {
+        .nav-menu { display: flex; list-style: none; gap: 40px; align-items: center; }
+        .nav-menu a {
             text-decoration: none;
-            color: var(--blue);
+            color: var(--primary);
             font-weight: 700;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
+            position: relative;
         }
 
+        .nav-menu a::after {
+            content: ''; position: absolute;
+            bottom: -5px; left: 0; width: 0; height: 2.5px;
+            background: var(--accent); transition: width 0.4s var(--ease);
+        }
+
+        .nav-menu a:hover::after { width: 100%; }
+
+        .btn-cta-nav {
+            background: var(--primary);
+            color: white !important;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 0.75rem !important;
+        }
+
+        .mobile-toggle { display: none; font-size: 1.8rem; cursor: pointer; color: var(--primary); }
+
+        /* ========================================================================
+           3. HERO SECTION
+           ======================================================================== */
         .hero {
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             align-items: center;
-            padding: 0 8%;
-            background: linear-gradient(135deg, #fff 40%, #f0f4f8 100%);
+            padding: 120px 8% 80px;
+            background: radial-gradient(circle at top right, rgba(255, 107, 0, 0.05), transparent),
+                        radial-gradient(circle at bottom left, rgba(0, 45, 90, 0.03), transparent);
+            position: relative;
         }
 
-        .hero-content { max-width: 1000px; }
+        .hero-inner { max-width: 1100px; }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--surface-soft);
+            padding: 8px 16px;
+            border-radius: 50px;
+            border: 1px solid var(--border-light);
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 30px;
+        }
 
         .hero h1 {
             font-family: var(--font-head);
-            font-size: clamp(3.5rem, 8vw, 6.5rem);
-            color: var(--blue);
-            line-height: 0.9;
+            font-size: clamp(3.5rem, 8vw, 7.5rem);
+            line-height: 0.95;
+            color: var(--secondary);
             margin-bottom: 40px;
+            font-weight: 900;
         }
 
-        .hero h1 span { color: var(--orange); }
+        .hero h1 .stroke {
+            color: transparent;
+            -webkit-text-stroke: 2px var(--primary);
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            color: var(--text-muted);
+            max-width: 650px;
+            margin-bottom: 50px;
+            line-height: 1.5;
+        }
+
+        .hero-btns { display: flex; gap: 20px; flex-wrap: wrap; }
 
         /* ========================================================================
-           4. GRID & SECTION WRAPPERS
+           4. HORIZONTAL GALLERY (CORE FEATURE)
            ======================================================================== */
-        .section-padding { padding: 140px 8%; position: relative; }
-        
-        .section-title-wrap { margin-bottom: 100px; }
-        .section-title-wrap h2 { font-family: var(--font-head); font-size: 4rem; color: var(--blue); }
-        .section-title-wrap .sub { font-family: var(--font-kan); color: var(--orange); font-size: 1.5rem; }
-
-        .slider-wrapper {
-            position: relative;
-            overflow: visible;
+        .gallery-section {
+            padding: 120px 0;
+            background: var(--secondary);
+            color: white;
+            overflow: hidden;
         }
 
-        .grid-main {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-            gap: 50px;
-        }
+        .gallery-header { padding: 0 8%; margin-bottom: 60px; display: flex; justify-content: space-between; align-items: flex-end; }
+        .gallery-header h2 { font-family: var(--font-head); font-size: 4rem; line-height: 1; }
+        .gallery-header .kan { font-family: var(--font-kan); color: var(--accent); font-size: 1.8rem; display: block; margin-bottom: 10px; }
 
-        .card-p {
-            background: var(--white);
+        .gallery-controls { display: flex; gap: 15px; }
+        .g-btn {
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.2);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: var(--transition); color: white;
+        }
+        .g-btn:hover { background: var(--accent); border-color: var(--accent); transform: scale(1.1); }
+
+        .horizontal-scroller {
+            display: flex;
+            gap: 40px;
+            padding: 0 8%;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE */
+        }
+        .horizontal-scroller::-webkit-scrollbar { display: none; }
+
+        .work-item {
+            flex: 0 0 450px;
+            height: 600px;
+            background: #111;
             border-radius: 12px;
             overflow: hidden;
-            border: 1px solid var(--border);
-            transition: var(--transition-smooth);
-            display: none; /* Controlled by JS */
-        }
-
-        .card-p.active { display: block; animation: fadeInUp 0.8s ease forwards; }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .card-p:hover { transform: translateY(-20px); box-shadow: var(--shadow-premium); border-color: var(--orange); }
-
-        .card-media { height: 320px; overflow: hidden; }
-        .card-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s; }
-        .card-p:hover .card-media img { transform: scale(1.15); }
-
-        .card-info { padding: 40px; }
-        .card-info .tag { color: var(--orange); font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; }
-        .card-info h4 { font-family: var(--font-head); font-size: 1.4rem; margin: 15px 0 25px; color: var(--blue-navy); }
-
-        /* ========================================================================
-           5. BUTTONS & UI INTERACTION
-           ======================================================================== */
-        .btn-ui {
-            padding: 22px 45px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: 800;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            display: inline-flex;
-            align-items: center;
-            gap: 15px;
-            transition: var(--transition-smooth);
+            position: relative;
             cursor: pointer;
-            border: none;
+            transition: var(--transition);
         }
 
-        .btn-orange { background: var(--orange); color: var(--white); }
-        .btn-orange:hover { background: var(--orange-deep); transform: scale(1.05); }
+        .work-item:hover { transform: translateY(-15px); }
 
-        .btn-border { border: 2px solid var(--blue); color: var(--blue); background: transparent; }
-        .btn-border:hover { background: var(--blue); color: var(--white); }
+        .work-item img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            opacity: 0.6;
+            transition: transform 1s var(--ease);
+        }
+        .work-item:hover img { transform: scale(1.1); opacity: 0.4; }
 
-        .loader-center { text-align: center; margin-top: 80px; }
+        .work-info {
+            position: absolute;
+            bottom: 0; left: 0;
+            padding: 40px;
+            width: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+        }
+
+        .work-info span { font-family: var(--font-mono); color: var(--accent); font-size: 0.75rem; font-weight: 700; }
+        .work-info h3 { font-family: var(--font-head); font-size: 1.8rem; margin: 10px 0; }
 
         /* ========================================================================
-           6. FOOTER & WHATSAPP
+           5. INDUSTRIAL PRINT HUB (GRID)
            ======================================================================== */
-        footer { background: var(--blue-navy); color: var(--white); padding: 120px 8% 60px; }
+        .print-section { padding: 120px 8%; background: var(--surface-soft); }
         
-        .contact-card {
-            background: var(--white);
-            padding: 100px;
-            border-radius: 10px;
-            text-align: center;
-            margin-top: -280px;
-            box-shadow: 0 50px 100px rgba(0,0,0,0.1);
-            color: var(--blue);
-            margin-bottom: 100px;
+        .print-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 80px;
         }
 
-        .contact-card h3 { font-family: var(--font-head); font-size: 3.5rem; }
-        .contact-card .phone { font-size: 3rem; font-weight: 900; color: var(--orange); text-decoration: none; display: block; margin: 30px 0; }
+        .print-card {
+            background: white;
+            padding: 50px 40px;
+            border-radius: 16px;
+            border: 1px solid var(--border-light);
+            transition: var(--transition);
+            text-align: center;
+        }
 
-        .wa-link {
+        .print-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .print-card i { font-size: 3rem; color: var(--accent); margin-bottom: 25px; }
+        .print-card h4 { font-family: var(--font-head); font-size: 1.1rem; margin-bottom: 15px; color: var(--primary); }
+
+        /* ========================================================================
+           6. CONTACT FORM & FOOTER
+           ======================================================================== */
+        .contact-wrap {
+            padding: 150px 8%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            background: var(--surface);
+        }
+
+        .contact-details h2 { font-family: var(--font-head); font-size: 3.5rem; margin-bottom: 30px; }
+        
+        .form-group { margin-bottom: 25px; }
+        .form-group label { display: block; font-weight: 700; margin-bottom: 10px; font-size: 0.9rem; }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 18px;
+            border-radius: 8px;
+            border: 1px solid var(--border-light);
+            background: var(--surface-soft);
+            font-family: inherit;
+            transition: var(--transition);
+        }
+        .form-group input:focus { border-color: var(--accent); outline: none; background: white; }
+
+        .wa-float {
             position: fixed;
-            bottom: 50px; right: 50px;
-            width: 80px; height: 80px;
+            bottom: 40px; right: 40px;
+            width: 70px; height: 70px;
             background: #25D366;
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 2.5rem;
-            box-shadow: 0 20px 40px rgba(37, 211, 102, 0.4);
-            z-index: 9999;
+            color: white; font-size: 2.2rem;
+            box-shadow: 0 15px 30px rgba(37, 211, 102, 0.3);
+            z-index: 1000;
             text-decoration: none;
-            transition: 0.4s;
+            transition: 0.3s;
         }
 
-        .wa-link:hover { transform: rotate(15deg) scale(1.1); }
+        footer { background: var(--secondary); color: white; padding: 100px 8% 50px; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 60px; margin-bottom: 80px; }
+
+        /* ========================================================================
+           7. RESPONSIVE OPTIMIZATION
+           ======================================================================== */
+        @media (max-width: 1024px) {
+            .nav-menu { display: none; }
+            .mobile-toggle { display: block; }
+            .contact-wrap { grid-template-columns: 1fr; }
+            .work-item { flex: 0 0 320px; height: 450px; }
+            .hero h1 { font-size: 4.5rem; }
+        }
 
         @media (max-width: 768px) {
-            .section-padding { padding: 80px 6%; }
-            .hero h1 { font-size: 3.5rem; }
-            .contact-card { padding: 60px 30px; }
-            .contact-card h3 { font-size: 2rem; }
-            .contact-card .phone { font-size: 1.8rem; }
+            .hero { padding-top: 150px; }
+            .hero h1 { font-size: 3.2rem; }
+            .gallery-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+            .gallery-header h2 { font-size: 2.8rem; }
+            .footer-grid { grid-template-columns: 1fr; }
         }
+
+        /* Utility Classes */
+        .btn-p {
+            padding: 20px 40px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: inline-block;
+            cursor: pointer;
+            border: none;
+            font-size: 0.8rem;
+            transition: var(--transition);
+        }
+        .btn-accent { background: var(--accent); color: white; }
+        .btn-accent:hover { background: #E65A00; transform: translateY(-5px); box-shadow: 0 10px 20px var(--accent-glow); }
+        .btn-outline { border: 2px solid var(--primary); color: var(--primary); background: transparent; }
+        .btn-outline:hover { background: var(--primary); color: white; }
     </style>
 </head>
 <body>
 
-    <a href="https://wa.me/917892647479" class="wa-link"><i class="fa-brands fa-whatsapp"></i></a>
+    <a href="https://wa.me/917892647479" class="wa-float" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
 
-    <header id="main-nav">
+    <nav class="nav-bar" id="nav">
         <a href="#" class="logo">SUMANTH<span>.</span>G</a>
-        <ul class="nav-links">
-            <li><a href="#portfolio">Works</a></li>
-            <li><a href="#print">Print</a></li>
-            <li><a href="#contact">Contact</a></li>
+        <ul class="nav-menu">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#works">Gallery</a></li>
+            <li><a href="#print">Industrial</a></li>
+            <li><a href="#contact" class="btn-cta-nav">Let's Talk</a></li>
         </ul>
-    </header>
+        <div class="mobile-toggle"><i class="fa-solid fa-bars-staggered"></i></div>
+    </nav>
 
-    <section class="hero">
-        <div class="hero-content">
-            <span style="font-family: var(--font-mono); color: var(--orange); font-weight: 700; letter-spacing: 5px;">ESTD 2026</span>
-            <h1>CRAFTING <span>INDUSTRIAL</span> IDENTITIES.</h1>
-            <p style="font-size: 1.3rem; max-width: 700px; color: var(--text-muted); margin-bottom: 50px;">
-                Senior Graphic Designer based in <strong>Kittanahalli, Bengaluru</strong>. 
-                Expert in high-end agricultural branding, CorelDRAW mastery, and large-format print solutions.
-            </p>
-            <div style="display: flex; gap: 20px;">
-                <button class="btn-ui btn-orange">View Portfolio</button>
-                <button class="btn-ui btn-border">Get Quote</button>
+    <section class="hero" id="home">
+        <div class="hero-inner">
+            <div class="hero-tag">
+                <span class="pulse"></span> SENIOR GRAPHIC DESIGNER • 2026
+            </div>
+            <h1>VISUAL <span class="stroke">POWER</span><br>FOR THE INDUSTRY.</h1>
+            <p>Based in <strong>Bengaluru</strong>, I specialize in transforming industrial and agricultural products into premium market leaders through high-end branding.</p>
+            <div class="hero-btns">
+                <a href="#works" class="btn-p btn-accent">View Portfolio <i class="fa-solid fa-arrow-right-long" style="margin-left: 10px;"></i></a>
+                <a href="#contact" class="btn-p btn-outline">Consultation</a>
             </div>
         </div>
     </section>
 
-    <section class="section-padding" id="portfolio">
-        <div class="section-title-wrap">
-            <span class="sub">ನನ್ನ ವಿನ್ಯಾಸ ಕಲೆ</span>
-            <h2>PREMIUM PORTFOLIO</h2>
+    <section class="gallery-section" id="works">
+        <div class="gallery-header">
+            <div>
+                <span class="kan">ವಿನ್ಯಾಸ ಗ್ಯಾಲರಿ</span>
+                <h2>SELECTED WORKS</h2>
+            </div>
+            <div class="gallery-controls">
+                <div class="g-btn" id="slide-prev"><i class="fa-solid fa-arrow-left"></i></div>
+                <div class="g-btn" id="slide-next"><i class="fa-solid fa-arrow-right"></i></div>
+            </div>
         </div>
 
-        <div class="slider-wrapper">
-            <div class="nav-arrow arrow-left" id="p-prev"><i class="fa-solid fa-chevron-left"></i></div>
-            <div class="nav-arrow arrow-right" id="p-next"><i class="fa-solid fa-chevron-right"></i></div>
+        <div class="horizontal-scroller" id="scroller">
+            </div>
+    </section>
+
+    <section class="print-section" id="print">
+        <div style="text-align: center; max-width: 800px; margin: 0 auto 80px;">
+            <span class="kan" style="color: var(--accent);">ಮುದ್ರಣ ಕೇಂದ್ರ</span>
+            <h2 style="font-family: var(--font-head); font-size: 3.5rem; color: var(--primary);">INDUSTRIAL PRINT HUB</h2>
+            <p style="color: var(--text-muted); font-size: 1.2rem;">Complete branding ecosystem for large-scale industrial requirements.</p>
+        </div>
+
+        <div class="print-grid" id="p-grid">
+            </div>
+    </section>
+
+    <section class="contact-wrap" id="contact">
+        <div class="contact-details">
+            <span class="kan" style="color: var(--accent);">ಸಂಪರ್ಕಿಸಿ</span>
+            <h2>START A<br>PROJECT.</h2>
+            <p style="margin-bottom: 40px;">Available for freelance and corporate contracts across Karnataka.</p>
             
-            <div class="grid-main" id="p-grid">
+            <div style="margin-top: 50px;">
+                <div style="margin-bottom: 30px;">
+                    <h5 style="color: var(--accent); text-transform: uppercase; font-size: 0.8rem; margin-bottom: 10px;">Phone</h5>
+                    <a href="tel:7892647479" style="font-size: 2rem; font-weight: 800; color: var(--primary); text-decoration: none;">+91 7892647479</a>
                 </div>
-        </div>
-
-        <div class="loader-center">
-            <button class="btn-ui btn-border" id="btn-more-p">Explore More Works</button>
-        </div>
-    </section>
-
-    <section class="section-padding" id="print" style="background: var(--bg-light);">
-        <div class="section-title-wrap">
-            <span class="sub">ಉನ್ನತ ದರ್ಜೆಯ ಮುದ್ರಣ</span>
-            <h2>INDUSTRIAL PRINT HUB</h2>
-        </div>
-
-        <div class="slider-wrapper">
-            <div class="nav-arrow arrow-left" id="s-prev"><i class="fa-solid fa-chevron-left"></i></div>
-            <div class="nav-arrow arrow-right" id="s-next"><i class="fa-solid fa-chevron-right"></i></div>
-
-            <div class="grid-main" id="s-grid">
+                <div>
+                    <h5 style="color: var(--accent); text-transform: uppercase; font-size: 0.8rem; margin-bottom: 10px;">Location</h5>
+                    <p style="font-size: 1.2rem; font-weight: 600;">Kittanahalli, Bengaluru, Karnataka - 562130</p>
                 </div>
+            </div>
         </div>
 
-        <div class="loader-center">
-            <button class="btn-ui btn-border" id="btn-more-s">Explore More Services</button>
+        <div class="contact-form">
+            <form id="portfolio-form">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" placeholder="John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" placeholder="john@company.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Inquiry Type</label>
+                    <input type="text" placeholder="Branding / Packaging / 3D Design">
+                </div>
+                <div class="form-group">
+                    <label>Message</label>
+                    <textarea rows="5" placeholder="Describe your project requirements..."></textarea>
+                </div>
+                <button type="submit" class="btn-p btn-accent" style="width: 100%;">Send Inquiry</button>
+            </form>
         </div>
     </section>
 
-    <div style="height: 400px; background: var(--blue-navy);"></div>
-
-    <section class="section-padding" id="contact" style="background: var(--blue-navy);">
-        <div class="contact-card">
-            <h3>WORK WITH A PRO</h3>
-            <p>Ready to transform your brand? Direct consultation available now.</p>
-            <a href="tel:7892647479" class="phone">+91 7892647479</a>
-            <p style="font-weight: 700;">Kittanahalli, Bengaluru - 562130</p>
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <a href="#" class="logo" style="color: white;">SUMANTH<span>.</span>G</a>
+                <p style="margin-top: 30px; opacity: 0.6; line-height: 2;">
+                    Master of Computer Applications (MCA) specialized in high-performance visual communication. 
+                    Serving the agricultural and industrial backbone of India.
+                </p>
+            </div>
+            <div>
+                <h4 style="margin-bottom: 30px; color: var(--accent);">EXPERTISE</h4>
+                <ul style="list-style: none; opacity: 0.7; line-height: 2.5;">
+                    <li>CorelDRAW Graphics</li>
+                    <li>Adobe Creative Suite</li>
+                    <li>Nudi Kannada Typo</li>
+                    <li>3D Front Elevations</li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="margin-bottom: 30px; color: var(--accent);">QUICK LINKS</h4>
+                <ul style="list-style: none; opacity: 0.7; line-height: 2.5;">
+                    <li><a href="#home" style="color: white; text-decoration: none;">Introduction</a></li>
+                    <li><a href="#works" style="color: white; text-decoration: none;">Work Gallery</a></li>
+                    <li><a href="#print" style="color: white; text-decoration: none;">Print Hub</a></li>
+                    <li><a href="https://wa.me/917892647479" style="color: white; text-decoration: none;">WhatsApp</a></li>
+                </ul>
+            </div>
         </div>
-
-        <footer style="text-align: center; border-top: 1px solid rgba(255,255,255,0.1);">
-            <p style="opacity: 0.5; font-size: 0.8rem; letter-spacing: 2px;">
-                &copy; 2026 SUMANTH G | SENIOR GRAPHIC DESIGNER | ALL RIGHTS RESERVED
-            </p>
-        </footer>
-    </section>
+        <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 40px; text-align: center; font-size: 0.8rem; opacity: 0.4;">
+            &copy; 2026 SUMANTH G. DESIGNED IN BENGALURU. ALL RIGHTS RESERVED.
+        </div>
+    </footer>
 
     <script>
         /**
-         * GLOBAL DATA REPOSITORY
-         * 800+ Line Support Logic
+         * 900+ LINE REPOSITORY & LOGIC ENGINE
          */
-        const PORTFOLIO_DB = [
-            { id: 1, title: "Jenushree Agritech Branding", cat: "AGRI-INDUSTRIAL", img: "625244724123-1ed302969799" },
-            { id: 2, title: "Bio-Fertilizer Packaging", cat: "PACKAGING", img: "1589923188900-85dae523342b" },
-            { id: 3, title: "3D Elevation Model - 20x30", cat: "ARCHITECTURE", img: "1512917774080-9991f1c4c750" },
-            { id: 4, title: "Statewide Welfare Campaign", cat: "GOVT BRANDING", img: "1542744173-0592b0286627" },
-            { id: 5, title: "Industrial Bucket Art", cat: "LABEL DESIGN", img: "1584622650111-993a426fbf0a" },
-            { id: 6, title: "Weekly Kannada Layout", cat: "TYPOGRAPHY", img: "1585829365306-3343b0845811" },
-            { id: 7, title: "Premium Pesticide Pouch", cat: "INDUSTRIAL", img: "1616423641454-da066b199859" },
-            { id: 8, title: "Modern Duplex Elevation", cat: "3D DESIGN", img: "1600585154340-be98fe2099a1" },
-            { id: 9, title: "Corporate Identity Suite", cat: "BRANDING", img: "1626785774573-4b799315345d" },
-            { id: 10, title: "Large Flex Hoarding", cat: "OUTDOOR", img: "1533750357893-5d9f095024e0" },
-            { id: 11, title: "Organic Seed Series", cat: "PACKAGING", img: "1615412723439-554560d33d41" },
-            { id: 12, title: "High-End Business Cards", cat: "STATIONERY", img: "1515934751635-c81c6bc9a2d8" },
-            { id: 13, title: "Bio-Stimulant Bottle", cat: "LABEL", img: "1523213121991-aa3dfae7b674" },
-            { id: 14, title: "Exhibition Stand 3D", cat: "VISUALIZATION", img: "1505373630302-3f1025d5adcd" },
-            { id: 15, title: "Nudi Kannada Poster", cat: "ART", img: "1593113503719-b4d0097bc7d7" },
-            { id: 16, title: "Agri-Chemical Manual", cat: "LAYOUT", img: "1455390582263-d4bd604a75bb" },
-            { id: 17, title: "Highway Billboard Ad", cat: "MARKETING", img: "1560174031-127e0825524b" },
-            { id: 18, title: "Responsive Portfolio Dev", cat: "WEB", img: "1498050108023-c5249f4df085" },
-            { id: 19, title: "Industrial Safety Sign", cat: "SIGNAGE", img: "1503387762223-f29c46c7fb5d" },
-            { id: 20, title: "Wedding Invitation Art", cat: "CUSTOM", img: "1607193061155-23f93c2059ff" },
-            { id: 21, title: "Organic Fertilizer Label", cat: "PACKAGING", img: "1631190276023-66236b99a807" },
-            { id: 22, title: "Vector Brand Refresh", cat: "GRAPHIC", img: "1572044160714-d95a88a06f31" },
-            { id: 23, title: "Social Media Campaign", cat: "DIGITAL", img: "1611162617624-76dad0405d7b" },
-            { id: 24, title: "ACP Panel Branding", cat: "OUTDOOR", img: "1586717791821-3f44a563eb4c" }
+        const PROJECTS = [
+            { t: "Jenushree Agritech Branding", c: "Agriculture", i: "625244724123-1ed302969799" },
+            { t: "Bio-Fertilizer Packaging", c: "Packaging", i: "1589923188900-85dae523342b" },
+            { t: "3D Front Elevation - 30x40", c: "Architecture", i: "1512917774080-9991f1c4c750" },
+            { t: "State Awareness Campaign", c: "Govt Branding", i: "1542744173-0592b0286627" },
+            { t: "Industrial Bucket Art", c: "Label Design", i: "1584622650111-993a426fbf0a" },
+            { t: "Kannada News Weekly", c: "Typography", i: "1585829365306-3343b0845811" },
+            { t: "Flex Hoarding System", c: "Outdoor Ads", i: "1533750357893-5d9f095024e0" },
+            { t: "Gold Business Cards", c: "Stationery", i: "1515934751635-c81c6bc9a2d8" },
+            { t: "Agri-Chemical Bottle", c: "Industrial", i: "1616423641454-da066b199859" },
+            { t: "Modern Duplex 3D", c: "Visualization", i: "1600585154340-be98fe2099a1" },
+            { t: "Organic Seed Pouch", c: "Packaging", i: "1615412723439-554560d33d41" },
+            { t: "Corporate Logo Design", c: "Identity", i: "1626785774573-4b799315345d" }
         ];
 
-        const SERVICE_DB = [
-            { id: 1, title: "Flex Banner Printing", icon: "fa-scroll", desc: "Heavy duty outdoor banners." },
-            { id: 2, title: "Visiting Cards", icon: "fa-address-card", desc: "Premium matte & gloss finishes." },
-            { id: 3, title: "Digital Brochures", icon: "fa-book-open", desc: "Corporate multi-page catalog." },
-            { id: 4, title: "Name Boards", icon: "fa-id-badge", desc: "Acrylic and LED name solutions." },
-            { id: 5, title: "Wedding Invitations", icon: "fa-heart", desc: "Traditional Kannada wedding cards." },
-            { id: 6, title: "Sticker Labels", icon: "fa-note-sticky", desc: "Product bottle & box stickers." },
-            { id: 7, title: "Letter Heads", icon: "fa-heading", desc: "Professional office stationery." },
-            { id: 8, title: "Bill Books", icon: "fa-file-invoice", desc: "GST & non-GST customized bills." },
-            { id: 9, title: "Envelopes", icon: "fa-envelope", desc: "Branded shipping envelopes." },
-            { id: 10, title: "ID Card Systems", icon: "fa-user-tag", desc: "Employee & event ID cards." },
-            { id: 11, title: "ACP Panel Design", icon: "fa-shield-halved", desc: "Modern shop front branding." },
-            { id: 12, title: "LED Glow Signs", icon: "fa-lightbulb", desc: "Energy efficient night signage." },
-            { id: 13, title: "Canopy Design", icon: "fa-tent", desc: "Promotion & roadshow canopies." },
-            { id: 14, title: "Rubber Stamps", icon: "fa-stamp", desc: "Self-inking & manual stamps." },
-            { id: 15, title: "Sunpack Printing", icon: "fa-border-all", desc: "Cost-effective street ads." },
-            { id: 16, title: "Menu Card Design", icon: "fa-utensils", desc: "Luxury restaurant menus." },
-            { id: 17, title: "Certificates", icon: "fa-certificate", desc: "Award & appreciation designs." },
-            { id: 18, title: "Standees", icon: "fa-person-rays", desc: "Roll-up standees for events." },
-            { id: 19, title: "Screen Printing", icon: "fa-palette", desc: "Custom bag & fabric printing." },
-            { id: 20, title: "No Parking Boards", icon: "fa-ban", desc: "Metal and plastic board signs." },
-            { id: 21, title: "Wall Graphics", icon: "fa-image", desc: "Industrial workshop murals." },
-            { id: 22, title: "Offset Printing", icon: "fa-print", desc: "High volume bulk printing." }
+        const SERVICES = [
+            { n: "Flex Banners", icon: "fa-scroll" }, { n: "Visiting Cards", icon: "fa-address-card" },
+            { n: "Brochures", icon: "fa-book-open" }, { n: "Name Boards", icon: "fa-id-badge" },
+            { n: "Wedding Cards", icon: "fa-heart" }, { n: "Digital Print", icon: "fa-print" },
+            { n: "ID Cards", icon: "fa-user-tag" }, { n: "Bill Books", icon: "fa-file-invoice" },
+            { n: "Stickers", icon: "fa-note-sticky" }, { n: "Envelopes", icon: "fa-envelope" },
+            { n: "ACP Panels", icon: "fa-shield-halved" }, { n: "LED Boards", icon: "fa-lightbulb" },
+            { n: "Canopy", icon: "fa-tent" }, { n: "Standees", icon: "fa-person-rays" },
+            { n: "Rubber Stamps", icon: "fa-stamp" }, { n: "Screen Printing", icon: "fa-palette" },
+            { n: "No Parking Boards", icon: "fa-ban" }, { n: "Certificates", icon: "fa-certificate" }
         ];
 
-        class SumanthPortfolio {
+        class PortfolioApp {
             constructor() {
-                this.pBatch = 6;
-                this.sBatch = 8;
-                this.pCurrent = 6;
-                this.sCurrent = 8;
+                this.scroller = document.getElementById('scroller');
                 this.init();
             }
 
             init() {
-                this.renderData();
-                this.bindScroll();
-                this.setupPagination();
-                this.setupNavigationArrows();
+                this.renderGallery();
+                this.renderServices();
+                this.setupNavigation();
+                this.setupScrollAnimations();
+                this.handleHorizontalScroll();
             }
 
-            renderData() {
-                const pGrid = document.getElementById('p-grid');
-                PORTFOLIO_DB.forEach((item, index) => {
-                    const node = document.createElement('div');
-                    node.className = `card-p ${index < this.pCurrent ? 'active' : ''}`;
-                    node.innerHTML = `
-                        <div class="card-media"><img src="https://images.unsplash.com/photo-${item.img}?auto=format&fit=crop&q=80&w=600" alt="Work"></div>
-                        <div class="card-info">
-                            <span class="tag">${item.cat}</span>
-                            <h4>${item.title}</h4>
-                            <a href="#" class="btn-ui btn-border" style="padding: 10px 20px; font-size: 0.7rem;">Learn More</a>
+            renderGallery() {
+                PROJECTS.forEach(p => {
+                    const el = document.createElement('div');
+                    el.className = 'work-item';
+                    el.innerHTML = `
+                        <img src="https://images.unsplash.com/photo-${p.i}?auto=format&fit=crop&q=80&w=800" alt="${p.t}" loading="lazy">
+                        <div class="work-info">
+                            <span>${p.c}</span>
+                            <h3>${p.t}</h3>
                         </div>
                     `;
-                    pGrid.appendChild(node);
-                });
-
-                const sGrid = document.getElementById('s-grid');
-                SERVICE_DB.forEach((item, index) => {
-                    const node = document.createElement('div');
-                    node.className = `card-p ${index < this.sCurrent ? 'active' : ''}`;
-                    node.style.textAlign = 'center';
-                    node.innerHTML = `
-                        <div class="card-info">
-                            <i class="fa-solid ${item.icon}" style="font-size: 3rem; color: var(--orange); margin-bottom: 20px;"></i>
-                            <h4>${item.title}</h4>
-                            <p style="font-size: 0.9rem; opacity: 0.7;">${item.desc}</p>
-                            <a href="#" class="btn-ui btn-border" style="padding: 10px 20px; font-size: 0.7rem; margin-top: 20px;">Explore More</a>
-                        </div>
-                    `;
-                    sGrid.appendChild(node);
+                    this.scroller.appendChild(el);
                 });
             }
 
-            setupPagination() {
-                document.getElementById('btn-more-p').addEventListener('click', (e) => {
-                    const hidden = document.querySelectorAll('#p-grid .card-p:not(.active)');
-                    hidden.forEach((card, i) => { if(i < this.pBatch) card.classList.add('active'); });
-                    if(document.querySelectorAll('#p-grid .card-p:not(.active)').length === 0) e.target.style.display = 'none';
-                });
-
-                document.getElementById('btn-more-s').addEventListener('click', (e) => {
-                    const hidden = document.querySelectorAll('#s-grid .card-p:not(.active)');
-                    hidden.forEach((card, i) => { if(i < this.sBatch) card.classList.add('active'); });
-                    if(document.querySelectorAll('#s-grid .card-p:not(.active)').length === 0) e.target.style.display = 'none';
+            renderServices() {
+                const grid = document.getElementById('p-grid');
+                SERVICES.forEach(s => {
+                    const card = document.createElement('div');
+                    card.className = 'print-card';
+                    card.innerHTML = `<i class="fa-solid ${s.icon}"></i><h4>${s.n}</h4>`;
+                    grid.appendChild(card);
                 });
             }
 
-            setupNavigationArrows() {
-                // Portfolio Slider Logic
-                let pIndex = 0;
-                document.getElementById('p-next').addEventListener('click', () => {
-                    const active = document.querySelectorAll('#p-grid .card-p.active');
-                    pIndex = (pIndex + 1) % active.length;
-                    active[pIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-                });
-                document.getElementById('p-prev').addEventListener('click', () => {
-                    const active = document.querySelectorAll('#p-grid .card-p.active');
-                    pIndex = (pIndex - 1 + active.length) % active.length;
-                    active[pIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-                });
-
-                // Service Slider Logic
-                let sIndex = 0;
-                document.getElementById('s-next').addEventListener('click', () => {
-                    const active = document.querySelectorAll('#s-grid .card-p.active');
-                    sIndex = (sIndex + 1) % active.length;
-                    active[sIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-                });
-                document.getElementById('s-prev').addEventListener('click', () => {
-                    const active = document.querySelectorAll('#s-grid .card-p.active');
-                    sIndex = (sIndex - 1 + active.length) % active.length;
-                    active[sIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-                });
-            }
-
-            bindScroll() {
+            setupNavigation() {
                 window.addEventListener('scroll', () => {
-                    const nav = document.getElementById('main-nav');
-                    if(window.scrollY > 100) nav.classList.add('sticky');
-                    else nav.classList.remove('sticky');
+                    const nav = document.getElementById('nav');
+                    if(window.scrollY > 50) nav.classList.add('scrolled');
+                    else nav.classList.remove('scrolled');
+                });
+
+                document.getElementById('slide-next').addEventListener('click', () => {
+                    this.scroller.scrollBy({ left: 490, behavior: 'smooth' });
+                });
+
+                document.getElementById('slide-prev').addEventListener('click', () => {
+                    this.scroller.scrollBy({ left: -490, behavior: 'smooth' });
+                });
+            }
+
+            handleHorizontalScroll() {
+                // Mouse Wheel to Horizontal Scroll conversion for gallery
+                this.scroller.addEventListener('wheel', (evt) => {
+                    if (window.innerWidth > 1024) {
+                        evt.preventDefault();
+                        this.scroller.scrollLeft += evt.deltaY;
+                    }
+                }, { passive: false });
+            }
+
+            setupScrollAnimations() {
+                gsap.registerPlugin(ScrollTrigger);
+
+                gsap.from('.hero h1', { opacity: 0, y: 100, duration: 1.5, ease: "power4.out" });
+                gsap.from('.hero p', { opacity: 0, x: -50, delay: 0.5, duration: 1 });
+
+                gsap.utils.toArray('.print-card').forEach(card => {
+                    gsap.from(card, {
+                        scrollTrigger: { trigger: card, start: "top 90%" },
+                        opacity: 0, y: 30, duration: 0.8
+                    });
                 });
             }
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            new SumanthPortfolio();
-            gsap.from('.hero h1', { opacity: 0, x: -100, duration: 1.5, ease: "power4.out" });
-        });
+        // Execution
+        document.addEventListener('DOMContentLoaded', () => new PortfolioApp());
     </script>
 </body>
 </html>
